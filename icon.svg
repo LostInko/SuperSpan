@@ -1,0 +1,55 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="pastelGreenBagGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#A2D9A4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6BCA70;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="goldSwooshGradIcon" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+    </linearGradient>
+
+    <filter id="softShadowIcon" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="4" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
+      <feMerge> 
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="10" y="10" width="280" height="280" rx="60" ry="60" fill="white" stroke="#f0f0f0" stroke-width="1"/>
+
+  <g filter="url(#softShadowIcon)" transform="translate(150, 105) scale(1.6)">
+      
+      <g transform="rotate(-10, 200, -30) translate(-35, -45)">
+         
+          <path d="M 15 0 Q 30 -25 45 0" stroke="url(#goldSwooshGradIcon)" stroke-width="6" fill="none" stroke-linecap="round"/>
+         <rect x="0" y="0" width="60" height="50" rx="5" ry="5" fill="url(#pastelGreenBagGrad)"/>
+
+           <text x="30" y="35" 
+                 font-family="Arial, Helvetica, sans-serif" 
+                 font-weight="900" 
+                 font-size="15" 
+                 fill="white" 
+                 text-anchor="middle" 
+                 dominant-baseline="middle"
+                 style="text-shadow: 1px 1px 2px rgba(0,0,0,0.1);">
+             sSpan
+           </text>
+      </g>
+
+      <path d="M -50 60 
+               Q 0 95 60 50 
+               Q 65 48 62 55 
+               Q 0 110 -55 70 
+               Q -60 65 -50 60 Z" 
+            fill="url(#goldSwooshGradIcon)"/>
+      
+  </g>
+</svg>
