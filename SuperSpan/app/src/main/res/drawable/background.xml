@@ -1,0 +1,21 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Parte superiore uniforme -->
+    <item android:height="120dp">
+        <shape>
+            <solid android:color="#EBEBEB"/>
+        </shape>
+    </item>
+
+    <!-- Gradiente -->
+    <item android:top="120dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="90"
+                android:startColor="@color/greenet"
+                android:endColor="#EBEBEB"/>
+        </shape>
+    </item>
+
+</layer-list>
