@@ -30,7 +30,8 @@
             android:id="@+id/tvUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Username" />
+            android:text="Username"
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/etUsername"
@@ -38,13 +39,15 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Inserisci il tuo username"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/tvPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Password" />
+            android:text="Password"
+            android:textSize="24sp" />
 
         <EditText
             android:id="@+id/etPassword"
@@ -52,16 +55,43 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Inserisci la tua password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
+                android:text="Non hai un account? " />
+
+            <TextView
+                android:id="@+id/tvRegister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registrati"
+                android:textColor="@color/button" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="90dp"
-            android:layout_marginRight="90dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="100dp"
             android:backgroundTint="@color/button"
-            android:text="Login" />
+            android:text="Login"
+            android:textSize="24sp" />
 
 
     </LinearLayout>

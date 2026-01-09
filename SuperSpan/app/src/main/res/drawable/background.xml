@@ -1,14 +1,14 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Parte superiore uniforme -->
-    <item android:height="120dp">
+    <item android:height="360dp">
         <shape>
             <solid android:color="#EBEBEB"/>
         </shape>
     </item>
 
     <!-- Gradiente -->
-    <item android:top="120dp">
+    <item android:top="360dp">
         <shape>
             <gradient
                 android:type="linear"
