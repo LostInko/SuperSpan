@@ -13,14 +13,14 @@
         android:id="@+id/imageView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/logoext"
-        android:contentDescription="Logo"/>
+        android:contentDescription="Logo"
+        app:srcCompat="@drawable/logoext" />
 
 
     <ImageView
         android:id="@+id/ivBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="37dp"
+        android:layout_height="38dp"
         android:layout_marginLeft="10dp"
         app:srcCompat="@drawable/chevron_backward_circle_fill" />
 
@@ -36,11 +36,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="Registrati"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
@@ -48,39 +48,76 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
             android:gravity="center"
-            android:text="Username"
-            android:textSize="20sp" />
+            android:text="Nome"
+            android:textSize="17sp" />
 
         <EditText
-            android:id="@+id/etUsername"
+            android:id="@+id/etName"
+            style="@android:style/Widget.DeviceDefault.AutoCompleteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Scegli uno username"
+            android:hint="Nome"
             android:inputType="text"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|left"
             android:gravity="center"
-            android:text="Email"
-            android:textSize="20sp" />
+            android:text="Cognome"
+            android:textSize="17sp" />
 
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/etSurname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Scegli un email"
-            android:inputType="textEmailAddress"
-            android:textSize="20sp" />
+            android:hint="Cognome"
+            android:inputType="text"
+            android:textSize="17dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:gravity="center"
+            android:text="Data di nascita"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/etDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="Inserisci data"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:gravity="center"
+            android:text="Username"
+            android:textSize="17sp" />
+
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="Username"
+            android:textSize="17sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="start"
             android:orientation="horizontal">
 
             <TextView
@@ -89,16 +126,16 @@
                 android:layout_gravity="center|left"
                 android:gravity="center"
                 android:text="Password"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/tvHelp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:text="\?"
                 android:textColor="@color/button"
-                android:textSize="20sp" />
+                android:textSize="17sp" />
 
         </LinearLayout>
 
@@ -109,7 +146,7 @@
             android:ems="10"
             android:hint="Scegli una password"
             android:inputType="textPassword"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -117,7 +154,7 @@
             android:layout_gravity="center|left"
             android:gravity="center"
             android:text="Conferma Password"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/etPasswordConf"
@@ -126,26 +163,8 @@
             android:ems="10"
             android:hint="Reinserisci la password"
             android:inputType="textPassword"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|left"
-            android:gravity="center"
-            android:text="Data di nascita"
-            android:textSize="20sp" />
-
-        <EditText
-            android:id="@+id/etDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:ems="10"
-            android:focusable="false"
-            android:hint="Inserisci data"
-            android:textSize="20sp" />
 
         <CheckBox
             android:id="@+id/checkBox"
@@ -153,17 +172,17 @@
             android:layout_height="wrap_content"
             android:buttonTint="@color/button"
             android:text="Accetto i termini di servizio"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:backgroundTint="@color/button"
             android:text="Registrati"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
     </LinearLayout>
 
