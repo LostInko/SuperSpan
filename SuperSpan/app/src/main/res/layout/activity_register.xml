@@ -90,7 +90,6 @@
             android:id="@+id/etDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:ems="10"
             android:focusable="false"
             android:hint="Inserisci data"
@@ -106,12 +105,12 @@
 
         <EditText
             android:id="@+id/etUsername"
+            style="@android:style/Widget.DeviceDefault.AutoCompleteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
             android:ems="10"
-            android:focusable="false"
             android:hint="Username"
+            android:inputType="text"
             android:textSize="17sp" />
 
         <LinearLayout
