@@ -16,7 +16,7 @@
         </shape>
     </item>
 
-    <item android:gravity="bottom" android:height="100dp">
+    <item android:gravity="bottom" android:height="120dp">
         <shape>
             <solid android:color="@color/greenet"/> <corners
             android:topLeftRadius="16dp"
