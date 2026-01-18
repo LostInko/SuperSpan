@@ -1,0 +1,62 @@
+
+<resources>
+
+    <!-- Contenitore Material: TextInputLayout -->
+    <style name="Widget.SuperSpan.TextInputLayout.Filled" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="boxBackgroundMode">filled</item>
+        <item name="boxBackgroundColor">@color/surface_color</item>
+
+        <!-- angoli "pill" -->
+        <item name="boxCornerRadiusTopStart">28dp</item>
+        <item name="boxCornerRadiusTopEnd">28dp</item>
+        <item name="boxCornerRadiusBottomStart">28dp</item>
+        <item name="boxCornerRadiusBottomEnd">28dp</item>
+
+        <!-- Tolgo le righe -->
+        <item name="boxStrokeColor">@android:color/transparent</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+
+        <!-- CORRETTO per TIL: senza 'android:' -->
+        <item name="hintTextColor">@color/hint_color</item>
+
+        <!-- opzionali -->
+        <item name="startIconTint">@color/text_secondary</item>
+        <item name="endIconTint">@color/text_secondary</item>
+        <item name="helperTextTextColor">@color/text_secondary</item>
+        <item name="errorTextColor">@android:color/holo_red_dark</item>
+    </style>
+
+    <!-- Campo interno: TextInputEditText (deriva da EditText) -->
+    <style name="Widget.SuperSpan.EditText" parent="Widget.Material3.TextInputEditText.FilledBox">
+        <item name="android:textColor">@color/text_primary</item>
+        <!-- CORRETTO per EditText: 'android:textColorHint' -->
+        <item name="android:textColorHint">@color/hint_color</item>
+        <item name="android:paddingLeft">22dp</item>
+        <item name="android:paddingRight">22dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+    </style>
+
+
+<!-- Checkbox Material moderno -->
+<style name="Widget.SuperSpan.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
+    <item name="android:textColor">@color/text_primary</item>
+    <item name="buttonTint">@color/brand_primary</item>
+</style>
+
+<!-- Bottone primario a pill -->
+<style name="Widget.SuperSpan.Button.Primary" parent="Widget.Material3.Button">
+    <item name="android:background">@drawable/bg_button_primary_pill</item>
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:minHeight">56dp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAllCaps">false</item>
+    <!-- rimuove padding extra di default su alcuni OEM -->
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+</style>
+
+</resources>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<resources>
-    <color name="greenNav_test">#8BD79A</color>    <!-- Verde barra -->
-    <color name="greenIcon_test">#267F4B</color>  <!-- Verde icone/testo -->
-    <color name="white">#FFFFFFFF</color>
-</resources>

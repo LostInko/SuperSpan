@@ -1,0 +1,36 @@
+
+<resources>
+
+    <!-- Contenitore Material: TextInputLayout -->
+    <style name="Widget.SuperSpan.TextInputLayout.Filled" parent="Widget.Material3.TextInputLayout.FilledBox">
+        <item name="boxBackgroundMode">filled</item>
+        <item name="boxBackgroundColor">@color/surface_color</item>
+
+        <!-- angoli "pill" -->
+        <item name="boxCornerRadiusTopStart">28dp</item>
+        <item name="boxCornerRadiusTopEnd">28dp</item>
+        <item name="boxCornerRadiusBottomStart">28dp</item>
+        <item name="boxCornerRadiusBottomEnd">28dp</item>
+
+        <!-- CORRETTO per TIL: senza 'android:' -->
+        <item name="hintTextColor">@color/hint_color</item>
+
+        <!-- opzionali -->
+        <item name="startIconTint">@color/text_secondary</item>
+        <item name="endIconTint">@color/text_secondary</item>
+        <item name="helperTextTextColor">@color/text_secondary</item>
+        <item name="errorTextColor">@android:color/holo_red_dark</item>
+    </style>
+
+    <!-- Campo interno: TextInputEditText (deriva da EditText) -->
+    <style name="Widget.SuperSpan.EditText" parent="Widget.Material3.TextInputEditText.FilledBox">
+        <item name="android:textColor">@color/text_primary</item>
+        <!-- CORRETTO per EditText: 'android:textColorHint' -->
+        <item name="android:textColorHint">@color/hint_color</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+    </style>
+
+</resources>

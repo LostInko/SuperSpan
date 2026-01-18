@@ -1,8 +1,26 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base -->
     <style name="Base.Theme.SuperSpan" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Evita che il sistema scurisca forzatamente -->
+        <item name="android:forceDarkAllowed">false</item>
+
+        <!-- Imposta esplicitamente colori ad alto contrasto -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+
+        <!-- Per Material 3: impatta sui testi/icone dentro superfici -->
+        <item name="colorOnBackground">@color/text_primary</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+
+
+        <!-- Colori componenti (personalizza a piacere) -->
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorSecondary">@color/brand_secondary</item>
+        <item name="colorSurface">@color/surface_color</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
+    <!-- (Opzionale) disattiva colori dinamici di Material 3 lato tema -->
+        <!-- <item name="material3DynamicColor">false</item> -->
     </style>
 
     <style name="Theme.SuperSpan" parent="Base.Theme.SuperSpan" />

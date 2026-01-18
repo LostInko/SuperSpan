@@ -41,7 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Username"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textColor="@color/text_primary"/>
 
         <EditText
             android:id="@+id/etUsername"
@@ -50,14 +51,16 @@
             android:ems="10"
             android:hint="Inserisci il tuo username"
             android:inputType="text"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textColor="@color/text_primary"/>
 
         <TextView
             android:id="@+id/tvPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textColor="@color/text_primary"/>
 
         <EditText
             android:id="@+id/etPassword"
@@ -66,7 +69,8 @@
             android:ems="10"
             android:hint="Inserisci la tua password"
             android:inputType="textPassword"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textColor="@color/text_primary"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -81,7 +85,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="70dp"
-                android:text="Non hai un account? " />
+                android:text="Non hai un account? "
+                android:textColor="@color/text_primary"/>
 
             <TextView
                 android:id="@+id/tvRegister"
