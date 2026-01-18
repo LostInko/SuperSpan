@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CC93D596"
+    android:background="#D3E5D4"
     tools:context=".MainActivity">
 
 

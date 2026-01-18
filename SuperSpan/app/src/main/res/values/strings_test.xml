@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="home_test">Home</string>
+    <string name="home_test_label">Home (TEST)</string>
+    <string name="favorites_test">Preferiti</string>
+    <string name="cart_test">Carrello</string>
+    <string name="profile_test">Profilo</string>
+    <string name="navbar_demo_app_label">SuperSpan Demo (NavBar)</string>
+</resources>
