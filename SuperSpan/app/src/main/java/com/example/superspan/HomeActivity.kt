@@ -27,8 +27,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var curvedBar: CurvedBottomBarView
 
     private lateinit var btnHome: LinearLayout
-    private lateinit var btnFav: LinearLayout
-    private lateinit var btnCart: LinearLayout
+    private lateinit var btnProd: LinearLayout
+    private lateinit var btnCoup: LinearLayout
     private lateinit var btnProfile: LinearLayout
 
     // Colori usati per stato attivo/inattivo (lazy: calcolati al primo accesso)
@@ -69,9 +69,15 @@ class HomeActivity : AppCompatActivity() {
         curvedBar = findViewById(R.id.curved_bar)
 
         btnHome = findViewById(R.id.btn_home)
-        btnFav = findViewById(R.id.btn_fav)
-        btnCart = findViewById(R.id.btn_cart)
+        btnProd = findViewById(R.id.btn_prod)
+        btnCoup = findViewById(R.id.btn_coup)
         btnProfile = findViewById(R.id.btn_profile)
+
+        val btnFav = findViewById<ImageView>(R.id.btn_fav)
+        val btnCart = findViewById<ImageView>(R.id.btn_cart)
+
+        // Posiziona la gobba sotto il bottone HOME
+
 
         // Stato iniziale: posiziona la gobba sotto il bottone HOME
         // .post() rimanda l'operazione a dopo il layout, così le dimensioni/posizioni sono già calcolate.
@@ -89,17 +95,21 @@ class HomeActivity : AppCompatActivity() {
             home()
         }
         btnFav.setOnClickListener {
-            moveWaveTo(btnFav)
-            select(btnFav)
             favourite()
         }
         btnCart.setOnClickListener {
-            moveWaveTo(btnCart)
-            select(btnCart)
         }
         btnProfile.setOnClickListener {
             moveWaveTo(btnProfile)
             select(btnProfile)
+        }
+        btnProd.setOnClickListener {
+            moveWaveTo(btnProd)
+            select(btnProd)
+        }
+        btnCoup.setOnClickListener {
+            moveWaveTo(btnCoup)
+            select(btnCoup)
         }
 
     }
@@ -149,8 +159,8 @@ class HomeActivity : AppCompatActivity() {
      */
     private fun select(target: LinearLayout, animate: Boolean = true) {
         setGroupInactive(btnHome, animate)
-        setGroupInactive(btnFav, animate)
-        setGroupInactive(btnCart, animate)
+        setGroupInactive(btnProd, animate)
+        setGroupInactive(btnCoup, animate)
         setGroupInactive(btnProfile, animate)
 
         setGroupActive(target, animate)
@@ -258,8 +268,8 @@ class HomeActivity : AppCompatActivity() {
      */
     private fun findIconId(group: LinearLayout): Int = when (group.id) {
         R.id.btn_home    -> R.id.ic_home
-        R.id.btn_fav     -> R.id.ic_fav
-        R.id.btn_cart    -> R.id.ic_cart
+        R.id.btn_prod     -> R.id.ic_prod
+        R.id.btn_coup    -> R.id.ic_coup
         R.id.btn_profile -> R.id.ic_profile
         else -> View.NO_ID
     }

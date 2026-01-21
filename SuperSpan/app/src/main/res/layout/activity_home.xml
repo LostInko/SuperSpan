@@ -1,57 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:clipChildren="false"
     android:clipToPadding="false"
     tools:context=".HomeActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <!-- Barra superiore con il nome utente -->
+        <ImageView
+            android:id="@+id/btn_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/favorites_test"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_favorite_test"
+            app:tint="@color/greenIcon_test" />
 
-    <!-- Etichetta della sezione (prima c'era tvContent) -->
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="283dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="Logo"
+            app:srcCompat="@drawable/logoext" />
 
+        <ImageView
+            android:id="@+id/btn_cart"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/cart_test"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_cart_test"
+            app:tint="@color/greenIcon_test" />
 
-    <!-- Contenuto di test -->
+    </LinearLayout>
 
-
-
-
+    <!-- CONTENUTO (FRAGMENT) -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/navbar_container"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
+    <!-- NAVBAR -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navbar_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
         android:clipChildren="false"
-        android:clipToPadding="false"
-        android:minHeight="88dp"
-        app:layout_constraintHeight_percent="0.15"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:clipToPadding="false">
 
-        <!-- SFONDO con gobba mobile (deve stare sotto gli item) -->
         <com.example.superspan.CurvedBottomBarView
             android:id="@+id/curved_bar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Riga con 4 voci (sopra lo sfondo) -->
         <LinearLayout
             android:id="@+id/nav_items_row"
             android:layout_width="0dp"
@@ -59,17 +79,15 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:weightSum="4"
-            android:clipChildren="false"
-            android:clipToPadding="false"
+            android:elevation="6dp"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:paddingTop="12dp"
             android:paddingBottom="8dp"
-            android:elevation="6dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <!-- HOME -->
             <LinearLayout
@@ -105,9 +123,9 @@
                     android:textSize="13sp"/>
             </LinearLayout>
 
-            <!-- PREFERITI -->
+
             <LinearLayout
-                android:id="@+id/btn_fav"
+                android:id="@+id/btn_prod"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -121,27 +139,27 @@
                 android:paddingBottom="4dp">
 
                 <ImageView
-                    android:id="@+id/ic_fav"
+                    android:id="@+id/ic_prod"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     app:tint="@color/greenIcon_test"
                     android:contentDescription="@string/favorites_test"
-                    app:srcCompat="@drawable/ic_favorite_test" />
+                    app:srcCompat="@drawable/ic_basket" />
 
                 <TextView
-                    android:id="@+id/tv_fav"
+                    android:id="@+id/tv_prod"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/favorites_test"
+                    android:text="Prodotti"
                     android:textColor="@color/greenIcon_test"
                     android:textSize="13sp"/>
             </LinearLayout>
 
             <!-- CARRELLO -->
             <LinearLayout
-                android:id="@+id/btn_cart"
+                android:id="@+id/btn_coup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -155,20 +173,20 @@
                 android:paddingBottom="4dp">
 
                 <ImageView
-                    android:id="@+id/ic_cart"
+                    android:id="@+id/ic_coup"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     app:tint="@color/greenIcon_test"
                     android:contentDescription="@string/cart_test"
-                    app:srcCompat="@drawable/ic_cart_test" />
+                    app:srcCompat="@drawable/ic_coupon" />
 
                 <TextView
-                    android:id="@+id/tv_cart"
+                    android:id="@+id/tv_coup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cart_test"
+                    android:text="Coupon"
                     android:textColor="@color/greenIcon_test"
                     android:textSize="13sp"/>
             </LinearLayout>
@@ -209,7 +227,6 @@
 
         </LinearLayout>
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
