@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat
 object GlobalData {
     // Lista di utenti memorizzata in RAM (si resetta se l'app viene completamente chiusa)
     var user_list = mutableListOf<User>()
+    var currentUser: User? = null
 }
 
 /**
@@ -80,6 +81,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (match) {
+                GlobalData.currentUser = GlobalData.user_list.find {it.username == etUsername.text.toString() && it.password == etPassword.text.toString()}
                 // Credenziali corrette: procedi alla Home
                 login()
             } else {

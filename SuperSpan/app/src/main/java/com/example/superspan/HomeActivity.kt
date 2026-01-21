@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -52,18 +53,9 @@ class HomeActivity : AppCompatActivity() {
         // Layout dell'activity
         setContentView(R.layout.activity_home)
 
-        val recyclerProducts =
-            findViewById<RecyclerView>(R.id.recyclerProducts)
-        recyclerProducts.layoutManager =
-            GridLayoutManager(this, 2)
-
-        val products = listOf(
-            Product("Succo ACE", "Brik 0.2L", "1,75€", R.drawable.succo_ace)
-        )
-
-        recyclerProducts.adapter =
-            ProductAdapter(products)
-
+        if (savedInstanceState == null) {
+            replaceFragment(HomeFragment())
+        }
 
         // Applica padding top/left/right in base alle system bars (status/navigation)
         // Per evitare che i contenuti finiscano "sotto" le barre di sistema.
@@ -94,10 +86,12 @@ class HomeActivity : AppCompatActivity() {
         btnHome.setOnClickListener {
             moveWaveTo(btnHome)                // anima la gobba verso HOME
             select(btnHome)
+            home()
         }
         btnFav.setOnClickListener {
             moveWaveTo(btnFav)
             select(btnFav)
+            favourite()
         }
         btnCart.setOnClickListener {
             moveWaveTo(btnCart)
@@ -108,16 +102,28 @@ class HomeActivity : AppCompatActivity() {
             select(btnProfile)
         }
 
-        // Imposta il nome utente in un TextView prelevandolo da una lista globale
-        // ATTENZIONE: se la lista è vuota, questo genererà un crash (IndexOutOfBounds).
-        // Valuta un controllo di sicurezza se necessario.
-        val tvUserName = findViewById<TextView>(R.id.tvUserName)
-        tvUserName.text = com.example.superspan.GlobalData.user_list[0].name
     }
 
     private fun favourite() {
-        val intent = Intent(this, FavouriteFragment::class.java)
-        startActivity(intent)
+        // Creiamo un'istanza del fragment
+        val fragment = FavouriteFragment()
+
+        // Lo inseriamo nel contenitore dell'Activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment) // 'fragment_container' è l'ID nel tuo XML
+            .addToBackStack(null) // Opzionale: permette di tornare indietro con il tasto back
+            .commit()
+    }
+
+    private fun home() {
+        // Creiamo un'istanza del fragment
+        val fragment = HomeFragment()
+
+        // Lo inseriamo nel contenitore dell'Activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment) // 'fragment_container' è l'ID nel tuo XML
+            .addToBackStack(null) // Opzionale: permette di tornare indietro con il tasto back
+            .commit()
     }
 
 
@@ -256,5 +262,11 @@ class HomeActivity : AppCompatActivity() {
         R.id.btn_cart    -> R.id.ic_cart
         R.id.btn_profile -> R.id.ic_profile
         else -> View.NO_ID
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
     }
 }
