@@ -1,6 +1,7 @@
 
 package com.example.superspan
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -12,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Activity principale che mostra una bottom bar "curva" animata.
@@ -51,6 +54,19 @@ class HomeActivity : AppCompatActivity() {
         // Layout dell'activity
         setContentView(R.layout.activity_home)
 
+        val recyclerProducts =
+            findViewById<RecyclerView>(R.id.recyclerProducts)
+        recyclerProducts.layoutManager =
+            GridLayoutManager(this, 2)
+
+        val products = listOf(
+            Product("Succo ACE", "Brik 0.2L", "1,75€", R.drawable.succo_ace)
+        )
+
+        recyclerProducts.adapter =
+            ProductAdapter(products)
+
+
         // Applica padding top/left/right in base alle system bars (status/navigation)
         // Per evitare che i contenuti finiscano "sotto" le barre di sistema.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root)) { v, insets ->
@@ -60,7 +76,6 @@ class HomeActivity : AppCompatActivity() {
         }
 
         // Bind dei componenti principali
-        tvContent = findViewById(R.id.tvContent)
         curvedBar = findViewById(R.id.curved_bar)
 
         btnHome = findViewById(R.id.btn_home)
@@ -76,7 +91,6 @@ class HomeActivity : AppCompatActivity() {
 
         // Seleziona HOME come attiva (senza animare per evitare "salti" al primo frame)
         select(btnHome, animate = false)
-        tvContent.text = getString(R.string.home_test_label)
 
         // Listener pulsanti bottom bar: sposta la gobba, marca selezione e aggiorna contenuto/testo
         btnHome.setOnClickListener {
@@ -106,6 +120,12 @@ class HomeActivity : AppCompatActivity() {
         val tvUserName = findViewById<TextView>(R.id.tvUserName)
         tvUserName.text = com.example.superspan.GlobalData.user_list[0].name
     }
+
+    private fun favourite() {
+        val intent = Intent(this, FavouriteActivity::class.java)
+        startActivity(intent)
+    }
+
 
     /**
      * Anima la curvatura (onda/gobba) della bottom bar verso il centro X del target.

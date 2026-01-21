@@ -14,52 +14,42 @@
 
 
     <!-- Barra superiore con il nome utente -->
+
+    <!-- Etichetta della sezione (prima c'era tvContent) -->
+
+
     <TextView
         android:id="@+id/tvUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="12dp"
-        android:textAppearance="?attr/textAppearanceTitleMedium"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
+        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:maxLines="1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="16dp"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
+        android:textColor="@android:color/black"
+        android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Ciao, Admin" />
 
-    <!-- Etichetta della sezione (prima c'era tvContent) -->
-    <TextView
-        android:id="@+id/tvSectionLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/home_test_label"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tvUserName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/navbar_container" />
-
     <!-- Contenuto di test -->
-    <TextView
-        android:id="@+id/tvContent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:text="@string/home_test_label"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/navbar_container"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Contenitore navbar (più alto, no clip) -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerProducts"
+        android:layout_width="412dp"
+        android:layout_height="848dp"
+        android:layout_marginTop="75dp"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navbar_container"
         android:layout_width="0dp"
@@ -123,7 +113,7 @@
                     android:layout_height="36dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
-                    android:tint="@color/greenIcon_test"
+                    app:tint="@color/greenIcon_test"
                     android:contentDescription="@string/home_test"
                     app:srcCompat="@drawable/ic_home_test" />
 
@@ -157,7 +147,7 @@
                     android:layout_height="36dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
-                    android:tint="@color/greenIcon_test"
+                    app:tint="@color/greenIcon_test"
                     android:contentDescription="@string/favorites_test"
                     app:srcCompat="@drawable/ic_favorite_test" />
 
@@ -191,7 +181,7 @@
                     android:layout_height="36dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
-                    android:tint="@color/greenIcon_test"
+                    app:tint="@color/greenIcon_test"
                     android:contentDescription="@string/cart_test"
                     app:srcCompat="@drawable/ic_cart_test" />
 
@@ -225,7 +215,7 @@
                     android:layout_height="36dp"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
-                    android:tint="@color/greenIcon_test"
+                    app:tint="@color/greenIcon_test"
                     android:contentDescription="@string/profile_test"
                     app:srcCompat="@drawable/ic_person_test" />
 
@@ -239,6 +229,8 @@
             </LinearLayout>
 
         </LinearLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
