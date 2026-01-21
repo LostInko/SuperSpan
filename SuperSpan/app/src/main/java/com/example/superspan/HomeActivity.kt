@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -24,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView
 class HomeActivity : AppCompatActivity() {
 
     // Riferimenti a UI
-    private lateinit var tvContent: TextView
     private lateinit var curvedBar: CurvedBottomBarView
 
     private lateinit var btnHome: LinearLayout
@@ -95,23 +93,19 @@ class HomeActivity : AppCompatActivity() {
         // Listener pulsanti bottom bar: sposta la gobba, marca selezione e aggiorna contenuto/testo
         btnHome.setOnClickListener {
             moveWaveTo(btnHome)                // anima la gobba verso HOME
-            select(btnHome)                    // evidenzia HOME e resetta gli altri
-            tvContent.text = getString(R.string.home_test_label)
+            select(btnHome)
         }
         btnFav.setOnClickListener {
             moveWaveTo(btnFav)
             select(btnFav)
-            tvContent.text = getString(R.string.favorites_test)
         }
         btnCart.setOnClickListener {
             moveWaveTo(btnCart)
             select(btnCart)
-            tvContent.text = getString(R.string.cart_test)
         }
         btnProfile.setOnClickListener {
             moveWaveTo(btnProfile)
             select(btnProfile)
-            tvContent.text = getString(R.string.profile_test)
         }
 
         // Imposta il nome utente in un TextView prelevandolo da una lista globale
@@ -122,7 +116,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun favourite() {
-        val intent = Intent(this, FavouriteActivity::class.java)
+        val intent = Intent(this, FavouriteFragment::class.java)
         startActivity(intent)
     }
 

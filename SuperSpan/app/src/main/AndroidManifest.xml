@@ -18,7 +18,7 @@
             android:name=".CartActivity"
             android:exported="false" />
         <activity
-            android:name=".FavouriteActivity"
+            android:name=".FavouriteFragment"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
