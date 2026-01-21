@@ -98,18 +98,22 @@ class HomeActivity : AppCompatActivity() {
             favourite()
         }
         btnCart.setOnClickListener {
+            cart()
         }
         btnProfile.setOnClickListener {
             moveWaveTo(btnProfile)
             select(btnProfile)
+            profile()
         }
         btnProd.setOnClickListener {
             moveWaveTo(btnProd)
             select(btnProd)
+            product()
         }
         btnCoup.setOnClickListener {
             moveWaveTo(btnCoup)
             select(btnCoup)
+            coupon()
         }
 
     }
@@ -128,6 +132,50 @@ class HomeActivity : AppCompatActivity() {
     private fun home() {
         // Creiamo un'istanza del fragment
         val fragment = HomeFragment()
+
+        // Lo inseriamo nel contenitore dell'Activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment) // 'fragment_container' è l'ID nel tuo XML
+            .addToBackStack(null) // Opzionale: permette di tornare indietro con il tasto back
+            .commit()
+    }
+
+    private fun cart() {
+        // Creiamo un'istanza del fragment
+        val fragment = CartFragment()
+
+        // Lo inseriamo nel contenitore dell'Activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment) // 'fragment_container' è l'ID nel tuo XML
+            .addToBackStack(null) // Opzionale: permette di tornare indietro con il tasto back
+            .commit()
+    }
+
+    private fun coupon() {
+        // Creiamo un'istanza del fragment
+        val fragment = CouponFragment()
+
+        // Lo inseriamo nel contenitore dell'Activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment) // 'fragment_container' è l'ID nel tuo XML
+            .addToBackStack(null) // Opzionale: permette di tornare indietro con il tasto back
+            .commit()
+    }
+
+    private fun profile() {
+        // Creiamo un'istanza del fragment
+        val fragment = ProfileFragment()
+
+        // Lo inseriamo nel contenitore dell'Activity
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment) // 'fragment_container' è l'ID nel tuo XML
+            .addToBackStack(null) // Opzionale: permette di tornare indietro con il tasto back
+            .commit()
+    }
+
+    private fun product() {
+        // Creiamo un'istanza del fragment
+        val fragment = ProductFragment()
 
         // Lo inseriamo nel contenitore dell'Activity
         supportFragmentManager.beginTransaction()
