@@ -139,7 +139,7 @@ class RegisterActivity : AppCompatActivity() {
      * Torna alla LoginActivity senza extra (usato per il tasto indietro).
      */
     fun back() {
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 
@@ -150,7 +150,7 @@ class RegisterActivity : AppCompatActivity() {
      *   o riempire automaticamente dei campi, se vuoi gestirlo in LoginActivity.
      */
     fun endRegister() {
-        val intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("fromRegisterActivity", true)
         startActivity(intent)
     }
