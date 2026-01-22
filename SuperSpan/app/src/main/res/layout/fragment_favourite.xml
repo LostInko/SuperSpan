@@ -3,12 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.FavouriteFragment">
+    tools:context=".ui.fragment.FavouriteSectionFragment">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="QUA CI SARANNO I PREFERITI"
-        android:textSize="50sp" />
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lista dei preferiti"
+        android:textSize="34sp"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textColor="@color/greenText"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="5dp" />
 
 </FrameLayout>

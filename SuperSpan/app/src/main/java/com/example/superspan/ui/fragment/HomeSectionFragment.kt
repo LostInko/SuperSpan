@@ -14,7 +14,7 @@ import com.example.superspan.adapter.ProductAdapter
 import com.example.superspan.model.Product
 import com.example.superspan.ui.activity.GlobalData
 
-class HomeFragment : Fragment() {
+class HomeSectionFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +36,20 @@ class HomeFragment : Fragment() {
         val products = listOf(
             Product("Succo ACE", "Brik 0.2L", "1,75€", R.drawable.succo_ace)
         )
-        recyclerProducts.adapter = ProductAdapter(products)
+
+        recyclerProducts.adapter = ProductAdapter(products) { product ->
+            val fragment = ProductFragment.newInstance(
+                name = product.name,
+                desc = product.description,
+                price = product.price,
+                imageRes = product.imageRes
+            )
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
 
         // Messaggio di benvenuto
         val tvUserName = view.findViewById<TextView>(R.id.tvUserName)

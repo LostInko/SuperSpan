@@ -12,13 +12,14 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.example.superspan.ui.fragment.CartFragment
-import com.example.superspan.ui.fragment.CouponFragment
+import com.example.superspan.ui.fragment.CouponSectionFragment
 import com.example.superspan.view.CurvedBottomBarView
-import com.example.superspan.ui.fragment.FavouriteFragment
-import com.example.superspan.ui.fragment.HomeFragment
+import com.example.superspan.ui.fragment.FavouriteSectionFragment
+import com.example.superspan.ui.fragment.HomeSectionFragment
 import com.example.superspan.ui.fragment.ProductFragment
 import com.example.superspan.ui.fragment.ProfileFragment
 import com.example.superspan.R
+import com.example.superspan.ui.fragment.ProductsSectionFragment
 
 /**
  * Activity principale che mostra una bottom bar "curva" animata.
@@ -59,7 +60,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         if (savedInstanceState == null) {
-            replaceFragment(HomeFragment())
+            replaceFragment(HomeSectionFragment())
         }
 
         // Applica padding top/left/right in base alle system bars (status/navigation)
@@ -116,7 +117,7 @@ class HomeActivity : AppCompatActivity() {
         btnProd.setOnClickListener {
             moveWaveTo(btnProd)
             select(btnProd)
-            product()
+            productsSection()
         }
         btnCoup.setOnClickListener {
             moveWaveTo(btnCoup)
@@ -128,7 +129,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun favourite() {
         // Creiamo un'istanza del fragment
-        val fragment = FavouriteFragment()
+        val fragment = FavouriteSectionFragment()
 
         // Lo inseriamo nel contenitore dell'Activity
         supportFragmentManager.beginTransaction()
@@ -139,7 +140,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun home() {
         // Creiamo un'istanza del fragment
-        val fragment = HomeFragment()
+        val fragment = HomeSectionFragment()
 
         // Lo inseriamo nel contenitore dell'Activity
         supportFragmentManager.beginTransaction()
@@ -161,7 +162,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun coupon() {
         // Creiamo un'istanza del fragment
-        val fragment = CouponFragment()
+        val fragment = CouponSectionFragment()
 
         // Lo inseriamo nel contenitore dell'Activity
         supportFragmentManager.beginTransaction()
@@ -191,6 +192,17 @@ class HomeActivity : AppCompatActivity() {
             .addToBackStack(null) // Opzionale: permette di tornare indietro con il tasto back
             .commit()
     }
+
+
+    private fun productsSection() {
+        // Qui usi la sezione/lista dei prodotti
+        val fragment = ProductsSectionFragment()   // Assicurati che questa classe esista
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
 
 
     /**

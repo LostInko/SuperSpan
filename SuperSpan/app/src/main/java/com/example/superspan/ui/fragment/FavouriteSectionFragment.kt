@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.superspan.R
 
-class FavouriteFragment : Fragment() {
+class FavouriteSectionFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

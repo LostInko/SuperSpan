@@ -10,7 +10,8 @@ import com.example.superspan.model.Product
 import com.example.superspan.R
 
 class ProductAdapter(
-    private val productList: List<Product>
+    private val productList: List<Product>,
+    private val onItemClick: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     class ProductViewHolder(itemView: View) :
@@ -47,6 +48,7 @@ class ProductAdapter(
         holder.txtDesc.text = product.description
         holder.txtPrice.text = product.price
         holder.imgProduct.setImageResource(product.imageRes)
+        holder.itemView.setOnClickListener { onItemClick(product) }
     }
 
     override fun getItemCount(): Int {
