@@ -73,7 +73,7 @@
 
     <!-- Testo per i testi relativi all'aggiunta al carrello -->
     <style name="addToCart">
-        <item name="android:textColor">@color/greenIcon_test</item>
+        <item name="android:textColor">@color/greenIcon</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
     </style>
