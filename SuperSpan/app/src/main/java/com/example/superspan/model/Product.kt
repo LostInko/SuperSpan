@@ -1,4 +1,4 @@
-package com.example.superspan
+package com.example.superspan.model
 
 class Product (
     val name: String,

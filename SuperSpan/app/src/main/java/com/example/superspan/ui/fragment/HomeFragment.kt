@@ -1,4 +1,4 @@
-package com.example.superspan
+package com.example.superspan.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.superspan.R
+import com.example.superspan.adapter.ProductAdapter
+import com.example.superspan.model.Product
+import com.example.superspan.ui.activity.GlobalData
 
 class HomeFragment : Fragment() {
 

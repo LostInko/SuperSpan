@@ -1,4 +1,4 @@
-package com.example.superspan
+package com.example.superspan.view
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -10,6 +10,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import com.example.superspan.R
 import kotlin.math.max
 import kotlin.math.min
 
@@ -34,7 +35,7 @@ class CurvedBottomBarView @JvmOverloads constructor(
     // Pennello per riempire la forma (colore e antialiasing)
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.greenNav_test)
+        color = ContextCompat.getColor(context, R.color.greenNav)
     }
 
     // Path che rappresenta la forma della barra con gobba

@@ -1,4 +1,4 @@
-package com.example.superspan
+package com.example.superspan.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.superspan.model.Product
+import com.example.superspan.R
 
 class ProductAdapter(
     private val productList: List<Product>
@@ -30,7 +32,7 @@ class ProductAdapter(
     ): ProductViewHolder {
 
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.product, parent, false)
+            .inflate(R.layout.view_product, parent, false)
 
         return ProductViewHolder(view)
     }

@@ -18,19 +18,19 @@
             android:name=".CartActivity"
             android:exported="false" />
         <activity
-            android:name=".FavouriteFragment"
+            android:name=".ui.fragment.FavouriteFragment"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.activity.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.activity.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

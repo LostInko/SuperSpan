@@ -1,5 +1,4 @@
-
-package com.example.superspan
+package com.example.superspan.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.superspan.R
+import com.example.superspan.model.User
 
 /**
  * Oggetto globale usato per memorizzare informazioni condivise nell'app.

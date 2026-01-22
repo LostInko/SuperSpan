@@ -1,10 +1,8 @@
-
-package com.example.superspan
+package com.example.superspan.ui.activity
 
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -15,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.superspan.R
+import com.example.superspan.model.User
 import java.util.Calendar
 
 /**

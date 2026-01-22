@@ -1,7 +1,5 @@
+package com.example.superspan.ui.activity
 
-package com.example.superspan
-
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -13,8 +11,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.superspan.ui.fragment.CartFragment
+import com.example.superspan.ui.fragment.CouponFragment
+import com.example.superspan.view.CurvedBottomBarView
+import com.example.superspan.ui.fragment.FavouriteFragment
+import com.example.superspan.ui.fragment.HomeFragment
+import com.example.superspan.ui.fragment.ProductFragment
+import com.example.superspan.ui.fragment.ProfileFragment
+import com.example.superspan.R
 
 /**
  * Activity principale che mostra una bottom bar "curva" animata.
@@ -29,10 +33,11 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var btnHome: LinearLayout
     private lateinit var btnProd: LinearLayout
     private lateinit var btnCoup: LinearLayout
+    private lateinit var btnFav: LinearLayout
     private lateinit var btnProfile: LinearLayout
 
     // Colori usati per stato attivo/inattivo (lazy: calcolati al primo accesso)
-    private val green by lazy { ContextCompat.getColor(this, R.color.greenIcon_test) }
+    private val green by lazy { ContextCompat.getColor(this, R.color.greenIcon) }
     private val white by lazy { ContextCompat.getColor(this, R.color.white) }
 
     // Parametri per le animazioni e aspetto degli item
@@ -72,9 +77,10 @@ class HomeActivity : AppCompatActivity() {
         btnProd = findViewById(R.id.btn_prod)
         btnCoup = findViewById(R.id.btn_coup)
         btnProfile = findViewById(R.id.btn_profile)
+        btnFav = findViewById(R.id.btn_fav)
 
-        val btnFav = findViewById<ImageView>(R.id.btn_fav)
-        val btnCart = findViewById<ImageView>(R.id.btn_cart)
+
+        val btnCart = findViewById<LinearLayout>(R.id.btn_cart)
 
         // Posiziona la gobba sotto il bottone HOME
 
@@ -95,6 +101,8 @@ class HomeActivity : AppCompatActivity() {
             home()
         }
         btnFav.setOnClickListener {
+            moveWaveTo(btnFav)
+            select(btnFav)
             favourite()
         }
         btnCart.setOnClickListener {
@@ -209,6 +217,7 @@ class HomeActivity : AppCompatActivity() {
         setGroupInactive(btnHome, animate)
         setGroupInactive(btnProd, animate)
         setGroupInactive(btnCoup, animate)
+        setGroupInactive(btnFav, animate)
         setGroupInactive(btnProfile, animate)
 
         setGroupActive(target, animate)
@@ -306,7 +315,7 @@ class HomeActivity : AppCompatActivity() {
 
         // Applica la "pillola" di selezione solo quando attivo
         group.background = if (active)
-            ContextCompat.getDrawable(this, R.drawable.bg_selected_pill_test)
+            ContextCompat.getDrawable(this, R.drawable.bg_selected_pill)
         else null
     }
 
@@ -318,6 +327,7 @@ class HomeActivity : AppCompatActivity() {
         R.id.btn_home    -> R.id.ic_home
         R.id.btn_prod     -> R.id.ic_prod
         R.id.btn_coup    -> R.id.ic_coup
+        R.id.btn_fav     -> R.id.ic_fav
         R.id.btn_profile -> R.id.ic_profile
         else -> View.NO_ID
     }

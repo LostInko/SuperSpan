@@ -12,6 +12,13 @@
         <item name="colorOnBackground">@color/text_primary</item>
         <item name="colorOnSurface">@color/text_primary</item>
 
+
+        <!-- Colori componenti (personalizza a piacere) -->
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorSecondary">@color/brand_secondary</item>
+        <item name="colorSurface">@color/surface_color</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+
         <!-- (Opzionale) disattiva colori dinamici di Material 3 lato tema -->
         <!-- <item name="material3DynamicColor">false</item> -->
     </style>
