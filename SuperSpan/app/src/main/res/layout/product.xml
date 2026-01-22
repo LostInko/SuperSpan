@@ -19,8 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Succo ACE"
-        android:textStyle="bold"
-        android:textSize="14sp"
+        style="@style/textProduct"
         android:layout_marginTop="8dp" />
 
     <!-- Descrizione -->
@@ -29,8 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Brik 1L"
-        android:textSize="12sp"
-        android:textColor="#777777" />
+        style="@style/descProduct" />
 
     <!-- Prezzo + icone -->
     <LinearLayout
@@ -46,8 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="1,75€"
-            android:textStyle="bold"
-            android:textSize="14sp" />
+            style="@style/textProduct" />
 
         <ImageView
             android:layout_width="24dp"
