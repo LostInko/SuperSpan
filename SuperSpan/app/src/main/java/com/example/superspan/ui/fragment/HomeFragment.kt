@@ -1,3 +1,4 @@
+
 package com.example.superspan.ui.fragment
 
 import android.os.Bundle
@@ -24,17 +25,22 @@ class HomeFragment : Fragment() {
         val recyclerProducts = view.findViewById<RecyclerView>(R.id.recyclerProducts)
         recyclerProducts.layoutManager = GridLayoutManager(context, 2)
 
+        // Recupera l'utente corrente
+        val user = GlobalData.currentUser
+
+
+        val tvStoreTitle = view.findViewById<TextView>(R.id.tvStoreTitle)
+        tvStoreTitle.text = user?.citta ?: "Nessuna città"
+
+        // Lista prodotti (placeholder)
         val products = listOf(
             Product("Succo ACE", "Brik 0.2L", "1,75€", R.drawable.succo_ace)
         )
-
         recyclerProducts.adapter = ProductAdapter(products)
 
-        // Imposta il nome utente in un TextView prelevandolo da una lista globale
-        // ATTENZIONE: se la lista è vuota, questo genererà un crash (IndexOutOfBounds).
-        // Valuta un controllo di sicurezza se necessario.
+        // Messaggio di benvenuto
         val tvUserName = view.findViewById<TextView>(R.id.tvUserName)
-        tvUserName.text = ("Ciao, "+ GlobalData.currentUser?.name)
+        tvUserName.text = "Ciao, " + (user?.name ?: "Utente")
 
         return view
     }

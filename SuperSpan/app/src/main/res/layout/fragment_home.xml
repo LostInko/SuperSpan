@@ -1,26 +1,159 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvUserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ciao, Admin"
-            android:textSize="34sp"
-            android:textStyle="bold" />
+        <!-- ░░░ BANNER POSIZIONE ░░░ -->
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerProducts"
+        <LinearLayout
+            android:id="@+id/location_banner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_location_banner"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="12dp">
+
+
+            <!-- Riga titolo + Mostra -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/ivFav"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_star_filled_20"
+                    android:contentDescription="Preferito"
+                    app:tint="@color/location_pill_accent" />
+
+                <TextView
+                    android:id="@+id/tvStoreTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="Quartu Sant’Elena"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:textColor="@color/location_pill_text" />
+
+                <ImageView
+                    android:id="@+id/dotStatus"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:src="@drawable/ic_dot_8"
+                    android:contentDescription="Stato"
+                    app:tint="@color/location_pill_accent" />
+
+                    <TextView
+                        android:id="@+id/tvOpenLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="Aperto"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/location_pill_text" />
+
+
+                </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- PARTE TOP -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/tvUserName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Benvenuto Admin!"
+                android:textSize="34sp"
+                android:textStyle="bold"
+                android:textColor="@color/greenText"
+                android:layout_marginBottom="5dp" />
+
+        </LinearLayout>
+
+
+        <!-- ░░░ BANNER LAVORA CON NOI ░░░ -->
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bannerCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="5dp"
+            app:cardCornerRadius="16dp"
+            app:cardUseCompatPadding="true"
+            app:cardPreventCornerOverlap="true">
+
+            <!-- Manteniamo il ratio 2:1 e il centerCrop -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/bannerLavora"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/lavora_con_noi"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintDimensionRatio="H,2:1" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <!-- ░░░ CONTENUTO DELLA HOME ░░░ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:id="@+id/tvOccasioni"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Ultime offerte!"
+                android:textColor="@color/greenText"
+                android:textSize="34sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="32dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</FrameLayout>
+</ScrollView>

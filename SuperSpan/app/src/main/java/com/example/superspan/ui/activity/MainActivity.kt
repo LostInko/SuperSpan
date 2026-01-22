@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         // Questo serve al test iniziale per avere un utente già registrato.
         GlobalData.user_list.add(
             0,
-            User("Admin", "Admin", "1234", "admin", "admin", "Via Sarrabus, Cagliari")
+            User("Admin", "Admin", "1234", "admin", "admin", "Cagliari")
         )
 
 

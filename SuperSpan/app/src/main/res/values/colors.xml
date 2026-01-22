@@ -21,4 +21,11 @@
     <!-- Superfici -->
     <color name="surface_color">#FFF5F5F5</color>   <!-- grigio chiarissimo -->
 
+
+    <color name="location_pill_bg">#D9F6E8</color>
+    <color name="location_pill_stroke">#B6EED8</color>
+    <color name="location_pill_text">#083A2B</color>
+    <color name="location_pill_accent">#1E8E5A</color>
+
+
 </resources>

@@ -47,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
         val etPasswordConf = findViewById<EditText>(R.id.etPasswordConf)
         val checkBox = findViewById<CheckBox>(R.id.checkBox)     // TOS / privacy
         val btnRegister = findViewById<Button>(R.id.btnRegister)
-        val etIndirizzo = findViewById<EditText>(R.id.etIndirizzo)
+        val etcitta = findViewById<EditText>(R.id.etcitta)
 
 
         // Icona indietro -> torna alla LoginActivity
@@ -89,9 +89,9 @@ class RegisterActivity : AppCompatActivity() {
                 invalid = true
             }
 
-            // 5) Campo indirizzo vuoto?
-            if (etIndirizzo.text.toString().isEmpty()) {
-                etIndirizzo.error = "Inserisci un indirizzo"
+            // 5) Campo citta vuoto?
+            if (etcitta.text.toString().isEmpty()) {
+                etcitta.error = "Inserisci un citta"
                 invalid = true
             }
 
@@ -103,7 +103,7 @@ class RegisterActivity : AppCompatActivity() {
                     etDate.text.toString(),        // qui usi la data come terzo campo del tuo model
                     etUsername.text.toString(),
                     etPassword.text.toString(),
-                    etIndirizzo.text.toString()
+                    etcitta.text.toString()
                 )
                 GlobalData.user_list.add(newUser)
                 endRegister() // Torna alla LoginActivity con un extra

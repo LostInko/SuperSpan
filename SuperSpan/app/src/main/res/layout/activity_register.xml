@@ -69,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nome"
-            android:textColor="@color/greenText"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginTop="10dp" />
@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Cognome"
-            android:textColor="@color/greenText"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="18sp" />
         <com.google.android.material.textfield.TextInputLayout
@@ -119,7 +119,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Data di nascita"
-            android:textColor="@color/greenText"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="18sp" />
         <com.google.android.material.textfield.TextInputLayout
@@ -146,7 +146,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Username"
-            android:textColor="@color/greenText"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="18sp" />
         <com.google.android.material.textfield.TextInputLayout
@@ -170,7 +170,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password"
-            android:textColor="@color/greenText"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="18sp" />
         <com.google.android.material.textfield.TextInputLayout
@@ -215,13 +215,13 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- INDIRIZZO -->
+        <!-- citta -->
         <TextView
-            android:id="@+id/tvIndirizzo"
+            android:id="@+id/tvcitta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Indirizzo"
-            android:textColor="@color/greenText"
+            android:text="Città"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="18sp" />
 
@@ -232,11 +232,11 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etIndirizzo"
+                android:id="@+id/etcitta"
                 style="@style/Widget.SuperSpan.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Via ..., Città"
+                android:hint="Città"
                 android:inputType="textPersonName" />
         </com.google.android.material.textfield.TextInputLayout>
 
