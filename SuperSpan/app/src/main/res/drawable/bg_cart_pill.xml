@@ -1,4 +1,3 @@
-
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <solid android:color="@color/greenNav"/> <!-- stesso colore della navbar -->
