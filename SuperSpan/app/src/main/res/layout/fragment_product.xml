@@ -18,20 +18,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+
+            <LinearLayout
                 android:id="@+id/btn_back"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/favorites_test"
-                android:scaleType="fitCenter"
+                android:layout_width="93dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:layout_marginStart="15dp"
-                app:srcCompat="@drawable/arrow_backward"
-                app:tint="@color/greenIcon_test" />
+                android:background="@drawable/bg_cart_pill"
+                android:layout_gravity="center_vertical"
+                android:minHeight="48dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/favorites_test"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/arrow_backward"
+                    app:tint="@color/greenIcon" />
+
+            </LinearLayout>
 
             <View
                 android:layout_width="0dp"
@@ -39,16 +52,36 @@
                 android:layout_weight="1"
                 />
 
-            <ImageView
+
+            <LinearLayout
                 android:id="@+id/btn_cart"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/cart_test"
-                android:scaleType="fitCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:layout_marginEnd="15dp"
-                app:srcCompat="@drawable/ic_cart_test"
-                app:tint="@color/greenIcon_test" />
+                android:background="@drawable/bg_cart_pill"
+                android:layout_gravity="center_vertical"
+                android:minHeight="48dp">
+
+                <ImageView
+                    android:id="@+id/ic_cart"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="@drawable/ic_cart_test"
+                    app:tint="@color/greenText" />
+
+                <TextView
+                    android:id="@+id/tv_cart_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="0.0 €"
+                    android:textColor="@color/greenText"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -72,7 +105,7 @@
             android:contentDescription="@string/favorites_test"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_favorite_test"
-            app:tint="@color/greenIcon_test"
+            app:tint="@color/greenIcon"
             android:layout_marginEnd="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -97,6 +130,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/product_name">
@@ -168,7 +202,7 @@
                     android:contentDescription="@string/favorites_test"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/minus_circle"
-                    app:tint="@color/greenIcon_test" />
+                    app:tint="@color/greenIcon" />
 
                 <View
                     android:layout_width="0dp"
@@ -197,7 +231,7 @@
                     android:contentDescription="@string/favorites_test"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/plus_circle"
-                    app:tint="@color/greenIcon_test" />
+                    app:tint="@color/greenIcon" />
 
             </LinearLayout>
 
