@@ -47,6 +47,8 @@ class RegisterActivity : AppCompatActivity() {
         val etPasswordConf = findViewById<EditText>(R.id.etPasswordConf)
         val checkBox = findViewById<CheckBox>(R.id.checkBox)     // TOS / privacy
         val btnRegister = findViewById<Button>(R.id.btnRegister)
+        val etIndirizzo = findViewById<EditText>(R.id.etIndirizzo)
+
 
         // Icona indietro -> torna alla LoginActivity
         ivBack.setOnClickListener {
@@ -87,6 +89,12 @@ class RegisterActivity : AppCompatActivity() {
                 invalid = true
             }
 
+            // 5) Campo indirizzo vuoto?
+            if (etIndirizzo.text.toString().isEmpty()) {
+                etIndirizzo.error = "Inserisci un indirizzo"
+                invalid = true
+            }
+
             // Se tutti i controlli sono ok -> crea User e termina registrazione
             if (!invalid) {
                 val newUser = User(
@@ -94,11 +102,14 @@ class RegisterActivity : AppCompatActivity() {
                     etSurname.text.toString(),
                     etDate.text.toString(),        // qui usi la data come terzo campo del tuo model
                     etUsername.text.toString(),
-                    etPassword.text.toString()
+                    etPassword.text.toString(),
+                    etIndirizzo.text.toString()
                 )
                 GlobalData.user_list.add(newUser)
                 endRegister() // Torna alla LoginActivity con un extra
             }
+
+
         }
 
         // Tap nel campo data -> apre DatePicker

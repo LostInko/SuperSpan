@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         // Imposta il layout grafico da mostrare in questa schermata
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
 
         // Gestisce i padding in base all'altezza della status bar / navigation bar,
         // così gli elementi in alto o in basso non vengono coperti.
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         // Questo serve al test iniziale per avere un utente già registrato.
         GlobalData.user_list.add(
             0,
-            User("Admin", "Admin", "1234", "admin", "admin")
+            User("Admin", "Admin", "1234", "admin", "admin", "Via Sarrabus, Cagliari")
         )
 
 

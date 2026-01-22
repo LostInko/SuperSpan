@@ -22,11 +22,12 @@
         <!-- Logo -->
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="308dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
             android:contentDescription="@string/app_name"
-            app:srcCompat="@drawable/logoext"
-            android:paddingBottom="8dp" />
+            android:paddingBottom="8dp"
+            app:srcCompat="@drawable/logoext" />
 
         <!-- Pulsante back (se lo vuoi allineato a sinistra, lascialo qui) -->
         <LinearLayout
@@ -47,7 +48,7 @@
                 android:contentDescription="Torna indietro"
                 app:srcCompat="@drawable/chevron_backward_circle_fill"
                 android:padding="4dp"
-                android:tint="@color/brand_primary" />
+                app:tint="@color/brand_primary" />
 
             <!-- TITOLO ALLINEATO ALLA FRECCIA -->
             <TextView
@@ -62,12 +63,22 @@
         </LinearLayout>
 
         <!-- NOME -->
+
+        <TextView
+            android:id="@+id/tvNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome"
+            android:textColor="@color/greenText"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp" />
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.SuperSpan.TextInputLayout.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="false"
-            android:layout_marginTop="12dp">
+            app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etName"
@@ -79,12 +90,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- COGNOME -->
+        <TextView
+            android:id="@+id/tvCognome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cognome"
+            android:textColor="@color/greenText"
+            android:textStyle="bold"
+            android:textSize="18sp" />
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.SuperSpan.TextInputLayout.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintEnabled="false"
-            android:layout_marginTop="12dp">
+            app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etSurname"
@@ -96,12 +114,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- DATA DI NASCITA -->
+        <TextView
+            android:id="@+id/tvDataNascita"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Data di nascita"
+            android:textColor="@color/greenText"
+            android:textStyle="bold"
+            android:textSize="18sp" />
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.SuperSpan.TextInputLayout.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false"
-            android:layout_marginTop="12dp"
             app:startIconDrawable="@drawable/ic_calendar_24"
             app:startIconTint="@color/text_secondary">
 
@@ -116,12 +141,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- USERNAME -->
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:textColor="@color/greenText"
+            android:textStyle="bold"
+            android:textSize="18sp" />
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.SuperSpan.TextInputLayout.Filled"
             android:layout_width="match_parent"
             app:hintEnabled="false"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etUsername"
@@ -133,12 +165,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- PASSWORD -->
+        <TextView
+            android:id="@+id/tvPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Password"
+            android:textColor="@color/greenText"
+            android:textStyle="bold"
+            android:textSize="18sp" />
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.SuperSpan.TextInputLayout.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintEnabled="false"
-            android:layout_marginTop="12dp"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -154,7 +193,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="ℹ︎ La password deve avere almeno 8 caratteri"
+            android:text="La password deve avere almeno 8 caratteri!"
             android:textColor="@color/text_secondary"
             android:textSize="14sp" />
 
@@ -165,7 +204,6 @@
             android:layout_width="match_parent"
             app:hintEnabled="false"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -176,6 +214,32 @@
                 android:hint="Conferma password"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- INDIRIZZO -->
+        <TextView
+            android:id="@+id/tvIndirizzo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Indirizzo"
+            android:textColor="@color/greenText"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etIndirizzo"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Via ..., Città"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <!-- CHECKBOX TOS -->
         <com.google.android.material.checkbox.MaterialCheckBox
