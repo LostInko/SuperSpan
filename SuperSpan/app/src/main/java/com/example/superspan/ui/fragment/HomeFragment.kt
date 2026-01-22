@@ -40,7 +40,7 @@ class HomeFragment : Fragment() {
 
         // Messaggio di benvenuto
         val tvUserName = view.findViewById<TextView>(R.id.tvUserName)
-        tvUserName.text = "Ciao, " + (user?.name ?: "Utente")
+        tvUserName.text = "Benvenuto " + (user?.name ?: "Utente") + "!"
 
         return view
     }
