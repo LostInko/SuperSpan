@@ -140,6 +140,31 @@
                 android:inputType="none" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- citta -->
+        <TextView
+            android:id="@+id/tvcitta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Città"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etcitta"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Città"
+                android:inputType="textPersonName" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <!-- USERNAME -->
         <TextView
             android:id="@+id/tvUsername"
@@ -188,6 +213,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:id="@+id/tvHelp"
             android:layout_width="wrap_content"
@@ -196,7 +222,14 @@
             android:text="La password deve avere almeno 8 caratteri!"
             android:textColor="@color/text_secondary"
             android:textSize="14sp" />
-
+        <TextView
+            android:id="@+id/tvConfermaPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Conferma password"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="18dp" />
 
         <!-- CONFERMA PASSWORD -->
         <com.google.android.material.textfield.TextInputLayout
@@ -215,32 +248,6 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- citta -->
-        <TextView
-            android:id="@+id/tvcitta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Città"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="18sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintEnabled="false">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etcitta"
-                style="@style/Widget.SuperSpan.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Città"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
         <!-- CHECKBOX TOS -->
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkBox"
@@ -248,7 +255,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Accetto i termini"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="5dp"
             app:useMaterialThemeColors="true" />
 
         <!-- BOTTONE REGISTRAZIONE -->
@@ -258,7 +265,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Registrati"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
