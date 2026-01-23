@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -54,6 +55,15 @@ class HomeSectionFragment : Fragment() {
         // Messaggio di benvenuto
         val tvUserName = view.findViewById<TextView>(R.id.tvUserName)
         tvUserName.text = "Benvenuto " + (user?.name ?: "Utente") + "!"
+
+        val workBanner = view.findViewById<ImageView>(R.id.bannerLavora)
+        workBanner.setOnClickListener {
+            val fragment = WorkWithUsFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
 
         return view
     }
