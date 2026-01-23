@@ -13,6 +13,7 @@
     <color name="text_primary">#FF000000</color>      <!-- nero pieno -->
     <color name="text_secondary">#8A000000</color>    <!-- 54% nero (Material) -->
     <color name="hint_color">#66000000</color>        <!-- 40% nero -->
+    <color name="soft_red">#4DFF0000</color>
 
     <!-- Brand -->
     <color name="brand_primary">#5DBB63</color>     <!-- verde pulsante -->

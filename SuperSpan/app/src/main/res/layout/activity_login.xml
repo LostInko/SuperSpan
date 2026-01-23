@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="50dp"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -34,46 +34,68 @@
             android:text="Nome utente e/o password errati!"
             android:textColor="#FF0000"
             android:textStyle="bold"
+            android:textSize="22sp"
             android:visibility="invisible" />
 
+        <!-- Username -->
         <TextView
             android:id="@+id/tvUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Username"
-            android:textSize="24sp"
-            android:textColor="@color/text_primary"/>
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp" />
 
-        <EditText
-            android:id="@+id/etUsername"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Inserisci il tuo username"
-            android:inputType="text"
-            android:textSize="24sp"
-            android:textColor="@color/text_primary"/>
+            app:hintEnabled="false">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUsername"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Inserisci il tuo username"
+                android:textSize="18sp"
+                android:inputType="textPersonName" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password -->
         <TextView
             android:id="@+id/tvPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Password"
-            android:textSize="24sp"
-            android:textColor="@color/text_primary"/>
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp" />
 
-        <EditText
-            android:id="@+id/etPassword"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Inserisci la tua password"
-            android:inputType="textPassword"
-            android:textSize="24sp"
-            android:textColor="@color/text_primary"/>
+            app:hintEnabled="false"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Inserisci la tua password"
+                android:textSize="18sp"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="horizontal"
@@ -84,15 +106,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="70dp"
-                android:text="Non hai un account? "
+                android:layout_marginLeft="15dp"
+                android:text="Non hai un account?"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:textSize="20sp"
                 android:textColor="@color/text_primary"/>
 
             <TextView
                 android:id="@+id/tvRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Registrati"
+                android:text="Registrati!"
+                android:gravity="center"
+                android:textSize="20sp"
                 android:textColor="@color/button" />
 
         </LinearLayout>

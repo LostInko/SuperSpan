@@ -2,9 +2,12 @@ package com.example.superspan.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.TextView
 import android.widget.EditText
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,24 +16,10 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.superspan.R
 import com.example.superspan.model.User
 
-/**
- * Oggetto globale usato per memorizzare informazioni condivise nell'app.
- * In questo caso contiene una lista di utenti (che simula un "database" in memoria).
- *
- * ATTENZIONE:
- * Questa soluzione va bene per test e piccole app.
- * In una app vera è meglio usare un database o un ViewModel persistente.
- */
-object GlobalData {
-    // Lista di utenti memorizzata in RAM (si resetta se l'app viene completamente chiusa)
-    var user_list = mutableListOf<User>()
-    var currentUser: User? = null
-}
 
 /**
- * Activity di avvio dell'app (launcher activity).
- * Mostra il layout principale con un pulsante "Start" che porta alla schermata di login.
- */
+ Schermata di login.
+ **/
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,9 +46,13 @@ class MainActivity : AppCompatActivity() {
         // Questo serve al test iniziale per avere un utente già registrato.
         GlobalData.user_list.add(
             0,
-            User("Admin", "Admin", "1234", "admin", "admin", "Cagliari")
+            User("Admin", "Admin", "1234", "Cagliari", "admin", "admin")
         )
 
+        val fromRegister = intent.getBooleanExtra("fromRegisterActivity", false)
+        if (fromRegister) {
+            Toast.makeText(this, "Registrazione completata con successo", Toast.LENGTH_SHORT).show()
+        }
 
         // --- Bind delle View ---
         val tvRegister = findViewById<TextView>(R.id.tvRegister)  // link "Registrati"
@@ -92,15 +85,64 @@ class MainActivity : AppCompatActivity() {
 
                 // 2) Evidenzia i campi in rosso
                 etUsername.backgroundTintList =
-                    ContextCompat.getColorStateList(this, R.color.red)
+                    ContextCompat.getColorStateList(this, R.color.soft_red)
                 etPassword.backgroundTintList =
-                    ContextCompat.getColorStateList(this, R.color.red)
+                    ContextCompat.getColorStateList(this, R.color.soft_red)
 
                 // 3) Svuota i campi per nuovo tentativo
-                etUsername.text.clear()
-                etPassword.text.clear()
+                //etUsername.text.clear()
+                //etPassword.text.clear()
             }
         }
+
+        // Rende il bottone login invisibile fin quando non vengono inseriti campi
+        btnLogin.isEnabled = false;
+        btnLogin.alpha = 0.3f;
+
+        val textWatcher = object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable?) {
+                if(etUsername.text.isNotBlank() && etPassword.text.isNotBlank()) {
+                    btnLogin.isEnabled = true;
+                    btnLogin.alpha = 1f;
+                } else {
+                    btnLogin.isEnabled = false;
+                    btnLogin.alpha = 0.3f;
+                }
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+                // Appena l'utente scrive qualcosa, nascondiamo l'errore!
+
+                // 1. Nascondi la scritta rossa
+                tvError.visibility = TextView.INVISIBLE
+
+                // 2. Togli il colore rosso dallo sfondo (resettando a null o bianco)
+                etUsername.backgroundTintList = null
+                etPassword.backgroundTintList = null
+
+            }
+
+        }
+
+        etUsername.addTextChangedListener(textWatcher)
+        etPassword.addTextChangedListener(textWatcher)
+
+
     }
 
 

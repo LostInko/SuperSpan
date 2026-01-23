@@ -3,6 +3,8 @@ package com.example.superspan.ui.activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -11,6 +13,7 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.TooltipCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.superspan.R
@@ -23,6 +26,19 @@ import java.util.Calendar
  * - Permette di selezionare la data di nascita con DatePicker
  * - Se la registrazione va a buon fine, crea un nuovo User e torna alla LoginActivity.
  */
+
+/**
+ * Oggetto globale usato per memorizzare informazioni condivise nell'app.
+ * In questo caso contiene una lista di utenti (che simula un "database" in memoria).
+ *//**
+ * Oggetto globale usato per memorizzare informazioni condivise nell'app.
+ * In questo caso contiene una lista di utenti (che simula un "database" in memoria).
+ */
+object GlobalData {
+    // Lista di utenti memorizzata in RAM (si resetta se l'app viene completamente chiusa)
+    var user_list = mutableListOf<User>()
+    var currentUser: User? = null
+}
 class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +81,10 @@ class RegisterActivity : AppCompatActivity() {
                 etPassword.error = "Le password non coincidono"
                 etPasswordConf.text.clear()
                 etPasswordConf.error = "Le password non coincidono"
+                etPassword.backgroundTintList =
+                    ContextCompat.getColorStateList(this, R.color.soft_red)
+                etPasswordConf.backgroundTintList =
+                    ContextCompat.getColorStateList(this, R.color.soft_red)
                 invalid = true
             }
 
@@ -73,6 +93,8 @@ class RegisterActivity : AppCompatActivity() {
                 etPassword.text.clear()
                 etPassword.error = "La password deve avere almeno 8 caratteri"
                 etPasswordConf.text.clear()
+                etPassword.backgroundTintList =
+                    ContextCompat.getColorStateList(this, R.color.soft_red)
                 invalid = true
             }
 
@@ -80,30 +102,22 @@ class RegisterActivity : AppCompatActivity() {
             if (GlobalData.user_list.any { it.username == etUsername.text.toString() }) {
                 etUsername.text.clear()
                 etUsername.error = "Username già esistente"
+                // 2) Evidenzia i campi in rosso
+                etUsername.backgroundTintList =
+                    ContextCompat.getColorStateList(this, R.color.soft_red)
                 invalid = true
             }
 
-            // 4) Termini/Privacy accettati?
-            if (!checkBox.isChecked) {
-                checkBox.error = "Devi accettare i termini di servizio"
-                invalid = true
-            }
-
-            // 5) Campo citta vuoto?
-            if (etcitta.text.toString().isEmpty()) {
-                etcitta.error = "Inserisci un citta"
-                invalid = true
-            }
 
             // Se tutti i controlli sono ok -> crea User e termina registrazione
             if (!invalid) {
                 val newUser = User(
                     etName.text.toString(),
                     etSurname.text.toString(),
-                    etDate.text.toString(),        // qui usi la data come terzo campo del tuo model
+                    etDate.text.toString(),
+                    etcitta.text.toString(),// qui usi la data come terzo campo del tuo model
                     etUsername.text.toString(),
-                    etPassword.text.toString(),
-                    etcitta.text.toString()
+                    etPassword.text.toString()
                 )
                 GlobalData.user_list.add(newUser)
                 endRegister() // Torna alla LoginActivity con un extra
@@ -115,6 +129,59 @@ class RegisterActivity : AppCompatActivity() {
         // Tap nel campo data -> apre DatePicker
         etDate.setOnClickListener {
             datePicker(etDate)
+        }
+
+        btnRegister.isEnabled = false;
+        btnRegister.alpha = 0.6f;
+
+        //Creiamo funziona che controlla se tutto è valido
+        fun checkValidation() {
+            val areFieldsFilled = etUsername.text.isNotBlank() &&
+                    etPassword.text.isNotBlank() &&
+                    etName.text.isNotBlank() &&
+                    etDate.text.isNotBlank() &&
+                    etcitta.text.isNotBlank() &&
+                    etSurname.text.isNotBlank() &&
+                    etPasswordConf.text.isNotBlank()
+
+            val isTosAccepted = checkBox.isChecked
+
+            // Il bottone si attiva SOLO se i campi sono pieni E la checkbox è spuntata
+            if (areFieldsFilled && isTosAccepted) {
+                btnRegister.isEnabled = true
+                btnRegister.alpha = 1f
+            } else {
+                btnRegister.isEnabled = false
+                btnRegister.alpha = 0.6f // Mantiene il colore più scuro anche da disabilitato
+            }
+        }
+
+        // Funzione semplice per aggiungere il controllo a un campo
+        fun setupWatcher(editText: EditText) {
+            editText.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    // A. Appena scrivi, togli la tinta rossa (torna al colore originale)
+                    editText.backgroundTintList = null
+
+                    // B. Controlla se abilitare il bottone (la tua funzione esistente)
+                    checkValidation()
+                }
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            })
+        }
+
+    // Ora applica questa funzione a tutti i tuoi campi
+        setupWatcher(etUsername)
+        setupWatcher(etPassword)
+        setupWatcher(etDate)
+        setupWatcher(etName)
+        setupWatcher(etSurname)
+        setupWatcher(etcitta)
+        setupWatcher(etPasswordConf)
+        checkBox.setOnCheckedChangeListener { _, _ ->
+            checkValidation()
         }
 
         // Tooltip di aiuto (press-and-hold o long-press sul TextView)
@@ -166,3 +233,5 @@ class RegisterActivity : AppCompatActivity() {
         startActivity(intent)
     }
 }
+
+
