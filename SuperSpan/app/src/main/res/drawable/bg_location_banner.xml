@@ -3,7 +3,8 @@
     android:shape="rectangle">
 
     <!-- Verde chiaro -->
-    <solid android:color="#CEF8E7"/>
+<!--    <solid android:color="#CEF8E7"/>-->
+    <solid android:color="#E6FAEC" />
 
     <!-- Angoli stondati -->
     <corners android:radius="16dp" />

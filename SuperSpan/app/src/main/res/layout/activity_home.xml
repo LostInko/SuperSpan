@@ -92,7 +92,6 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:weightSum="5"
-            android:elevation="6dp"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:paddingTop="12dp"
