@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +12,6 @@
         android:orientation="vertical">
 
         <!-- ░░░ BANNER POSIZIONE ░░░ -->
-
         <LinearLayout
             android:id="@+id/location_banner"
             android:layout_width="match_parent"
@@ -23,8 +23,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginTop="12dp">
 
-
-            <!-- Riga titolo + Mostra -->
+            <!-- Riga titolo + stato -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,18 +57,16 @@
                     android:contentDescription="Stato"
                     app:tint="@color/location_pill_accent" />
 
-                    <TextView
-                        android:id="@+id/tvOpenLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:text="Aperto"
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:textColor="@color/location_pill_text" />
-
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvOpenLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="Aperto"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:textColor="@color/location_pill_text" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -91,12 +88,9 @@
                 android:textStyle="bold"
                 android:textColor="@color/greenText"
                 android:layout_marginBottom="5dp" />
-
         </LinearLayout>
 
-
         <!-- ░░░ BANNER LAVORA CON NOI ░░░ -->
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/bannerCard"
             android:layout_width="match_parent"
@@ -127,7 +121,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-
         <!-- ░░░ CONTENUTO DELLA HOME ░░░ -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -145,16 +138,18 @@
                 android:textColor="@color/greenText"
                 android:textSize="34sp"
                 android:textStyle="bold" />
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerProducts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:paddingBottom="32dp" />
-
         </LinearLayout>
 
+        <!-- RECYCLER NON-SCROLLABLE (si adatta e scorre con la pagina) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerProducts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="32dp" />
+
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
