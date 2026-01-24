@@ -4,6 +4,7 @@
     <color name="greenet">#CC93D596</color>
     <color name="button">#71DB76</color>
     <color name="red">#FF0000</color>
+    <color name="blue">#0000FF</color>
     <color name="greenNav">#8BD79A</color>    <!-- Verde barra -->
     <color name="greenIcon">#267F4B</color>  <!-- Verde icone/testo -->
     <color name="greenText">#204F22</color>  <!-- Verde icone/testo -->
