@@ -25,33 +25,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Bottone indietro -->
-            <ImageButton
-                android:id="@+id/ivBack"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="0dp"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnBackTop"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/bg_circle_button"
-                android:padding="0dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_back"
-                app:tint="@color/white"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_back"
+                app:tint="@color/greenIcon"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/imageView4"
-                app:layout_constraintBottom_toBottomOf="@id/imageView4" />
+                app:layout_constraintTop_toTopOf="@+id/imageView4"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4" />
 
-            <!-- Logo -->
             <ImageView
                 android:id="@+id/imageView4"
-                android:layout_width="308dp"
+                android:layout_width="0dp"
                 android:layout_height="100dp"
+                android:layout_marginStart="16dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/app_name"
                 android:paddingBottom="8dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btnBackTop"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/logoext" />
 
@@ -208,6 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Inserisci password"
+                android:paddingEnd="50dp"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -243,6 +240,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Conferma password"
+                android:paddingEnd="50dp"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -263,6 +261,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Registrati"
+            android:textSize="22dp"
             android:layout_marginTop="10dp" />
 
     </LinearLayout>

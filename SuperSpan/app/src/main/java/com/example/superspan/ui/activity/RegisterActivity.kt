@@ -54,7 +54,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         // --- Bind delle view dal layout ---
-        val ivBack = findViewById<ImageView>(R.id.ivBack)
+        val ivBack = findViewById<ImageView>(R.id.btnBackTop)
         val etName = findViewById<EditText>(R.id.etName)
         val etSurname = findViewById<EditText>(R.id.etSurname)
         val etDate = findViewById<EditText>(R.id.etDate)

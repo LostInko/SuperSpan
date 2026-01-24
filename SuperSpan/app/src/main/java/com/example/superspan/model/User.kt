@@ -6,6 +6,6 @@ data class User (
     val date : String,
     val citta : String,
     val username : String,
-    val password : String
+    var password : String
 
 )
