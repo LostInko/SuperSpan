@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.superspan.ui.fragment.CartFragment
 import com.example.superspan.ui.fragment.CouponSectionFragment
 import com.example.superspan.view.CurvedBottomBarView
@@ -20,6 +21,7 @@ import com.example.superspan.ui.fragment.ProductFragment
 import com.example.superspan.ui.fragment.ProfileFragment
 import com.example.superspan.R
 import com.example.superspan.ui.fragment.ProductsSectionFragment
+import com.example.superspan.viewmodel.HomeViewModel
 
 /**
  * Activity principale che mostra una bottom bar "curva" animata.
@@ -47,6 +49,8 @@ class HomeActivity : AppCompatActivity() {
     private val liftDp = 16f            // sollevamento verticale dell'item attivo (in dp)
     private val animDuration = 220L     // durata animazioni in millisecondi
 
+    private lateinit var vm: HomeViewModel
+
     // Utility: converte dp -> px, usando la densità dello schermo
     private fun dp(v: Float) = v * resources.displayMetrics.density
 
@@ -58,6 +62,17 @@ class HomeActivity : AppCompatActivity() {
 
         // Layout dell'activity
         setContentView(R.layout.activity_home)
+
+        // 1) prendi il VM scoped all'Activity
+                vm = ViewModelProvider(this)[HomeViewModel::class.java]
+
+                // 2) trova la TextView del totale nel layout dell'Activity
+                val tvCartAmount = findViewById<TextView>(R.id.tv_cart_amount)
+
+                // 3) osserva SEMPRE il totale: l'Activity è sempre attiva
+                vm.cartTotal.observe(this) { total ->
+                    tvCartAmount.text = String.format("€ %.2f", total)
+                }
 
         if (savedInstanceState == null) {
             replaceFragment(HomeSectionFragment())
@@ -124,6 +139,7 @@ class HomeActivity : AppCompatActivity() {
             select(btnCoup)
             coupon()
         }
+
 
     }
 

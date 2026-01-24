@@ -7,6 +7,7 @@
     <color name="greenNav">#8BD79A</color>    <!-- Verde barra -->
     <color name="greenIcon">#267F4B</color>  <!-- Verde icone/testo -->
     <color name="greenText">#204F22</color>  <!-- Verde icone/testo -->
+    <color name="productPanel">#DCF5E1</color>
     <color name="white">#FFFFFFFF</color>
 
     <!-- Testo (tema chiaro) -->

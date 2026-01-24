@@ -1,217 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".ui.fragment.ProductFragment">
-
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/topMenuBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
+        <!-- TOP SINISTRA: back -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnBackTop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_circle_button"
+            android:padding="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/greenIcon" />
 
+        <!-- TOP DESTRA: preferiti -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnFavTop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_circle_button"
+            android:contentDescription="@string/favorites_test"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_favorite"
+            app:tint="@color/greenIcon" />
 
-            <LinearLayout
-                android:id="@+id/btn_back"
-                android:layout_width="93dp"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:background="@drawable/bg_cart_pill"
-                android:layout_gravity="center_vertical"
-                android:minHeight="48dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/favorites_test"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/arrow_backward"
-                    app:tint="@color/greenText" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-
-
-
-
-        </LinearLayout>
-
+        <!-- IMMAGINE PRODOTTO: centrata sotto la top-bar -->
         <ImageView
             android:id="@+id/imgProduct"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_fav"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="30dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:layout_constraintTop_toBottomOf="@id/btnBackTop"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topMenuBar"
+            app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/succo_ace" />
 
-        <ImageView
-            android:id="@+id/btn_fav"
-            android:layout_width="wrap_content"
-            android:layout_height="64dp"
-            android:adjustViewBounds="true"
-            android:layout_gravity="right"
-            android:contentDescription="@string/favorites_test"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_favorite"
-            app:tint="@color/greenIcon"
-            android:layout_marginEnd="15dp"
+        <!-- MEGA CONTAINER: card con bordi stondati -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/productCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@id/imgProduct"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:strokeWidth="0dp">
 
-        <TextView
-            android:id="@+id/product_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Succo ACE"
-            style="@style/textProduct"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_fav" />
-
-        <LinearLayout
-            android:id="@+id/product_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/product_name">
-
-            <TextView
-                android:id="@+id/product_description"
-                android:layout_width="wrap_content"
+            <!-- Contenuto della card -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Descrizione del succo ACE"
-                style="@style/descProduct"/>
+                android:padding="16dp">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                <!-- Nome prodotto -->
+                <TextView
+                    android:id="@+id/product_name"
+                    style="@style/textProduct"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Nome prodotto"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                <!-- Riga: descrizione (a sinistra) + prezzo (a destra), stessa altezza -->
+                <TextView
+                    android:id="@+id/product_description"
+                    style="@style/descProduct"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Descrizione Prodotto"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toBottomOf="@id/product_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/product_price"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_goneMarginEnd="8dp"
+                    />
 
                 <TextView
                     android:id="@+id/product_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="1,75€"
-                    />
-            </LinearLayout>
-        </LinearLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="25dp">
-
-            <TextView
-                android:id="@+id/txtAddToCart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Aggiungi al carrello"
-                style="@style/addToCart"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/layoutx"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtAddToCart">
-
-                <ImageView
-                    android:id="@+id/btn_minus"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_marginLeft="80dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/favorites_test"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/minus_circle"
-                    app:tint="@color/greenIcon" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/productCount"
-                    style="@style/addToCart"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="0" />
+                    android:layout_height="wrap_content"
+                    android:text="0,00€"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    app:layout_constraintTop_toTopOf="@id/product_description"
+                    app:layout_constraintBottom_toBottomOf="@id/product_description"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                <!-- QTY container: fisso in basso a destra -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/qtyContainer"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:background="@drawable/bg_qty_green"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    app:layout_constraintTop_toBottomOf="@id/product_description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
-                <ImageView
-                    android:id="@+id/btn_plus"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_marginRight="80dp"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/favorites_test"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/plus_circle"
-                    app:tint="@color/greenIcon" />
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/btnMinus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="4dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:srcCompat="@drawable/ic_minus"
+                        app:tint="@android:color/white" />
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/txtCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:text="N"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@id/btnMinus"
+                        app:layout_constraintEnd_toStartOf="@id/btnPlus"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/btnPlus"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:padding="4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:srcCompat="@drawable/ic_plus"
+                        app:tint="@android:color/white" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </FrameLayout>
+

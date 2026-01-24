@@ -1,14 +1,16 @@
 package com.example.superspan.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.superspan.R
+import com.example.superspan.viewmodel.HomeViewModel
 
 class ProductFragment : Fragment() {
 
@@ -17,13 +19,14 @@ class ProductFragment : Fragment() {
         private const val ARG_DESC = "arg_desc"
         private const val ARG_PRICE = "arg_price"
         private const val ARG_IMAGE_RES = "arg_image_res"
+        private const val ARG_INDEX = "arg_index"
 
-        // Creo il fragment con i dati del prodotto
         fun newInstance(
             name: String,
             desc: String,
             price: String,
-            imageRes: Int
+            imageRes: Int,
+            index: Int
         ): ProductFragment {
             return ProductFragment().apply {
                 arguments = Bundle().apply {
@@ -31,14 +34,15 @@ class ProductFragment : Fragment() {
                     putString(ARG_DESC, desc)
                     putString(ARG_PRICE, price)
                     putInt(ARG_IMAGE_RES, imageRes)
+                    putInt(ARG_INDEX, index)
                 }
             }
         }
     }
 
-    private var score = 0
+    private lateinit var vm: HomeViewModel
 
-    // Leggo gli argomenti tramite lazy
+    private val productIndex: Int by lazy { arguments?.getInt(ARG_INDEX, -1) ?: -1 }
     private val productName: String by lazy { arguments?.getString(ARG_NAME).orEmpty() }
     private val productDesc: String by lazy { arguments?.getString(ARG_DESC).orEmpty() }
     private val productPrice: String by lazy { arguments?.getString(ARG_PRICE).orEmpty() }
@@ -46,54 +50,58 @@ class ProductFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // niente altro da fare qui
+        vm = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_product, container, false)
+        val v = inflater.inflate(R.layout.fragment_product, container, false)
 
-        val btnPlus = view.findViewById<ImageView>(R.id.btn_plus)
-        val btnMinus = view.findViewById<ImageView>(R.id.btn_minus)
-        val btnBack = view.findViewById<LinearLayout>(R.id.btn_back)
-        val numProd = view.findViewById<TextView>(R.id.productCount)
-
-        // Bind dei dati ricevuti negli argomenti
-        view.findViewById<TextView>(R.id.product_name).text = productName
-        view.findViewById<TextView>(R.id.product_description).text = productDesc
-        view.findViewById<TextView>(R.id.product_price).text = productPrice
-        view.findViewById<ImageView>(R.id.imgProduct).apply {
+        // Bind testo/immagine conferiti dall'adapter
+        v.findViewById<TextView>(R.id.product_name).text = productName
+        v.findViewById<TextView>(R.id.product_description).text = productDesc
+        v.findViewById<TextView>(R.id.product_price).text = productPrice
+        v.findViewById<ImageView>(R.id.imgProduct).apply {
             if (productImageRes != 0) setImageResource(productImageRes)
         }
 
-        btnPlus.setOnClickListener { addOne(numProd) }
-        btnMinus.setOnClickListener { minusOne(numProd) }
-
-        // 🔙 Torna indietro alla schermata precedente usando il back stack
-        btnBack.setOnClickListener {
+        // Back
+        v.findViewById<AppCompatImageView>(R.id.btnBackTop).setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+        // btnFavTop è placeholder
 
-        return view
-    }
+        // Qty
+        val btnPlus = v.findViewById<AppCompatImageView>(R.id.btnPlus)
+        val btnMinus = v.findViewById<AppCompatImageView>(R.id.btnMinus)
+        val txtCount = v.findViewById<TextView>(R.id.txtCount)
 
-    private fun addOne(numProdotti: TextView){
-        score++
-        numProdotti.text = "$score"
-    }
-    private fun minusOne(numProdotti: TextView){
-        if(score != 0) score--
-        numProdotti.text = "$score"
-    }
+        // Stato iniziale
+        val p0 = vm.products.value?.getOrNull(productIndex)
+        txtCount.text = (p0?.qty ?: 0).toString()
 
-    // Rimane disponibile se vuoi navigare "hard" verso la Home
-    private fun home() {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container, HomeSectionFragment())
-            addToBackStack(null)
-            commit()
+        btnPlus.setOnClickListener {
+            val p = vm.products.value?.getOrNull(productIndex) ?: return@setOnClickListener
+            p.qty += 1
+            txtCount.text = p.qty.toString()
+            vm.updateCartTotal()
+            // ri-emetti per aggiornare le liste quando torni indietro
+            vm.products.value = vm.products.value
         }
+
+        btnMinus.setOnClickListener {
+            val p = vm.products.value?.getOrNull(productIndex) ?: return@setOnClickListener
+            if (p.qty > 0) {
+                p.qty -= 1
+                txtCount.text = p.qty.toString()
+                vm.updateCartTotal()
+                vm.products.value = vm.products.value
+            }
+        }
+
+        return v
     }
 }
+

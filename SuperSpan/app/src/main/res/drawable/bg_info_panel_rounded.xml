@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-</selector>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- Sfondo -->
+    <solid android:color="@color/greenNav" />
+    <!-- Bordi arrotondati SOLO in alto per effetto “cuffia” -->
+    <corners
+        android:topLeftRadius="48dp"
+        android:topRightRadius="48dp"
+        android:bottomLeftRadius="0dp"
+        android:bottomRightRadius="0dp" />
+    <!-- Bordo colorato (cambia colore a piacere) -->
+<!--    <stroke-->
+<!--        android:width="2dp"-->
+<!--        android:color="@color/greenNav" />-->
+    <!-- Ombra leggera (opzionale: lascia a 0 e usa elevation sul container) -->
+    <padding
+        android:left="0dp"
+        android:top="0dp"
+        android:right="0dp"
+        android:bottom="0dp" />
+</shape>

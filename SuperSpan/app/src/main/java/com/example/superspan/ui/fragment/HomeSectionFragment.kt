@@ -50,19 +50,28 @@ class HomeSectionFragment : Fragment() {
 
             recyclerProducts.adapter = ProductAdapter(
                 productList = homeProducts,
+
+
                 onItemClick = { product ->
+                    val fullList = vm.products.value.orEmpty()
+                    val index = fullList.indexOfFirst { it.name == product.name && it.imageRes == product.imageRes }
+
                     val fragment = ProductFragment.newInstance(
                         name = product.name,
                         desc = product.description,
                         price = product.price,
-                        imageRes = product.imageRes
+                        imageRes = product.imageRes,
+                        index = index
                     )
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, fragment)
                         .addToBackStack(null)
                         .commit()
                 },
-                onCartChanged = { vm.updateCartTotal() }
+
+
+
+            onCartChanged = { vm.updateCartTotal() }
             )
         }
 

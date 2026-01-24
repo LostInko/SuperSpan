@@ -36,4 +36,18 @@ class HomeViewModel : ViewModel() {
         cartTotal.postValue(total)
     }
 
+    fun refreshProducts() {
+        products.value = products.value
+    }
+
+    fun setQtyAt(index: Int, qty: Int) {
+        val list = products.value ?: return
+        if (index in list.indices) {
+            list[index].qty = qty.coerceAtLeast(0)
+            updateCartTotal()
+            refreshProducts()
+        }
+    }
+
+
 }
