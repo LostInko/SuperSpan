@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import com.example.superspan.R
+import com.example.superspan.viewmodel.HomeViewModel
 
 class ProductFragment : Fragment() {
 
@@ -60,6 +62,12 @@ class ProductFragment : Fragment() {
         val btnBack = view.findViewById<LinearLayout>(R.id.btn_back)
         val numProd = view.findViewById<TextView>(R.id.productCount)
 
+        val vm = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
+        // Cerca il prodotto corrente nella lista globale
+        val currentProduct = vm.products.value?.find { it.name == productName }
+        var score = currentProduct?.qty ?: 0
+        numProd.text = score.toString()
+
         // Bind dei dati ricevuti negli argomenti
         view.findViewById<TextView>(R.id.product_name).text = productName
         view.findViewById<TextView>(R.id.product_description).text = productDesc
@@ -68,8 +76,20 @@ class ProductFragment : Fragment() {
             if (productImageRes != 0) setImageResource(productImageRes)
         }
 
-        btnPlus.setOnClickListener { addOne(numProd) }
-        btnMinus.setOnClickListener { minusOne(numProd) }
+        btnPlus.setOnClickListener {
+            score++
+            numProd.text = score.toString()
+            currentProduct?.qty = score
+            vm.notifyChange()
+        }
+        btnMinus.setOnClickListener {
+            if(score > 0){
+                score--
+                numProd.text = score.toString()
+                currentProduct?.qty = score
+                vm.notifyChange()
+            }
+        }
 
         // 🔙 Torna indietro alla schermata precedente usando il back stack
         btnBack.setOnClickListener {
@@ -79,10 +99,6 @@ class ProductFragment : Fragment() {
         return view
     }
 
-    private fun addOne(numProdotti: TextView){
-        score++
-        numProdotti.text = "$score"
-    }
     private fun minusOne(numProdotti: TextView){
         if(score != 0) score--
         numProdotti.text = "$score"

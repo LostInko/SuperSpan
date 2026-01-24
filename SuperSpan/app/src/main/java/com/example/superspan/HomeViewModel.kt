@@ -36,4 +36,9 @@ class HomeViewModel : ViewModel() {
         cartTotal.postValue(total)
     }
 
+    fun notifyChange(){
+        products.value = products.value
+        updateCartTotal()
+    }
+
 }
