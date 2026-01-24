@@ -1,3 +1,4 @@
+
 package com.example.superspan.ui.fragment
 
 import android.os.Bundle
@@ -22,8 +23,8 @@ class ProductFragment : Fragment() {
         private const val ARG_INDEX = "arg_index"
 
         /**
-         * Costruttore consigliato: consente di passare anche l'indice
-         * (se non lo conosci, passa -1 e useremo il nome come fallback).
+         * Costruttore consigliato: passa anche l'indice se lo conosci.
+         * Se non lo hai, usa -1: il fragment farà fallback per nome.
          */
         @JvmOverloads
         fun newInstance(
@@ -65,7 +66,7 @@ class ProductFragment : Fragment() {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_product, container, false)
 
-        // ---- Bind dati statici (testi e immagine) ----
+        // ---- Bind dati statici (coerenti con l'XML) ----
         v.findViewById<TextView>(R.id.product_name)?.text = productName
         v.findViewById<TextView>(R.id.product_description)?.text = productDesc
         v.findViewById<TextView>(R.id.product_price)?.text = productPrice
@@ -73,24 +74,21 @@ class ProductFragment : Fragment() {
             if (productImageRes != 0) setImageResource(productImageRes)
         }
 
-        // ---- Back: supporta sia btnBackTop (nuovo) sia btn_back (vecchio) ----
-        v.findViewById<View?>(R.id.btnBackTop)?.setOnClickListener {
+        // ---- Back (ID unico presente: btnBackTop) ----
+        v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-        v.findViewById<View?>(R.id.btn_back)?.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
+        // btnFavTop è placeholder
 
-        // ---- Qty: supporta entrambi i set di ID ----
-        val btnPlus: View? = v.findViewById(R.id.btnPlus) ?: v.findViewById(R.id.btn_plus)
-        val btnMinus: View? = v.findViewById(R.id.btnMinus) ?: v.findViewById(R.id.btn_minus)
-        val txtCount: TextView? = v.findViewById(R.id.txtCount) ?: v.findViewById(R.id.productCount)
+        // ---- Qty (ID presenti nel tuo XML) ----
+        val btnPlus = v.findViewById<AppCompatImageView>(R.id.btnPlus)
+        val btnMinus = v.findViewById<AppCompatImageView>(R.id.btnMinus)
+        val txtCount = v.findViewById<TextView>(R.id.txtCount)
 
         // Stato iniziale quantità
         val p0 = resolveCurrentProduct()
         txtCount?.text = (p0?.qty ?: 0).toString()
 
-        // +1
         btnPlus?.setOnClickListener {
             val p = resolveCurrentProduct() ?: return@setOnClickListener
             p.qty += 1
@@ -98,7 +96,6 @@ class ProductFragment : Fragment() {
             notifyVmChanged()
         }
 
-        // -1
         btnMinus?.setOnClickListener {
             val p = resolveCurrentProduct() ?: return@setOnClickListener
             if (p.qty > 0) {
@@ -112,12 +109,10 @@ class ProductFragment : Fragment() {
     }
 
     /**
-     * Recupera il prodotto corrente. Preferisce l'indice (se valido), altrimenti cerca per nome.
+     * Recupera il prodotto corrente. Preferisce l'indice se valido, altrimenti cerca per nome.
      */
     private fun resolveCurrentProduct(): com.example.superspan.model.Product? {
-        val list = vm.products.value
-        if (list.isNullOrEmpty()) return null
-
+        val list = vm.products.value ?: return null
         return if (productIndex in 0 until list.size) {
             list[productIndex]
         } else {
@@ -127,19 +122,12 @@ class ProductFragment : Fragment() {
 
     /**
      * Notifica le variazioni al ViewModel e aggiorna il totale carrello.
-     * Mantengo la strategia della "prima" versione:
-     * - updateCartTotal()
-     * - ri-emissione della lista per notificare gli osservatori.
+     * Mantiene l'approccio della prima versione.
      */
     private fun notifyVmChanged() {
-        // Se il tuo ViewModel non ha updateCartTotal(), commenta la riga seguente
+        // Se la tua implementazione del ViewModel non prevede questa funzione,
+        // sostituiscila con vm.notifyChange() oppure implementa updateCartTotal() nel VM.
         vm.updateCartTotal()
-
-        // Forza la ri-emissione della lista (trigger LiveData)
         vm.products.value = vm.products.value
-
-        // Se preferivi la strategia "seconda versione", puoi aggiungere nel tuo VM:
-        // fun notifyChange() { products.value = products.value }
-        // e richiamarla qui al posto di quanto sopra.
     }
 }
