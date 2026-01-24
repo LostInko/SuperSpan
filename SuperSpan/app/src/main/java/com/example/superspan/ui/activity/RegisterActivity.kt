@@ -221,6 +221,7 @@ class RegisterActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
     /**
      * Conclude la registrazione:
      * - Torna alla LoginActivity

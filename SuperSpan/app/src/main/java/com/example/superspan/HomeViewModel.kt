@@ -50,4 +50,9 @@ class HomeViewModel : ViewModel() {
     }
 
 
+    fun notifyChange(){
+        products.value = products.value
+        updateCartTotal()
+    }
+
 }
