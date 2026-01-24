@@ -58,12 +58,18 @@ class MainActivity : AppCompatActivity() {
         val tvRegister = findViewById<TextView>(R.id.tvRegister)  // link "Registrati"
         val etUsername = findViewById<EditText>(R.id.etUsername)  // input username
         val etPassword = findViewById<EditText>(R.id.etPassword)  // input password
-        val btnLogin   = findViewById<Button>(R.id.btnLogin)      // bottone login
-        val tvError    = findViewById<TextView>(R.id.tvError)     // messaggio di errore (di solito inizialmente GONE)
+        val btnLogin = findViewById<Button>(R.id.btnLogin)      // bottone login
+        val tvError = findViewById<TextView>(R.id.tvError)     // messaggio di errore (di solito inizialmente GONE)
+
+        val tvPassDim = findViewById<TextView>(R.id.tvPswDim)
 
         // Tap su "Registrati" -> vai alla schermata di registrazione
         tvRegister.setOnClickListener {
             register()
+        }
+
+        tvPassDim.setOnClickListener {
+            passDim()
         }
 
         // Tap su "Login" -> valida credenziali
@@ -75,7 +81,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (match) {
-                GlobalData.currentUser = GlobalData.user_list.find {it.username == etUsername.text.toString() && it.password == etPassword.text.toString()}
+                GlobalData.currentUser =
+                    GlobalData.user_list.find { it.username == etUsername.text.toString() && it.password == etPassword.text.toString() }
                 // Credenziali corrette: procedi alla Home
                 login()
             } else {
@@ -97,12 +104,12 @@ class MainActivity : AppCompatActivity() {
 
         // Rende il bottone login invisibile fin quando non vengono inseriti campi
         btnLogin.isEnabled = false;
-        btnLogin.alpha = 0.3f;
+        btnLogin.alpha = 0.6f;
 
         val textWatcher = object : TextWatcher {
 
             override fun afterTextChanged(s: Editable?) {
-                if(etUsername.text.isNotBlank() && etPassword.text.isNotBlank()) {
+                if (etUsername.text.isNotBlank() && etPassword.text.isNotBlank()) {
                     btnLogin.isEnabled = true;
                     btnLogin.alpha = 1f;
                 } else {
@@ -155,6 +162,12 @@ class MainActivity : AppCompatActivity() {
     /** Apre la HomeActivity (login riuscito). */
     private fun login() {
         val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+    }
+
+    /** Apre la schermata di recupero password. */
+    private fun passDim() {
+        val intent = Intent(this, PasswordActivity::class.java)
         startActivity(intent)
     }
 }
