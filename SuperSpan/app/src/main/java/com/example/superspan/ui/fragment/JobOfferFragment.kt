@@ -11,7 +11,10 @@ class JobOfferFragment : Fragment() {
         private const val ARG_SHIFT = "arg_shift"
         private const val ARG_WAGE = "arg_wage"
 
-        // Creo il fragment con i dati del prodotto
+        /**
+         * Costruttore consigliato: passa anche l'indice se lo conosci.
+         * Se non lo hai, usa -1: il fragment farà fallback per nome.
+         */
         fun newInstance(
             name: String,
             location: String,
@@ -28,5 +31,12 @@ class JobOfferFragment : Fragment() {
             }
         }
     }
+
+    private val jobOfferName: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_NAME).orEmpty() }
+    private val jobOfferLocation: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_LOCATION).orEmpty() }
+    private val jobOfferShift: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_SHIFT).orEmpty() }
+    private val jobOfferWage: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_WAGE).orEmpty() }
+
+
 
 }
