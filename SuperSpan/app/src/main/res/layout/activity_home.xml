@@ -226,7 +226,7 @@
                     android:adjustViewBounds="true"
                     app:tint="@color/greenIcon"
                     android:contentDescription="Preferiti"
-                    app:srcCompat="@drawable/ic_favorite" />
+                    app:srcCompat="@drawable/ic_favorite_border" />
 
                 <TextView
                     android:id="@+id/tv_fav"

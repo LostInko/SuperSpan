@@ -78,7 +78,20 @@ class ProductFragment : Fragment() {
         v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-        // btnFavTop è placeholder
+
+
+        // ---- Preferiti (cuore in alto a destra) ----
+        val btnFavTop = v.findViewById<AppCompatImageView>(R.id.btnFavTop)
+        val current = resolveCurrentProduct()
+        if (current != null) {
+            setFavIcon(btnFavTop, current.isFavorite)
+        }
+        btnFavTop?.setOnClickListener {
+            val p = resolveCurrentProduct() ?: return@setOnClickListener
+            vm.toggleFavoriteByRef(p)
+            setFavIcon(btnFavTop, p.isFavorite)
+        }
+
 
         // ---- Qty (ID presenti nel tuo XML) ----
         val btnPlus = v.findViewById<AppCompatImageView>(R.id.btnPlus)
@@ -106,6 +119,15 @@ class ProductFragment : Fragment() {
         }
 
         return v
+    }
+
+
+    private fun setFavIcon(iv: AppCompatImageView?, isFav: Boolean) {
+        iv?.setImageResource(
+            if (isFav) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+        )
+        // opzionale: lasciare il tint gestito dal layout/tema
+        // iv?.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.greenIcon))
     }
 
     /**

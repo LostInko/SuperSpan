@@ -14,8 +14,10 @@ class HomeViewModel : ViewModel() {
     // Totale carrello aggiornato
     val cartTotal = MutableLiveData<Double>()
 
+    // ⬇️ NEW: LiveData con i preferiti (derivata)
+    val favorites = MutableLiveData<List<Product>>(emptyList())
+
     init {
-        // inizializzi qui solo una volta
         products.value = mutableListOf(
             Product("Succo ACE", "Brik 0.2L x 6", "1,75€", R.drawable.succo_ace),
             Product("Ichnusa non filtrata","50cl", "1,56€", R.drawable.ichnusa_non_filtrata),
@@ -23,16 +25,13 @@ class HomeViewModel : ViewModel() {
             Product("Salsiccia classica stagionata","All'etto", "2,03€", R.drawable.salsiccia_secca_murru),
             Product("Ravioli ricotta e spinaci","", "2,30€", R.drawable.ravioli_ricotta_cossu)
         )
-
         cartTotal.value = 0.0
+        recomputeFavorites()
     }
-
 
     fun updateCartTotal() {
         val list = products.value.orEmpty()
-        val total: Double = list.sumOf { product ->
-            product.parsedPrice().toDouble() * product.qty.toDouble()
-        }
+        val total: Double = list.sumOf { p -> p.parsedPrice() * p.qty.toDouble() }
         cartTotal.postValue(total)
     }
 
@@ -49,10 +48,38 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-
-    fun notifyChange(){
+    fun notifyChange() {
         products.value = products.value
         updateCartTotal()
+        recomputeFavorites()
     }
 
+    // ⬇️ NEW: toggle preferito
+    fun toggleFavoriteByRef(product: Product) {
+        product.isFavorite = !product.isFavorite
+        refreshProducts()
+        recomputeFavorites()
+    }
+
+    // ⬇️ NEW: toggle per indice o per nome se serve
+    fun toggleFavoriteByIndex(index: Int) {
+        val list = products.value ?: return
+        if (index in list.indices) {
+            list[index].isFavorite = !list[index].isFavorite
+            refreshProducts()
+            recomputeFavorites()
+        }
+    }
+
+    fun toggleFavoriteByName(name: String) {
+        val p = products.value?.find { it.name == name } ?: return
+        p.isFavorite = !p.isFavorite
+        refreshProducts()
+        recomputeFavorites()
+    }
+
+    private fun recomputeFavorites() {
+        favorites.postValue(products.value?.filter { it.isFavorite } ?: emptyList())
+    }
 }
+
