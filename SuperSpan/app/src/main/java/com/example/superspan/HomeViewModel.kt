@@ -3,19 +3,19 @@ package com.example.superspan.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.superspan.R
+import com.example.superspan.model.Address
 import com.example.superspan.model.Product
 import com.example.superspan.model.parsedPrice
 
 class HomeViewModel : ViewModel() {
 
-    // Lista prodotti che NON si resetta cambiando fragment
     val products = MutableLiveData<MutableList<Product>>()
-
-    // Totale carrello aggiornato
     val cartTotal = MutableLiveData<Double>()
 
+    // 1. Sposta la dichiarazione qui fuori (deve essere accessibile al Fragment)
+    val addresses = MutableLiveData<List<Address>>()
+
     init {
-        // inizializzi qui solo una volta
         products.value = mutableListOf(
             Product("Succo ACE", "Brik 0.2L x 6", "1,75€", R.drawable.succo_ace),
             Product("Ichnusa non filtrata","50cl", "1,56€", R.drawable.ichnusa_non_filtrata),
@@ -25,9 +25,36 @@ class HomeViewModel : ViewModel() {
         )
 
         cartTotal.value = 0.0
+
+        // 2. Chiamiamo la funzione per caricare gli indirizzi all'avvio
+        loadAddresses()
     }
 
+    // 3. Funzione per caricare i dati (Spostata fuori da init)
+    fun loadAddresses() {
+        val list = listOf(
+            Address("Cagliari", "Via del Nastro Azzurro 17", "09131", "Casa Mia", isSelected = true),
+            Address("Cagliari", "Via Bruxelles 13", "09129", "Casa di Alice", isSelected = true)
+        )
+        addresses.value = list
+    }
 
+    // 4. AGGIUNGI QUESTA: Gestisce il click sull'indirizzo
+    fun selectAddress(selected: Address) {
+        val currentList = addresses.value ?: return
+
+        // Creiamo una nuova lista dove solo quello cliccato è true
+        val newList = currentList.map { address ->
+            // Se l'indirizzo della lista è quello selezionato, setta true, altrimenti false
+            // (Funziona meglio se Address è una 'data class')
+            address.copy(isSelected = (address == selected))
+        }
+
+        // Notifichiamo il cambiamento al Fragment
+        addresses.value = newList
+    }
+
+    // --- Le tue funzioni esistenti rimangono uguali ---
     fun updateCartTotal() {
         val list = products.value.orEmpty()
         val total: Double = list.sumOf { product ->
@@ -49,10 +76,8 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-
     fun notifyChange(){
         products.value = products.value
         updateCartTotal()
     }
-
 }
