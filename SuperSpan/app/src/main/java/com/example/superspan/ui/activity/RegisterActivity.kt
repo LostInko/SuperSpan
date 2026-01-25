@@ -120,6 +120,7 @@ class RegisterActivity : AppCompatActivity() {
                     etPassword.text.toString()
                 )
                 GlobalData.user_list.add(newUser)
+                GlobalData.currentUser = newUser
                 endRegister() // Torna alla LoginActivity con un extra
             }
 

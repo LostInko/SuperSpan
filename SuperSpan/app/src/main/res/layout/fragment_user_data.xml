@@ -1,14 +1,288 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragment.UserDataFragment">
+    android:fillViewport="true">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp">
 
-</FrameLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnBackTop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_circle_button"
+            android:padding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/greenIcon" />
+
+        <TextView
+            android:id="@+id/titleAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="I tuoi dati"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/btnBackTop"
+            app:layout_constraintStart_toEndOf="@id/btnBackTop"
+            app:layout_constraintTop_toTopOf="@id/btnBackTop" />
+
+        <TextView
+            android:id="@+id/tvNomeLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="20dp"
+            android:text="Nome"
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnBackTop" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilName"
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@id/tvNomeLabel"
+            app:layout_constraintStart_toStartOf="@id/tvNomeLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvNomeLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etName"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                tools:text="Nome Utente"
+                android:textSize="17sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvCognomeLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Cognome"
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/tilName"
+            app:layout_constraintStart_toStartOf="@id/tilName"
+            app:layout_constraintTop_toBottomOf="@id/tilName" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilSurname"
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@id/tvCognomeLabel"
+            app:layout_constraintStart_toStartOf="@id/tvCognomeLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvCognomeLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etSurname"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                tools:text="Cognome Utente"
+                android:textSize="17sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvDataLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Data di nascita"
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/tilSurname"
+            app:layout_constraintStart_toStartOf="@id/tilSurname"
+            app:layout_constraintTop_toBottomOf="@id/tilSurname" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilData"
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:hintEnabled="false"
+            app:startIconDrawable="@drawable/ic_calendar_24"
+            app:startIconTint="@color/text_secondary"
+            app:layout_constraintEnd_toEndOf="@id/tvDataLabel"
+            app:layout_constraintStart_toStartOf="@id/tvDataLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvDataLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDate"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                tools:text="01/01/2000"
+                android:textSize="17sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvCittaLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Città"
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/tilData"
+            app:layout_constraintStart_toStartOf="@id/tilData"
+            app:layout_constraintTop_toBottomOf="@id/tilData" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilCity"
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@id/tvCittaLabel"
+            app:layout_constraintStart_toStartOf="@id/tvCittaLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvCittaLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCity"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                tools:text="Cagliari"
+                android:textSize="17sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvUserLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Username"
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/tilCity"
+            app:layout_constraintStart_toStartOf="@id/tilCity"
+            app:layout_constraintTop_toBottomOf="@id/tilCity" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilUser"
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@id/tvUserLabel"
+            app:layout_constraintStart_toStartOf="@id/tvUserLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvUserLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUser"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                tools:text="admin_user"
+                android:textSize="17sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tvPassLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Password"
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/tilUser"
+            app:layout_constraintStart_toStartOf="@id/tilUser"
+            app:layout_constraintTop_toBottomOf="@id/tilUser" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPass"
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:hintEnabled="false"
+            app:endIconMode="password_toggle"
+            app:layout_constraintEnd_toEndOf="@id/tvPassLabel"
+            app:layout_constraintStart_toStartOf="@id/tvPassLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvPassLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPass"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:inputType="textPassword"
+                tools:text="••••••••"
+                android:textSize="17sp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnModificaDati"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="37dp"
+            android:layout_marginHorizontal="20dp"
+            app:cardBackgroundColor="@color/brand_primary"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="6dp"
+            app:strokeWidth="0dp"
+            app:layout_constraintTop_toBottomOf="@id/tilPass"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="24dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Modifica i tuoi dati"
+                    android:textColor="@color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
