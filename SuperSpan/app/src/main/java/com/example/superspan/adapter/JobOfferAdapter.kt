@@ -13,17 +13,11 @@ class JobOfferAdapter(
     private val onItemClick: (JobOffer) -> Unit
 ) : RecyclerView.Adapter<JobOfferAdapter.JobOfferViewHolder>() {
 
-    class JobOfferViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
-        val txtTitle: TextView =
-            itemView.findViewById(R.id.txtTitle)
-        val txtLocation: TextView =
-            itemView.findViewById(R.id.txtLocation)
-        val txtShift: TextView =
-            itemView.findViewById(R.id.txtShift)
-        val txtWage: TextView =
-            itemView.findViewById(R.id.txtWage)
+    class JobOfferViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val offerTitle: TextView = itemView.findViewById(R.id.offerTitle)
+        val offerLocation: TextView = itemView.findViewById(R.id.offerLocation)
+        val offerShift: TextView = itemView.findViewById(R.id.offerShift)
+        val offerWage: TextView = itemView.findViewById(R.id.offerWage)
     }
 
     override fun onCreateViewHolder(
@@ -31,8 +25,7 @@ class JobOfferAdapter(
         viewType: Int
     ): JobOfferViewHolder {
 
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_job_offer, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_job_offer, parent, false)
 
         return JobOfferViewHolder(view)
     }
@@ -43,10 +36,10 @@ class JobOfferAdapter(
     ) {
         val jobOffers = jobOfferList[position]
 
-        holder.txtTitle.text = jobOffers.name
-        holder.txtLocation.text = jobOffers.location
-        holder.txtShift.text = jobOffers.shift
-        holder.txtWage.text = jobOffers.wage
+        holder.offerTitle.text = jobOffers.name
+        holder.offerLocation.text = jobOffers.location
+        holder.offerShift.text = jobOffers.shift
+        holder.offerWage.text = jobOffers.wage
         holder.itemView.setOnClickListener { onItemClick(jobOffers) }
     }
 

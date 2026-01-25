@@ -34,7 +34,7 @@
 
             <!-- Nome offerta -->
             <TextView
-                android:id="@+id/offerTitle"
+                android:id="@+id/offer_title"
                 style="@style/textProduct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                     android:src="@drawable/ic_location_pin_black" />
 
                 <TextView
-                    android:id="@+id/txtLocation"
+                    android:id="@+id/offer_location"
                     style="@style/descProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                     android:src="@drawable/ic_calendar" />
 
                 <TextView
-                    android:id="@+id/txtShift"
+                    android:id="@+id/offer_shift"
                     style="@style/descProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                     android:src="@drawable/dollarsign_circle" />
 
                 <TextView
-                    android:id="@+id/txtWage"
+                    android:id="@+id/offer_wage"
                     style="@style/descProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/txtDesc"
+                android:id="@+id/offer_description"
                 style="@style/descProduct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/txtRequisiti"
+                android:id="@+id/offer_requisiti"
                 style="@style/descProduct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -210,7 +210,7 @@
                 android:textSize="20dp" />
 
             <TextView
-                android:id="@+id/txtOffer"
+                android:id="@+id/offer_offerta"
                 style="@style/descProduct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
