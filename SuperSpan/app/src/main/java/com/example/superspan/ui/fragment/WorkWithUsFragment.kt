@@ -5,18 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.adapter.JobOfferAdapter
 import com.example.superspan.adapter.ProductAdapter
 import com.example.superspan.model.JobOffer
+import com.example.superspan.viewmodel.HomeViewModel
+import com.example.superspan.viewmodel.WorkWithUsViewModel
+import kotlin.collections.indexOfFirst
+import kotlin.collections.orEmpty
 
 class WorkWithUsFragment : Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var vm: WorkWithUsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,26 +27,42 @@ class WorkWithUsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_work_with_us, container, false)
 
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        vm = ViewModelProvider(requireActivity())[WorkWithUsViewModel::class.java]
+
         val recyclerJobOffers = view.findViewById<RecyclerView>(R.id.recyclerJobOffers)
         recyclerJobOffers.layoutManager = GridLayoutManager(context, 1)
 
-        val jobOffers = listOf(
-            JobOffer("Magazziniere", "Teramo", "Turno notte", "€€")
-        )
+        vm.jobOffers.observe(viewLifecycleOwner) { jobOfferList ->
 
-        recyclerJobOffers.adapter = JobOfferAdapter(jobOffers) { jobOffer ->
-            val fragment = JobOfferFragment.newInstance(
-                name = jobOffer.name,
-                location = jobOffer.location,
-                shift = jobOffer.shift,
-                wage = jobOffer.wage
-            )
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit()
+            recyclerJobOffers.adapter = JobOfferAdapter(
+                jobOfferList = jobOfferList,
+
+                onItemClick = { jobOffer ->
+                    val fullList = vm.jobOffers.value.orEmpty()
+                    val index = fullList.indexOfFirst { it.id == jobOffer.id }
+
+                    val fragment = JobOfferFragment.newInstance(
+                        id = jobOffer.id,
+                        name = jobOffer.name,
+                        location = jobOffer.location,
+                        shift = jobOffer.shift,
+                        wage = jobOffer.wage,
+                        desc = jobOffer.description,
+                        req = jobOffer.requirements
+                    )
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit()
+                },
+
+                )
         }
-
-        return view
     }
 }
