@@ -48,6 +48,10 @@ class MainActivity : AppCompatActivity() {
             0,
             User("Admin", "Admin", "1234", "Cagliari", "admin", "admin")
         )
+        GlobalData.user_list.add(
+            1,
+            User("Matteo","Manai","22/11/2004","Quartu Sant'Elena","m","m")
+        )
 
         val fromRegister = intent.getBooleanExtra("fromRegisterActivity", false)
         if (fromRegister) {

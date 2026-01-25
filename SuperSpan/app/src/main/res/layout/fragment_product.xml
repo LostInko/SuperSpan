@@ -37,7 +37,7 @@
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_favorite"
+            app:srcCompat="@drawable/ic_favorite_border"
             app:tint="@color/greenIcon" />
 
         <!-- IMMAGINE PRODOTTO: centrata sotto la top-bar -->
