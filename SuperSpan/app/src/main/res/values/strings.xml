@@ -11,5 +11,6 @@
 
     <!--Stile sottolineato-->
     <string name="password_dimenticata"><u>Password dimenticata?</u></string>
+    <string name="coupon_online">Coupon online</string>
 
 </resources>
