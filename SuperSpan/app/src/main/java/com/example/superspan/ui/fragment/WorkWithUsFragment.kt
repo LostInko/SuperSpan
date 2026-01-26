@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -88,5 +89,13 @@ class WorkWithUsFragment : Fragment() {
                 override fun afterTextChanged(s: Editable?) {}
             })
         }
+
+        // ---- Back (ID unico presente: btnBackTop) ----
+        view.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
     }
+
+
 }
