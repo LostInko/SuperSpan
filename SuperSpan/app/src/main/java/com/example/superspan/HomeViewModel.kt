@@ -7,6 +7,7 @@ import com.example.superspan.model.Address
 import com.example.superspan.model.Product
 import com.example.superspan.model.parsedPrice
 
+
 class HomeViewModel : ViewModel() {
 
     val products = MutableLiveData<MutableList<Product>>()
@@ -14,6 +15,8 @@ class HomeViewModel : ViewModel() {
 
     // 1. Sposta la dichiarazione qui fuori (deve essere accessibile al Fragment)
     val addresses = MutableLiveData<List<Address>>()
+    val favorites = MutableLiveData<List<Product>>(emptyList())
+
 
     init {
         products.value = mutableListOf(
@@ -79,5 +82,33 @@ class HomeViewModel : ViewModel() {
     fun notifyChange(){
         products.value = products.value
         updateCartTotal()
+    }
+
+    // ⬇️ NEW: toggle preferito
+    fun toggleFavoriteByRef(product: Product) {
+        product.isFavorite = !product.isFavorite
+        refreshProducts()
+        recomputeFavorites()
+    }
+
+    // ⬇️ NEW: toggle per indice o per nome se serve
+    fun toggleFavoriteByIndex(index: Int) {
+        val list = products.value ?: return
+        if (index in list.indices) {
+            list[index].isFavorite = !list[index].isFavorite
+            refreshProducts()
+            recomputeFavorites()
+        }
+    }
+
+    fun toggleFavoriteByName(name: String) {
+        val p = products.value?.find { it.name == name } ?: return
+        p.isFavorite = !p.isFavorite
+        refreshProducts()
+        recomputeFavorites()
+    }
+
+    private fun recomputeFavorites() {
+        favorites.postValue(products.value?.filter { it.isFavorite } ?: emptyList())
     }
 }
