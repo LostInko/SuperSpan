@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Bianco un po' più scuro per dare risalto -->
+    <solid android:color="#E6FAEC" />
+    <corners android:radius="16dp" />
+    <stroke
+    android:width="5dp"
+    android:color="@color/greenText" />
+    <!-- NIENTE bordo -->
+    <padding
+        android:left="12dp"
+        android:top="12dp"
+        android:right="12dp"
+        android:bottom="12dp" />
+</shape>
