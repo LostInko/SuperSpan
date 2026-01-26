@@ -1,10 +1,12 @@
 package com.example.superspan.ui.fragment
 
+import android.R.attr.fragment
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,6 +56,15 @@ class CartFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
             // Oppure, se usi Navigation Component:
             // findNavController().navigateUp()
+        }
+
+        view.findViewById<Button>(R.id.btnPay)?.setOnClickListener {
+            val orderFragment = OrderFragment() // Assicurati che il nome della classe sia corretto
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, orderFragment) // 'fragment_container' è l'ID del contenitore nel tuo Activity Layout
+                .addToBackStack(null) // Permette di tornare indietro al carrello premendo il tasto back
+                .commit()
         }
 
         vm.cartTotal.observe(viewLifecycleOwner) { total ->
