@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="I tuoi dati"
-            android:textColor="@color/black"
+            android:textColor="@color/greenText"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/btnBackTop"
@@ -69,8 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                tools:text="Nome Utente"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                tools:text="Nome Utente" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -103,8 +103,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                tools:text="Cognome Utente"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                tools:text="Cognome Utente" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -139,8 +139,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                tools:text="01/01/2000"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                tools:text="01/01/2000" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -173,8 +173,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                tools:text="Cagliari"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                tools:text="Cagliari" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -207,8 +207,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                tools:text="admin_user"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                tools:text="admin_user" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -230,8 +230,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            app:hintEnabled="false"
             app:endIconMode="password_toggle"
+            app:hintEnabled="false"
             app:layout_constraintEnd_toEndOf="@id/tvPassLabel"
             app:layout_constraintStart_toStartOf="@id/tvPassLabel"
             app:layout_constraintTop_toBottomOf="@id/tvPassLabel">
@@ -243,44 +243,89 @@
                 android:layout_height="wrap_content"
                 android:enabled="false"
                 android:inputType="textPassword"
-                tools:text="••••••••"
-                android:textSize="17sp"/>
+                android:textSize="17sp"
+                tools:text="••••••••" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tvPassHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="La password deve avere almeno 8 caratteri!"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/tilPass"
+            app:layout_constraintStart_toStartOf="@id/tilPass"
+            app:layout_constraintTop_toBottomOf="@id/tilPass" />
+
+        <TextView
+            android:id="@+id/tvConfermaPassLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Conferma password"
+            android:textColor="@color/black"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/tvPassHint"
+            app:layout_constraintStart_toStartOf="@id/tvPassHint"
+            app:layout_constraintTop_toBottomOf="@id/tvPassHint" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilConfirmPass"
+            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:visibility="gone"
+            app:endIconMode="password_toggle"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@id/tvConfermaPassLabel"
+            app:layout_constraintStart_toStartOf="@id/tvConfermaPassLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvConfermaPassLabel">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etConfirmPass"
+                style="@style/Widget.SuperSpan.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textSize="17sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/btnModificaDati"
             android:layout_width="0dp"
             android:layout_height="64dp"
-            android:layout_marginTop="37dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="32dp"
             app:cardBackgroundColor="@color/brand_primary"
             app:cardCornerRadius="24dp"
             app:cardElevation="6dp"
-            app:strokeWidth="0dp"
-            app:layout_constraintTop_toBottomOf="@id/tilPass"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilConfirmPass"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="24dp"
+            app:strokeWidth="0dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/tvBtnText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="Modifica i tuoi dati"
                     android:textColor="@color/white"
                     android:textSize="22sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:textStyle="bold" />
+            </FrameLayout>
 
         </com.google.android.material.card.MaterialCardView>
 

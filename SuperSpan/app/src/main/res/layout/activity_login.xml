@@ -132,7 +132,7 @@
                 android:text="Registrati!"
                 android:gravity="center"
                 android:textSize="20sp"
-                android:textColor="@color/button" />
+                android:textColor="#71DB76" />
         </LinearLayout>
 
         <View

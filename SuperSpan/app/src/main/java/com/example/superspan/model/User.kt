@@ -1,11 +1,11 @@
 package com.example.superspan.model
 
 data class User (
-    val name : String,
-    val surname : String,
-    val date : String,
-    val citta : String,
-    val username : String,
+    var name : String,
+    var surname : String,
+    var date : String,
+    var citta : String,
+    var username : String,
     var password : String
 
 )

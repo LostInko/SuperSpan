@@ -32,7 +32,7 @@
             android:text="I tuoi indirizzi"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/greenText"
             app:layout_constraintTop_toTopOf="@id/btnBackTop"
             app:layout_constraintBottom_toBottomOf="@id/btnBackTop"
             app:layout_constraintStart_toEndOf="@id/btnBackTop"

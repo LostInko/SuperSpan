@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="Tornare indietro?"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Sei sicuro di volere effettuare il logout?"
+        android:text="Perderai tutte le modifiche non salvate."
         android:textSize="20dp"/>
 
     <RelativeLayout
@@ -34,14 +34,14 @@
             android:textColor="@color/black" />
 
         <Button
-        android:id="@+id/btn_conferma"
-        style="?attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:text="CONFERMA"
-        android:textSize="20dp"
-        android:textColor="@color/red"
+            android:id="@+id/btn_conferma"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="CONFERMA"
+            android:textSize="20dp"
+            android:textColor="@color/red"
 
             /> </RelativeLayout>
 </LinearLayout>
