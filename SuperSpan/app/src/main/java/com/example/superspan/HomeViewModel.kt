@@ -3,19 +3,17 @@ package com.example.superspan.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.superspan.R
+import com.example.superspan.model.Address
 import com.example.superspan.model.Product
 import com.example.superspan.model.parsedPrice
 
 class HomeViewModel : ViewModel() {
 
-    // Lista prodotti che NON si resetta cambiando fragment
     val products = MutableLiveData<MutableList<Product>>()
-
-    // Totale carrello aggiornato
     val cartTotal = MutableLiveData<Double>()
 
-    // ⬇️ NEW: LiveData con i preferiti (derivata)
-    val favorites = MutableLiveData<List<Product>>(emptyList())
+    // 1. Sposta la dichiarazione qui fuori (deve essere accessibile al Fragment)
+    val addresses = MutableLiveData<List<Address>>()
 
     init {
         products.value = mutableListOf(
@@ -25,13 +23,43 @@ class HomeViewModel : ViewModel() {
             Product("Salsiccia classica stagionata","All'etto", "2,03€", R.drawable.salsiccia_secca_murru),
             Product("Ravioli ricotta e spinaci","", "2,30€", R.drawable.ravioli_ricotta_cossu)
         )
+
         cartTotal.value = 0.0
-        recomputeFavorites()
+
+        // 2. Chiamiamo la funzione per caricare gli indirizzi all'avvio
+        loadAddresses()
     }
 
+    // 3. Funzione per caricare i dati (Spostata fuori da init)
+    fun loadAddresses() {
+        val list = listOf(
+            Address("Cagliari", "Via del Nastro Azzurro 17", "09131", "Casa Mia", isSelected = true),
+            Address("Cagliari", "Via Bruxelles 13", "09129", "Casa di Alice", isSelected = true)
+        )
+        addresses.value = list
+    }
+
+    // 4. AGGIUNGI QUESTA: Gestisce il click sull'indirizzo
+    fun selectAddress(selected: Address) {
+        val currentList = addresses.value ?: return
+
+        // Creiamo una nuova lista dove solo quello cliccato è true
+        val newList = currentList.map { address ->
+            // Se l'indirizzo della lista è quello selezionato, setta true, altrimenti false
+            // (Funziona meglio se Address è una 'data class')
+            address.copy(isSelected = (address == selected))
+        }
+
+        // Notifichiamo il cambiamento al Fragment
+        addresses.value = newList
+    }
+
+    // --- Le tue funzioni esistenti rimangono uguali ---
     fun updateCartTotal() {
         val list = products.value.orEmpty()
-        val total: Double = list.sumOf { p -> p.parsedPrice() * p.qty.toDouble() }
+        val total: Double = list.sumOf { product ->
+            product.parsedPrice().toDouble() * product.qty.toDouble()
+        }
         cartTotal.postValue(total)
     }
 
@@ -48,38 +76,8 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    fun notifyChange() {
+    fun notifyChange(){
         products.value = products.value
         updateCartTotal()
-        recomputeFavorites()
-    }
-
-    // ⬇️ NEW: toggle preferito
-    fun toggleFavoriteByRef(product: Product) {
-        product.isFavorite = !product.isFavorite
-        refreshProducts()
-        recomputeFavorites()
-    }
-
-    // ⬇️ NEW: toggle per indice o per nome se serve
-    fun toggleFavoriteByIndex(index: Int) {
-        val list = products.value ?: return
-        if (index in list.indices) {
-            list[index].isFavorite = !list[index].isFavorite
-            refreshProducts()
-            recomputeFavorites()
-        }
-    }
-
-    fun toggleFavoriteByName(name: String) {
-        val p = products.value?.find { it.name == name } ?: return
-        p.isFavorite = !p.isFavorite
-        refreshProducts()
-        recomputeFavorites()
-    }
-
-    private fun recomputeFavorites() {
-        favorites.postValue(products.value?.filter { it.isFavorite } ?: emptyList())
     }
 }
-
