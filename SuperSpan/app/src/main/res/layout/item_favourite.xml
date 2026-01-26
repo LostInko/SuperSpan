@@ -30,7 +30,7 @@
             android:textStyle="bold"
             android:text="nome prodotto"
             android:textSize="20sp"
-            android:maxLines="1"
+            android:maxLines="2"
             android:ellipsize="end"/>
 
         <TextView

@@ -126,8 +126,6 @@ class HomeActivity : AppCompatActivity() {
             favourite()
         }
         btnCart.setOnClickListener {
-            moveWaveTo(btnOffscreen)
-            select(btnOffscreen)
             cart()
         }
         btnProfile.setOnClickListener {

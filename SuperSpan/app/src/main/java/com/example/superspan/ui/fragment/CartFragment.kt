@@ -52,10 +52,18 @@ class CartFragment : Fragment() {
         return view
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         tvCartAmountInActivity = requireActivity().findViewById(R.id.tv_cart_amount)
+
+        // Bottone back (in testa alla pagina)
+        view.findViewById<View>(R.id.btnBackTop)?.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+            // Oppure, se usi Navigation Component:
+            // findNavController().navigateUp()
+        }
 
         vm.cartTotal.observe(viewLifecycleOwner) { total ->
             val formatted = String.format("%.2f €", total)
@@ -63,4 +71,5 @@ class CartFragment : Fragment() {
             tvTotalPrice?.text = formatted
         }
     }
+
 }
