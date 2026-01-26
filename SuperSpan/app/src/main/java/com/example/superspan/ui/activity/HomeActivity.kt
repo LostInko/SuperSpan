@@ -39,6 +39,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var btnFav: LinearLayout
     private lateinit var btnProfile: LinearLayout
 
+    private lateinit var btnOffscreen: LinearLayout
+
     // Colori usati per stato attivo/inattivo (lazy: calcolati al primo accesso)
     private val green by lazy { ContextCompat.getColor(this, R.color.greenIcon) }
     private val white by lazy { ContextCompat.getColor(this, R.color.white) }
@@ -94,6 +96,8 @@ class HomeActivity : AppCompatActivity() {
         btnCoup = findViewById(R.id.btn_coup)
         btnProfile = findViewById(R.id.btn_profile)
         btnFav = findViewById(R.id.btn_fav)
+        btnOffscreen = findViewById(R.id.btn_offscreen)
+
 
 
         val btnCart = findViewById<LinearLayout>(R.id.btn_cart)
@@ -122,6 +126,8 @@ class HomeActivity : AppCompatActivity() {
             favourite()
         }
         btnCart.setOnClickListener {
+            moveWaveTo(btnOffscreen)
+            select(btnOffscreen)
             cart()
         }
         btnProfile.setOnClickListener {

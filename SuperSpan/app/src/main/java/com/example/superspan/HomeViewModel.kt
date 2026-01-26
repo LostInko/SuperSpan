@@ -13,9 +13,11 @@ class HomeViewModel : ViewModel() {
     val products = MutableLiveData<MutableList<Product>>()
     val cartTotal = MutableLiveData<Double>()
 
-    // 1. Sposta la dichiarazione qui fuori (deve essere accessibile al Fragment)
     val addresses = MutableLiveData<List<Address>>()
+
+    val selectedAddress = MutableLiveData<Address?>()
     val favorites = MutableLiveData<List<Product>>(emptyList())
+
 
 
     init {
@@ -37,24 +39,24 @@ class HomeViewModel : ViewModel() {
     fun loadAddresses() {
         val list = listOf(
             Address("Cagliari", "Via del Nastro Azzurro 17", "09131", "Casa Mia", isSelected = true),
-            Address("Cagliari", "Via Bruxelles 13", "09129", "Casa di Alice", isSelected = true)
+            Address("Cagliari", "Via Bruxelles 13", "09129", "Casa di Alice", isSelected = false)
         )
         addresses.value = list
     }
 
-    // 4. AGGIUNGI QUESTA: Gestisce il click sull'indirizzo
+    fun getSelectedAddress(): Address? {
+        // Cerchiamo nella lista degli indirizzi quello che ha isSelected == true
+        return addresses.value?.find { it.isSelected }
+    }
+
     fun selectAddress(selected: Address) {
         val currentList = addresses.value ?: return
-
-        // Creiamo una nuova lista dove solo quello cliccato è true
         val newList = currentList.map { address ->
-            // Se l'indirizzo della lista è quello selezionato, setta true, altrimenti false
-            // (Funziona meglio se Address è una 'data class')
             address.copy(isSelected = (address == selected))
         }
-
-        // Notifichiamo il cambiamento al Fragment
         addresses.value = newList
+
+        selectedAddress.value = selected
     }
 
     // --- Le tue funzioni esistenti rimangono uguali ---

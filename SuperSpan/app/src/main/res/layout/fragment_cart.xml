@@ -60,7 +60,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp"
-        android:background="@android:color/white"
         android:elevation="12dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
