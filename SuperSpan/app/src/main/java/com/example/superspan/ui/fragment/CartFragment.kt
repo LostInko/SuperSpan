@@ -40,15 +40,6 @@ class CartFragment : Fragment() {
         }
 
 
-        val recyclerViewAddress = view.findViewById<RecyclerView>(R.id.recyclerAddress)
-        recyclerViewAddress.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
-        vm.addresses.observe(viewLifecycleOwner){ allAddresses ->
-            recyclerViewAddress.adapter = AddressAdapter(allAddresses) { selectedAddress ->
-                vm.selectAddress(selectedAddress)
-            }
-        }
-
         return view
     }
 
