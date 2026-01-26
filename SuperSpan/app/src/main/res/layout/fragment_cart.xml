@@ -25,9 +25,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Il tuo carrello"
-                android:textSize="25sp"
+                android:textSize="26sp"
                 android:textStyle="bold"
-                android:textColor="@color/greenIcon"
+                android:textColor="@color/greenText"
                 android:layout_marginBottom="8dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="Indirizzo di consegna"
                 android:textSize="20sp"
-                android:textColor="@color/greenIcon"
+                android:textColor="@color/greenText"
                 android:textStyle="bold"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"/>
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:text="Totale"
                 android:textColor="@color/greenText"
-                android:textSize="24sp"
+                android:textSize="26sp"
                 android:textStyle="bold" />
 
             <View
@@ -93,11 +93,12 @@
 
         <Button
             android:id="@+id/btnPay"
+            style="@style/Widget.SuperSpan.Button.Primary"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="16dp"
             android:text="Procedi al pagamento"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textAllCaps="false" />
     </LinearLayout>
 
