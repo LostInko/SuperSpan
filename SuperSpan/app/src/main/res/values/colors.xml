@@ -29,5 +29,6 @@
     <color name="location_pill_text">#083A2B</color>
     <color name="location_pill_accent">#1E8E5A</color>
 
+    <color name="bg_product_color">#E6FAEC</color>
 
 </resources>
