@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.superspan.R
 import com.example.superspan.viewmodel.HomeViewModel
 import com.example.superspan.viewmodel.WorkWithUsViewModel
+import com.google.android.material.chip.Chip
 
 class JobOfferFragment : Fragment() {
 
@@ -76,16 +77,16 @@ class JobOfferFragment : Fragment() {
 
         // ---- Bind dati statici (coerenti con l'XML) ----
         v.findViewById<TextView>(R.id.offer_title)?.text = jobOfferName
-        v.findViewById<TextView>(R.id.offer_location)?.text = jobOfferLocation
-        v.findViewById<TextView>(R.id.offer_shift)?.text = jobOfferShift
-        v.findViewById<TextView>(R.id.offer_wage)?.text = jobOfferWage
+        v.findViewById<Chip>(R.id.offer_location)?.text = jobOfferLocation
+        v.findViewById<Chip>(R.id.offer_shift)?.text = jobOfferShift
+        v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage
         v.findViewById<TextView>(R.id.offer_description)?.text = jobOfferDesc
         v.findViewById<TextView>(R.id.offer_requisiti)?.text = jobOfferReq
 
-        // ---- Back (ID unico presente: btnBackTop) ----
-        v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
+//        // ---- Back (ID unico presente: btnBackTop) ----
+//        v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
+//            requireActivity().onBackPressedDispatcher.onBackPressed()
+//        }
 
 
         return v
