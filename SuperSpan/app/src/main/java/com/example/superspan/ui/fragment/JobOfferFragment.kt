@@ -96,7 +96,7 @@ class JobOfferFragment : Fragment() {
         btnCandidati.setOnClickListener {
             val fragmentDomande = ApplicationFragment().apply {
                 arguments = Bundle().apply {
-                    putString("candidaturaId", "ID_ESEMPIO_123")
+                    putString("candidaturaId", jobOfferName)
                 }
             }
 

@@ -1,17 +1,26 @@
 package com.example.superspan.ui.fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.adapter.QuestionAdapter
+import com.example.superspan.model.Application
 import com.example.superspan.model.Question
 import com.example.superspan.model.TipoDomanda
+import com.example.superspan.ui.activity.GlobalData
 
 class ApplicationFragment : Fragment(){
     override fun onCreateView(
@@ -28,18 +37,87 @@ class ApplicationFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val listQuestion = getQuestions()
+        val btnInvia = view.findViewById<ConstraintLayout>(R.id.btnInvia)
+        val cbPrivacy = view.findViewById<CheckBox>(R.id.cbPrivacy)
 
         recyclerView = view.findViewById(R.id.rvQuestions)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        recyclerView.adapter = QuestionAdapter(listQuestion)
+        val controlloValidita = {
+            val blankAnswer = listQuestion.any() { it.answer.isBlank() }
 
+            if (!blankAnswer && cbPrivacy.isChecked) {
+                btnInvia.isEnabled = true;
+                btnInvia.alpha = 1f;
+            } else {
+                btnInvia.isEnabled = false;
+                btnInvia.alpha = 0.3f;
+                recyclerView.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
+            }
+        }
+
+        recyclerView.adapter = QuestionAdapter(listQuestion, controlloValidita)
 
         // ---- Back (ID unico presente: btnBackTop) ----
         view.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        cbPrivacy.setOnClickListener { controlloValidita() }
+
+        btnInvia.setOnClickListener {
+            val user = GlobalData.currentUser
+            val currentUserId = user!!.username
+            val currentOfferId = requireArguments().getString("candidaturaId") ?: "offerta_generica"
+
+            val answers = mutableListOf<String>()
+
+            for (domanda in listQuestion) {
+                answers.add(domanda.answer)
+            }
+
+            val stringaUnica = answers.joinToString { "###" }
+
+            val newApplication = Application(
+                userId = currentUserId,
+                offerId = currentOfferId,
+                risposte = stringaUnica
+            )
+
+            GlobalData.application_list.add(newApplication)
+
+            Toast.makeText(context, "Candidatura Inviata!", Toast.LENGTH_SHORT).show()
+            parentFragmentManager.popBackStack()
+        }
+
+        btnInvia.isEnabled = false;
+        btnInvia.alpha = 0.3f;
+
+        val textWatcher = object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable?) {
+                controlloValidita()
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+
+            }
+
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
+
+            }
+
         }
 
     }

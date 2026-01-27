@@ -6,5 +6,6 @@ class Question (
     val title : String,
     var answer : String,
     val options : List<String>?,
-    val tipo: TipoDomanda
+    val tipo: TipoDomanda,
+    var hasError: Boolean = false
 )

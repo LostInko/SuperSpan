@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.superspan.R
+import com.example.superspan.model.Application
 import com.example.superspan.model.User
 import java.util.Calendar
 
@@ -37,6 +38,8 @@ import java.util.Calendar
 object GlobalData {
     // Lista di utenti memorizzata in RAM (si resetta se l'app viene completamente chiusa)
     var user_list = mutableListOf<User>()
+
+    val application_list = mutableListOf<Application>()
     var currentUser: User? = null
 }
 class RegisterActivity : AppCompatActivity() {
