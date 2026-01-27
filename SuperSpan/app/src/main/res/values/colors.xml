@@ -10,6 +10,7 @@
     <color name="greenText">#204F22</color>  <!-- Verde icone/testo -->
     <color name="productPanel">#DCF5E1</color>
     <color name="white">#FFFFFFFF</color>
+
     <!-- Testo (tema chiaro) -->
     <color name="text_primary">#FF000000</color>      <!-- nero pieno -->
     <color name="text_secondary">#8A000000</color>    <!-- 54% nero (Material) -->
@@ -30,5 +31,7 @@
     <color name="location_pill_accent">#1E8E5A</color>
 
     <color name="bg_product_color">#E6FAEC</color>
+
+    <color name="desc_color">#777777</color>
 
 </resources>

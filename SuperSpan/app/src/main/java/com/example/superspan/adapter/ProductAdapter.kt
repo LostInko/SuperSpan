@@ -1,4 +1,3 @@
-
 package com.example.superspan.adapter
 
 import android.animation.ValueAnimator
