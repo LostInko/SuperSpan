@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import com.example.superspan.R
 import com.example.superspan.model.User
+import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.ui.activity.MainActivity
 import com.example.superspan.ui.activity.RegisterActivity
 import com.google.android.material.card.MaterialCardView
@@ -23,12 +25,23 @@ class ProfileFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
+        // Recupera l'utente corrente
+        val user = GlobalData.currentUser
+
         // Binding dei componenti
         val cardLogout = view.findViewById<MaterialCardView>(R.id.card_logout)
         val cardDate = view.findViewById<MaterialCardView>(R.id.card_data)
         val cardJob = view.findViewById<MaterialCardView>(R.id.card_job)
         val cardAdress = view.findViewById<androidx.cardview.widget.CardView>(R.id.card_adress)
         val cardOrder = view.findViewById<androidx.cardview.widget.CardView>(R.id.card_order)
+
+        val name = user?.name ?: "Utente"
+        val surname = user?.surname ?: "Utente"
+        view.findViewById<TextView>(R.id.user_name).text = "$name $surname"
+
+        val username = user?.username ?: "Utente"
+        view.findViewById<TextView>(R.id.user_username).text = "$username"
+
 
         //Clicco su 'i tuoi dati'
         cardDate.setOnClickListener {
