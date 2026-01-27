@@ -43,7 +43,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/sconto_online" />
+                android:src="@drawable/coupon_online" />
 
         </RelativeLayout>
 
@@ -82,7 +82,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/sconto_negozio" />
+                android:src="@drawable/coupon_store" />
 
         </RelativeLayout>
 
