@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.model.Question
 import com.example.superspan.model.TipoDomanda
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputEditText
 import org.w3c.dom.Text
 
