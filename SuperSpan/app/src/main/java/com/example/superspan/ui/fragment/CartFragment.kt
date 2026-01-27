@@ -2,18 +2,23 @@ package com.example.superspan.ui.fragment
 
 import android.R.attr.fragment
 import android.os.Bundle
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.adapter.AddressAdapter // Assicurati di importarlo
 import com.example.superspan.adapter.CartAdapter
+import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.viewmodel.HomeViewModel
 
 class CartFragment : Fragment() {
@@ -41,6 +46,27 @@ class CartFragment : Fragment() {
             recyclerViewProduct.adapter = CartAdapter(itemsInCart, vm)
         }
 
+        val shopSpinner = view.findViewById<AppCompatSpinner>(R.id.spinnerStores)
+        val shopList = listOf("Cagliari, Via Baccaredda 71", "Cagliari, Via Dante 134", "Selargius, Via Piave 62")
+        val shopAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            shopList
+        )
+
+        shopAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        view.findViewById<AppCompatSpinner>(R.id.spinnerStores).adapter = shopAdapter
+
+        shopSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // Salviamo il valore selezionato nella variabile di classe
+                GlobalData.selectedShop = shopList[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
 
         return view
     }
@@ -54,15 +80,13 @@ class CartFragment : Fragment() {
         // Bottone back (in testa alla pagina)
         view.findViewById<View>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
-            // Oppure, se usi Navigation Component:
-            // findNavController().navigateUp()
         }
 
         view.findViewById<Button>(R.id.btnPay)?.setOnClickListener {
-            val orderFragment = OrderFragment() // Assicurati che il nome della classe sia corretto
+            val orderFragment = OrderFragment()
 
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, orderFragment) // 'fragment_container' è l'ID del contenitore nel tuo Activity Layout
+                .replace(R.id.fragment_container, orderFragment)
                 .addToBackStack(null) // Permette di tornare indietro al carrello premendo il tasto back
                 .commit()
         }

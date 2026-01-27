@@ -4,14 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.fragment.app.Fragment
 import com.example.superspan.R
 import com.example.superspan.viewmodel.HomeViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.superspan.adapter.CartAdapter
 
 class OrderFragment : Fragment() {
 
+    private var tvCartAmountInActivity: TextView? = null
+    private var tvTotalPrice: TextView? = null
     private lateinit var vm : HomeViewModel
 
     override fun onCreateView(
@@ -27,10 +36,11 @@ class OrderFragment : Fragment() {
         val tvAddressTitle = view.findViewById<TextView>(R.id.tvAddressTitle)
         val tvAddressDetails = view.findViewById<TextView>(R.id.tvAddressDetails)
         val tvChangeAddress = view.findViewById<TextView>(R.id.tvChangeAddress)
+        val recyclerViewProduct = view.findViewById<RecyclerView>(R.id.recyclerCart)
 
+        tvTotalPrice = view.findViewById<TextView>(R.id.tv_total_price)
 
         vm.addresses.observe(viewLifecycleOwner) { allAddresses ->
-            // Find the address marked as default
             val defaultAddress = allAddresses.find { it.isSelected }
 
             if (defaultAddress != null) {
@@ -47,17 +57,37 @@ class OrderFragment : Fragment() {
                 .commit()
         }
 
+        recyclerViewProduct.layoutManager = LinearLayoutManager(requireContext())
+
+        vm.products.observe(viewLifecycleOwner) { allProducts ->
+            val itemsInCart = allProducts.filter { it.qty > 0 }
+            recyclerViewProduct.adapter = CartAdapter(itemsInCart, vm)
+        }
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        tvCartAmountInActivity = requireActivity().findViewById(R.id.tv_cart_amount)
+
         // Bottone back (in testa alla pagina)
         view.findViewById<View>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
-            // Oppure, se usi Navigation Component:
-            // findNavController().navigateUp()
+        }
+
+        view.findViewById<ImageView>(R.id.btnPay)?.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, OrderConfirmationFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        vm.cartTotal.observe(viewLifecycleOwner) { total ->
+            val formatted = String.format("%.2f €", total)
+            tvCartAmountInActivity?.text = formatted
+            tvTotalPrice?.text = formatted
         }
 
     }

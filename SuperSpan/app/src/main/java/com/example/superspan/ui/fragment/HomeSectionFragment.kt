@@ -37,8 +37,7 @@ class HomeSectionFragment : Fragment() {
         // Recupera l'utente corrente
         val user = GlobalData.currentUser
 
-        view.findViewById<TextView>(R.id.tvStoreTitle).text =
-            user?.citta ?: "Nessuna città"
+        view.findViewById<TextView>(R.id.tvStoreTitle).text ="Cagliari, Via Baccaredda 71"
 
         view.findViewById<TextView>(R.id.tvUserName).text =
             "Benvenuto " + (user?.name ?: "Utente") + "!"
