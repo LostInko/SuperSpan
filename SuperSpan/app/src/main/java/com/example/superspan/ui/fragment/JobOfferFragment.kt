@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.superspan.R
 import com.example.superspan.model.Question
+import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.viewmodel.HomeViewModel
 import com.example.superspan.viewmodel.WorkWithUsViewModel
 import com.google.android.material.card.MaterialCardView
@@ -20,7 +21,7 @@ import com.google.android.material.chip.Chip
 class JobOfferFragment : Fragment() {
 
     companion object {
-        private const val ARG_ID = "-1"
+        private const val ARG_ID = "arg_id"
         private const val ARG_NAME = "arg_name"
         private const val ARG_LOCATION = "arg_location"
         private const val ARG_SHIFT = "arg_shift"
@@ -58,6 +59,7 @@ class JobOfferFragment : Fragment() {
 
     private lateinit var vm: WorkWithUsViewModel
 
+    private val jobOfferId : Int = arguments?.getInt(ARG_ID) ?: -1
     private val jobOfferName: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_NAME).orEmpty() }
     private val jobOfferLocation: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_LOCATION).orEmpty() }
     private val jobOfferShift: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_SHIFT).orEmpty() }
@@ -94,12 +96,13 @@ class JobOfferFragment : Fragment() {
         val btnCandidati = v.findViewById<ConstraintLayout>(R.id.btn_candidati)
 
         btnCandidati.setOnClickListener {
-            val fragmentDomande = ApplicationFragment().apply {
-                arguments = Bundle().apply {
-                    putString("candidaturaId", jobOfferName)
-                }
-            }
-
+            val fragmentDomande = ApplicationFragment.newInstance(
+                id = -1,
+                userId = GlobalData.currentUser!!.name,
+                name = jobOfferName,
+                offerId = jobOfferId,
+                risposte = ""
+            )
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragmentDomande) // R.id.fragment_container è l'ID nel tuo layout activity
                 .addToBackStack(null) // Permette all'utente di tornare indietro col tasto back

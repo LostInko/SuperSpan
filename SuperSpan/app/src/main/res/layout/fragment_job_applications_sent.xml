@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.fragment.ProductFragment">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,14 +33,13 @@
                 app:srcCompat="@drawable/ic_back"
                 app:tint="@color/greenIcon" />
 
-            <!-- Nome offerta -->
             <TextView
                 android:id="@+id/page_title"
                 style="@style/textProduct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:text="Lavora con noi!"
+                android:text="Candidature inviate"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="@color/greenText"
@@ -49,18 +47,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/btnBackTop"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnApplications"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_circle_button"
-                android:padding="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_calendar_24"
-                app:tint="@color/greenIcon" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -85,13 +71,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <LinearLayout
-            android:id="@+id/filters"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="horizontal">
-        </LinearLayout>
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -103,9 +82,6 @@
                 android:nestedScrollingEnabled="false"
                 android:paddingBottom="32dp" />
         </androidx.core.widget.NestedScrollView>
-
-
-
 
     </LinearLayout>
 
