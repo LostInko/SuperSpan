@@ -2,12 +2,10 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F8F9FA"
-    tools:context=".ui.fragment.OrderHistoryFragment">
+    android:background="#F8F9FA">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -28,10 +26,10 @@
             android:padding="8dp" />
 
         <TextView
-            android:id="@+id/titleAddress"
+            android:id="@+id/tvDetailTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="I tuoi ordini"
+            android:text="Dettaglio Ordine #1234"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/greenText"
@@ -44,25 +42,52 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvDetailShop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Negozio: SuperSpan"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvDetailAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Indirizzo: Via Roma 10"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/tvEmptyOrders"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Non hai ancora effettuato ordini"
-            android:visibility="gone"/>
+            android:layout_marginTop="24dp"
+            android:text="Prodotti acquistati"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerOrders"
+            android:id="@+id/rvOrderDetailProducts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:nestedScrollingEnabled="true" />
-
+            android:nestedScrollingEnabled="false"/>
 
     </LinearLayout>
-
 </LinearLayout>

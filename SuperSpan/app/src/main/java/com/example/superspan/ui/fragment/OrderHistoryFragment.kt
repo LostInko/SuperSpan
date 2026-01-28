@@ -43,15 +43,21 @@ class OrderHistoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1. Inizializziamo la RecyclerView
+        //Inizializziamo la RecyclerView
         val rv = view.findViewById<RecyclerView>(R.id.recyclerOrders)
         val tvEmpty = view.findViewById<TextView>(R.id.tvEmptyOrders)
 
-        adapter = OrderAdapter()
+        adapter = OrderAdapter{selectedOrder ->
+            vm.selectOrder(selectedOrder)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, OrderDetailFragment())
+                .addToBackStack(null)
+                .commit()
+        }
         rv.layoutManager = LinearLayoutManager(requireContext())
         rv.adapter = adapter
 
-        // 2. Osserviamo i cambiamenti della lista ordini nel ViewModel
+        //Osserviamo i cambiamenti della lista ordini nel ViewModel
         vm.orders.observe(viewLifecycleOwner) { orderList ->
             if (orderList.isNullOrEmpty()) {
                 tvEmpty.visibility = View.VISIBLE

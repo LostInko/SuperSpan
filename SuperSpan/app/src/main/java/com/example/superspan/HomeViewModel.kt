@@ -12,14 +12,18 @@ import com.example.superspan.model.parsedPrice
 class HomeViewModel : ViewModel() {
 
     val products = MutableLiveData<MutableList<Product>>()
+
     val cartTotal = MutableLiveData<Double>()
 
     val addresses = MutableLiveData<List<Address>>()
 
     val selectedAddress = MutableLiveData<Address?>()
+
     val favorites = MutableLiveData<List<Product>>(emptyList())
 
     val orders = MutableLiveData<List<Order>>(emptyList())
+
+    val selectedOrder = MutableLiveData<Order?>()
 
     init {
         products.value = mutableListOf(
@@ -103,14 +107,17 @@ class HomeViewModel : ViewModel() {
         updateCartTotal()
     }
 
-    // ⬇️ NEW: toggle preferito
+    fun selectOrder(order: Order){
+        selectedOrder.value = order
+    }
+
+
     fun toggleFavoriteByRef(product: Product) {
         product.isFavorite = !product.isFavorite
         refreshProducts()
         recomputeFavorites()
     }
 
-    // ⬇️ NEW: toggle per indice o per nome se serve
     fun toggleFavoriteByIndex(index: Int) {
         val list = products.value ?: return
         if (index in list.indices) {
