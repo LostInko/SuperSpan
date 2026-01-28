@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.adapter.QuestionAdapter
 import com.example.superspan.model.Application
+import com.example.superspan.model.JobOffer
 import com.example.superspan.model.Question
 import com.example.superspan.model.TipoDomanda
 import com.example.superspan.ui.activity.GlobalData
@@ -39,7 +40,7 @@ class ApplicationFragment : Fragment(){
         private const val ARG_ID = "-1"
         private const val ARG_NAME = "arg_name"
         private const val ARG_USER_ID = "arg_user_id"
-        private const val ARG_OFFER_ID = "arg_offer_id"
+        private const val ARG_JOB_OFFER = "arg_job_offer"
         private const val ARG_RISPOSTE = "arg_risposte"
 
         /**
@@ -60,7 +61,7 @@ class ApplicationFragment : Fragment(){
                     putInt(ARG_ID, id)
                     putString(ARG_NAME, name)
                     putString(ARG_USER_ID, userId)
-                    putInt(ARG_OFFER_ID, offerId)
+                    putInt(ARG_JOB_OFFER, offerId)
                     putString(ARG_RISPOSTE, risposte)
                 }
             }
@@ -70,7 +71,7 @@ class ApplicationFragment : Fragment(){
     private lateinit var vm: WorkWithUsViewModel
     private val applicationName: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_NAME).orEmpty() }
     private val applicationUserId: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_USER_ID).orEmpty() }
-    private val applicationOfferId: Int = arguments?.getInt(ARG_OFFER_ID) ?: -1
+    private val applicationOfferId: Int = arguments?.getInt(ARG_JOB_OFFER) ?: -4
     private val applicationRisposte: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_RISPOSTE).orEmpty() }
 
     override fun onCreateView(
@@ -124,6 +125,11 @@ class ApplicationFragment : Fragment(){
             val currentUserId = user!!.username
             val currentOfferId = applicationOfferId
 
+            if (applicationOfferId == -1) {
+                Toast.makeText(context, "Errore: Offerta non trovata", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val answers = mutableListOf<String>()
 
             for (domanda in listQuestion) {
@@ -141,7 +147,7 @@ class ApplicationFragment : Fragment(){
 
             ApplicationGlobal.application_list.add(newApplication)
 
-            Toast.makeText(context, "Candidatura Inviata!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Candidatura Inviata! - $currentOfferId -", Toast.LENGTH_SHORT).show()
             parentFragmentManager.popBackStack()
         }
 

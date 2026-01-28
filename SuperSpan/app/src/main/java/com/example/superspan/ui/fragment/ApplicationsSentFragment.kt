@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -14,11 +15,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.adapter.JobOfferAdapter
+import com.example.superspan.model.JobOffer
 import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.viewmodel.WorkWithUsViewModel
 
 class ApplicationsSentFragment : Fragment() {
     private lateinit var vm: WorkWithUsViewModel
+    private lateinit var recyclerJobOffers: RecyclerView
+    private var myAppliedOffers: List<JobOffer> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,71 +44,75 @@ class ApplicationsSentFragment : Fragment() {
 
         vm = ViewModelProvider(requireActivity())[WorkWithUsViewModel::class.java]
 
-        val recyclerJobOffers = view.findViewById<RecyclerView>(R.id.recyclerJobOffers)
+        recyclerJobOffers = view.findViewById(R.id.recyclerJobOffers)
         recyclerJobOffers.layoutManager = GridLayoutManager(context, 1)
-
-        val currentUserId = GlobalData.currentUser?.name
-        val idOfferteCandidate = ApplicationGlobal.application_list
-            .filter { it.userId == currentUserId}
-            .map {it.offerId}
 
         val etSearch = view.findViewById<EditText>(R.id.search_bar)
 
-        vm.jobOffers.observe(viewLifecycleOwner) { jobOfferList ->
-
-            fun updateList(query: String?) {
-                val filteredList = if (query.isNullOrEmpty()) {
-                    jobOfferList // Se vuoto, mostra tutto
-                } else {
-                    jobOfferList.filter { it.name.contains(query, ignoreCase = true) }
-                }
-
-                val mieOfferte = jobOfferList.filter { offerta ->
-                    val idOffertaStringa = offerta.id
-                    idOfferteCandidate.contains(idOffertaStringa)
-                }
-
-                recyclerJobOffers.adapter = JobOfferAdapter(
-                    jobOfferList = mieOfferte,
-
-                    onItemClick = { jobOffer ->
-                        val fullList = vm.jobOffers.value.orEmpty()
-                        val index = fullList.indexOfFirst { it.id == jobOffer.id }
-
-                        val fragment = JobOfferFragment.newInstance(
-                            id = jobOffer.id,
-                            name = jobOffer.name,
-                            location = jobOffer.location,
-                            shift = jobOffer.shift,
-                            wage = jobOffer.wage,
-                            desc = jobOffer.description,
-                            req = jobOffer.requirements
-                        )
-                        parentFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, fragment)
-                            .addToBackStack(null)
-                            .commit()
-                    },
-                )
-            }
-
-            // Caricamento iniziale
-            updateList("")
-
-            // Ascolta i cambiamenti di testo
-            etSearch?.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    updateList(s.toString()) // Filtra ogni volta che l'utente scrive
-                }
-                override fun afterTextChanged(s: Editable?) {}
-            })
-
-            val myApplications = ApplicationGlobal.application_list.filter {
-                it.userId == GlobalData.currentUser?.name
-            }
+        val currentUserId = GlobalData.currentUser!!.username
+        myAppliedOffers = vm.getAppliedOffersForUser(currentUserId)
 
 
+
+        // 3. LOGICA DI FILTRO DIRETTA (DEBUG MODE)
+        // Recuperiamo tutte le offerte dal ViewModel
+        val allOffers = vm.jobOffers.value ?: emptyList()
+
+        val myApplicationIds = ApplicationGlobal.application_list
+            .filter { it.userId == currentUserId } // Filtra per utente corretto
+            .map { it.offerId } // Prende solo gli ID (che sono Int)
+
+        // Incrociamo i dati: Tieni l'offerta SE il suo ID è nelle mie candidature
+        myAppliedOffers = allOffers.filter { offer ->
+            myApplicationIds.contains(offer.id)
         }
+
+        // --- DEBUG TOAST (Ti dirà quanti ne ha trovati) ---
+        Toast.makeText(context,
+            "Utente: $currentUserId\nCandidature trovate: ${myApplicationIds.size}\nOfferte corrispondenti: ${myApplicationIds.size}",
+            Toast.LENGTH_LONG
+        ).show()
+
+        fun updateList(query: String?) {
+
+            val offersToShow = if (query.isNullOrEmpty()) {
+                myAppliedOffers
+            } else {
+                myAppliedOffers.filter { it.name.contains(query, ignoreCase = true) }
+            }
+
+            recyclerJobOffers.adapter = JobOfferAdapter(
+                jobOfferList = offersToShow,
+
+                onItemClick = { jobOffer ->
+                    val fragment = JobOfferFragment.newInstance(
+                        id = jobOffer.id,
+                        name = jobOffer.name,
+                        location = jobOffer.location,
+                        shift = jobOffer.shift,
+                        wage = jobOffer.wage,
+                        desc = jobOffer.description,
+                        req = jobOffer.requirements
+                    )
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit()
+                },
+            )
+        }
+
+        // Caricamento iniziale
+        updateList("")
+
+        // Ascolta i cambiamenti di testo
+        etSearch?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                updateList(s.toString()) // Filtra ogni volta che l'utente scrive
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
     }
 }

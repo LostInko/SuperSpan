@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.superspan.R
+import com.example.superspan.model.JobOffer
 import com.example.superspan.model.Question
 import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.viewmodel.HomeViewModel
@@ -96,6 +98,16 @@ class JobOfferFragment : Fragment() {
         val btnCandidati = v.findViewById<ConstraintLayout>(R.id.btn_candidati)
 
         btnCandidati.setOnClickListener {
+            val thisJobOffer = JobOffer(
+                jobOfferId,
+                jobOfferName,
+                jobOfferLocation,
+                jobOfferShift,
+                jobOfferWage,
+                jobOfferDesc,
+                jobOfferReq
+            )
+
             val fragmentDomande = ApplicationFragment.newInstance(
                 id = -1,
                 userId = GlobalData.currentUser!!.name,
@@ -103,6 +115,8 @@ class JobOfferFragment : Fragment() {
                 offerId = jobOfferId,
                 risposte = ""
             )
+
+
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragmentDomande) // R.id.fragment_container è l'ID nel tuo layout activity
                 .addToBackStack(null) // Permette all'utente di tornare indietro col tasto back
