@@ -18,7 +18,7 @@
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="16dp">
 
             <!-- TOP SINISTRA: back -->
             <androidx.appcompat.widget.AppCompatImageView
@@ -42,12 +42,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:text="Lavora con noi!"
-                android:textColor="@color/black"
                 android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/greenText"
+                android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.45"
-                app:layout_constraintStart_toStartOf="@+id/btnBackTop"
+                app:layout_constraintStart_toEndOf="@+id/btnBackTop"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
