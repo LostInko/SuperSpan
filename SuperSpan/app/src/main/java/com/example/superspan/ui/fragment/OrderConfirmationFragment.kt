@@ -21,7 +21,6 @@ class OrderConfirmationFragment : Fragment() {
 
     private var tvCartAmountInActivity: TextView? = null
     private var tvTotalPrice: TextView? = null
-
     private var paymentMethod: String = "CREDIT_CARD"
 
     override fun onCreateView(
@@ -77,22 +76,24 @@ class OrderConfirmationFragment : Fragment() {
 
         val btnPay = view.findViewById<android.widget.Button>(R.id.btnPay)
         btnPay.setOnClickListener {
-            val cartProducts = vm.products.value?.filter { it.qty > 0 } ?: emptyList()
+            val cartProducts = vm.products.value?.filter { it.qty > 0 }?.map { it.copy() } ?: emptyList()
+
             val selectedAddress = vm.getSelectedAddress()
-            val selectedShop = GlobalData.selectedShop ?: "Negozio non selezionato"
+            val selectedShop = GlobalData.selectedShop ?: "SuperSpan Store"
 
             if (cartProducts.isNotEmpty() && selectedAddress != null) {
+
+                // Crea l'ordine con i prodotti CLONATI
                 val newOrder = Order(
                     products = cartProducts,
                     address = selectedAddress,
                     shop = selectedShop
                 )
-
                 vm.addOrder(newOrder)
 
-                Toast.makeText(requireContext(), "Ordine effettuato con successo!", Toast.LENGTH_LONG).show()
-
                 vm.clearCart()
+
+                Toast.makeText(requireContext(), "Ordine completato!", Toast.LENGTH_SHORT).show()
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, HomeSectionFragment())
                     .commit()
