@@ -67,7 +67,7 @@
 
     <!-- Testo per descrizione dei prodotti -->
     <style name="descProduct">
-        <item name="android:textColor">#777777</item>
+        <item name="android:textColor">@color/desc_color</item>
         <item name="android:textSize">14sp</item>
     </style>
 

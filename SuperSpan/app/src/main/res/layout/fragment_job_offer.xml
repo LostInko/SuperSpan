@@ -43,13 +43,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:text="Nome offerta"
-                android:textColor="@color/black"
                 android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/greenText"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.45"
-                app:layout_constraintStart_toStartOf="@+id/btnBackTop"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/btnBackTop"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="16dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -157,22 +157,27 @@
                     android:id="@+id/offer_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vasto"
-                    app:chipIcon="@drawable/ic_location_pin_black" />
+                    android:text="Location"
+                    app:chipBackgroundColor="@color/bg_product_color"
+                    app:chipIcon="@drawable/ic_location_pin_black"
+                    />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/offer_shift"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vasto"
-                    app:chipIcon="@drawable/ic_calendar" />
+                    android:text="Shift"
+                    app:chipBackgroundColor="@color/bg_product_color"
+                    app:chipIcon="@drawable/ic_calendar"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/offer_wage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vasto"
-                    app:chipIcon="@drawable/dollarsign_circle" />
+                    android:text="Wage"
+                    app:chipBackgroundColor="@color/bg_product_color"
+                    app:chipIcon="@drawable/dollarsign_circle"
+                    />
             </com.google.android.material.chip.ChipGroup>
 
 
@@ -324,7 +329,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@drawable/bg_product"
+                >
 
                 <TextView
                     android:id="@+id/descrizione"
@@ -360,7 +367,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@drawable/bg_product"
+                >
 
                 <TextView
                     android:id="@+id/requisiti"
@@ -396,7 +405,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@drawable/bg_product"
+                >
 
                 <TextView
                     android:id="@+id/offerta"
@@ -419,7 +430,6 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btn_candidati"
             android:layout_width="250dp"
             android:layout_height="64dp"
             android:layout_marginBottom="16dp"
@@ -434,10 +444,12 @@
             >
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btn_candidati"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 style="@style/Widget.SuperSpan.Button.Primary"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="20dp"
+                >
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

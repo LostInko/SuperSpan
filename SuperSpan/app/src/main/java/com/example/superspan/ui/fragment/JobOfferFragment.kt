@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.superspan.R
+import com.example.superspan.model.Question
 import com.example.superspan.viewmodel.HomeViewModel
 import com.example.superspan.viewmodel.WorkWithUsViewModel
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 
 class JobOfferFragment : Fragment() {
@@ -83,10 +86,25 @@ class JobOfferFragment : Fragment() {
         v.findViewById<TextView>(R.id.offer_description)?.text = jobOfferDesc
         v.findViewById<TextView>(R.id.offer_requisiti)?.text = jobOfferReq
 
-//        // ---- Back (ID unico presente: btnBackTop) ----
-//        v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
-//            requireActivity().onBackPressedDispatcher.onBackPressed()
-//        }
+        // ---- Back (ID unico presente: btnBackTop) ----
+        v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        val btnCandidati = v.findViewById<ConstraintLayout>(R.id.btn_candidati)
+
+        btnCandidati.setOnClickListener {
+            val fragmentDomande = ApplicationFragment().apply {
+                arguments = Bundle().apply {
+                    putString("candidaturaId", jobOfferName)
+                }
+            }
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragmentDomande) // R.id.fragment_container è l'ID nel tuo layout activity
+                .addToBackStack(null) // Permette all'utente di tornare indietro col tasto back
+                .commit()
+        }
 
 
         return v
