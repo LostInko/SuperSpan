@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.example.superspan.R
 import com.example.superspan.model.Address
 import com.example.superspan.model.Product
+import com.example.superspan.model.ProductCategory
 import com.example.superspan.model.parsedPrice
 
 
@@ -18,15 +19,21 @@ class HomeViewModel : ViewModel() {
     val selectedAddress = MutableLiveData<Address?>()
     val favorites = MutableLiveData<List<Product>>(emptyList())
 
-
+    val isAnyCouponActivated = MutableLiveData(false)
+    val activatedCouponName = MutableLiveData<String?>(null)
 
     init {
         products.value = mutableListOf(
-            Product("Succo ACE", "Brik 0.2L x 6", "1,75€", R.drawable.succo_ace),
-            Product("Ichnusa non filtrata","50cl", "1,56€", R.drawable.ichnusa_non_filtrata),
-            Product("Latte Arborea","1lt", "1,32€", R.drawable.latte_arborea),
-            Product("Salsiccia classica stagionata","All'etto", "2,03€", R.drawable.salsiccia_secca_murru),
-            Product("Ravioli ricotta e spinaci","", "2,30€", R.drawable.ravioli_ricotta_cossu)
+            Product("Succo ACE", "Brik 0.2L x 6", "1,75€", R.drawable.succo_ace, ProductCategory.BEVANDE),
+            Product("Ichnusa non filtrata","50cl", "1,56€", R.drawable.ichnusa_non_filtrata, ProductCategory.BEVANDE),
+            Product("Latte Arborea","1lt", "1,32€", R.drawable.latte_arborea, ProductCategory.BEVANDE),
+            Product("Salsiccia classica stagionata","All'etto", "2,03€", R.drawable.salsiccia_secca_murru, ProductCategory.AFFETTATI),
+            Product("Ravioli ricotta e spinaci","", "2,30€", R.drawable.ravioli_ricotta_cossu, ProductCategory.PASTA),
+            Product("LOreal Invisifix","100ml", "3,49€", R.drawable.gel_loreal, ProductCategory.CURA_PERSONALE),
+            Product("Shampoo Classico H&S","90ml", "2,64€", R.drawable.hes_shampoo, ProductCategory.CURA_PERSONALE),
+            Product("Pantene Balsamo","180ml", "2,19€", R.drawable.pantene_balsamo, ProductCategory.CURA_PERSONALE),
+            Product("Garnier Metodo Ricci","200ml", "4,49€", R.drawable.shampoo_garnier, ProductCategory.CURA_PERSONALE),
+            Product("Cera Phenomenal","100ml","6,20€", R.drawable.cera_phenomenal, ProductCategory.CURA_PERSONALE)
         )
 
         cartTotal.value = 0.0
@@ -81,12 +88,23 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+
+
+    fun activateCoupon(name: String) {
+        isAnyCouponActivated.value = true
+        activatedCouponName.value = name
+    }
+
+    fun clearActivatedCoupon() {
+        isAnyCouponActivated.value = false
+        activatedCouponName.value = null
+    }
+
     fun notifyChange(){
         products.value = products.value
         updateCartTotal()
     }
 
-    // ⬇️ NEW: toggle preferito
     fun toggleFavoriteByRef(product: Product) {
         product.isFavorite = !product.isFavorite
         refreshProducts()
@@ -110,6 +128,9 @@ class HomeViewModel : ViewModel() {
         recomputeFavorites()
     }
 
+    fun markCouponActivated() {
+        isAnyCouponActivated.value = true
+    }
     private fun recomputeFavorites() {
         favorites.postValue(products.value?.filter { it.isFavorite } ?: emptyList())
     }

@@ -1,0 +1,129 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnBackTop"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_circle_button"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/greenIcon" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="3×1 • Seleziona tre prodotti"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/greenText" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnInfo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_info"
+            app:tint="@color/greenIcon" />
+    </LinearLayout>
+
+    <!-- Lista prodotti -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProducts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- Bottom bar -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/tvSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Selezionati"
+            android:textStyle="bold"
+            android:textColor="@color/greenText"
+            android:layout_marginBottom="6dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+        <!-- Slot 1 -->
+        <ImageView
+            android:id="@+id/slot1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:background="@drawable/bg_slot_neutral"
+            android:contentDescription="@string/app_name" />
+
+        <Space android:layout_width="12dp" android:layout_height="match_parent"/>
+
+        <!-- Slot 2 -->
+        <ImageView
+            android:id="@+id/slot2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:background="@drawable/bg_slot_neutral"
+            android:contentDescription="@string/app_name" />
+
+        <Space android:layout_width="12dp" android:layout_height="match_parent"/>
+
+        <!-- Slot 3 -->
+        <ImageView
+            android:id="@+id/slot3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:background="@drawable/bg_slot_neutral"
+            android:contentDescription="@string/app_name" />
+    </LinearLayout>
+
+        <!-- Barra di conferma full-width -->
+        <TextView
+            android:id="@+id/btnConfirmBar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="Conferma"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_confirm_bar_disabled"
+            android:enabled="false"
+            android:clickable="true"
+            android:focusable="true"
+            android:importantForAccessibility="yes"
+            android:contentDescription="Conferma coupon"
+        />
+
+    </LinearLayout>
+</LinearLayout>
