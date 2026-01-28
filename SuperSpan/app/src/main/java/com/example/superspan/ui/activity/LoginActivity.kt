@@ -17,9 +17,6 @@ import com.example.superspan.R
 import com.example.superspan.model.User
 
 
-/**
- Schermata di login.
- **/
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

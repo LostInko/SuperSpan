@@ -66,6 +66,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etName"
                 style="@style/Widget.SuperSpan.EditText"
+                android:backgroundTint="#E6FAEC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
@@ -100,6 +101,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etSurname"
                 style="@style/Widget.SuperSpan.EditText"
+                android:backgroundTint="#E6FAEC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
@@ -136,6 +138,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDate"
                 style="@style/Widget.SuperSpan.EditText"
+                android:backgroundTint="#E6FAEC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
@@ -170,6 +173,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etCity"
                 style="@style/Widget.SuperSpan.EditText"
+                android:backgroundTint="#E6FAEC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
@@ -204,6 +208,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etUser"
                 style="@style/Widget.SuperSpan.EditText"
+                android:backgroundTint="#E6FAEC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
@@ -239,8 +244,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPass"
                 style="@style/Widget.SuperSpan.EditText"
+                android:backgroundTint="#E6FAEC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingEnd="50dp"
                 android:enabled="false"
                 android:inputType="textPassword"
                 android:textSize="17sp"
@@ -290,8 +297,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etConfirmPass"
                 style="@style/Widget.SuperSpan.EditText"
+                android:backgroundTint="#E6FAEC"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingEnd="50dp"
                 android:inputType="textPassword"
                 android:textSize="17sp" />
         </com.google.android.material.textfield.TextInputLayout>

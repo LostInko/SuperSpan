@@ -7,7 +7,8 @@ enum class ProductCategory(val label: String) {
     CURA_PERSONALE("Cura personale"),
     ALTRO("Altro")
 }
-class Product(
+
+data class Product(
     val name: String,
     val description: String,
     val price: String,

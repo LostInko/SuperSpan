@@ -3,7 +3,11 @@ package com.example.superspan.ui.fragment
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +17,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.superspan.R
 import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.ui.activity.MainActivity
@@ -50,6 +55,9 @@ class UserDataFragment : Fragment() {
         val etConfirmPass = view.findViewById<TextInputEditText>(R.id.etConfirmPass)
         val tvBtnText = view.findViewById<TextView>(R.id.tvBtnText)
 
+        val tilUser = view.findViewById<TextInputLayout>(R.id.tilUser)
+        val tilPass = view.findViewById<TextInputLayout>(R.id.tilPass)
+
         // Lista di tutti gli EditText
         val editTexts = listOf(etName, etSurname, etDate, etCity, etUser, etPass)
 
@@ -64,6 +72,10 @@ class UserDataFragment : Fragment() {
                 etPass.setText(user.password)
                 etConfirmPass.setText("")
             }
+
+            etUser.error = null
+            etPass.error = null
+            etConfirmPass.error = null
         }
 
         // Funzione per abilitare la modifica
@@ -117,48 +129,54 @@ class UserDataFragment : Fragment() {
 
         // Se clicco su 'Modifica'
         btnModifica.setOnClickListener {
-            // Se non sono in modadiltà modifica ci entro
             if (!isEditing) {
                 setEditingMode(true)
             } else {
-                // Se ci sono già, significa che sto tentando di salvare le modifiche --> controlli
                 val newUser = etUser.text.toString().trim()
                 val newPass = etPass.text.toString()
                 val confirmPass = etConfirmPass.text.toString()
 
-                // Validazione Username
+                // 1. Variabile per capire se tutto è ok
+                var isValid = true
+
+                // 2. Controllo Username
                 if (newUser != GlobalData.currentUser?.username) {
                     val exists = GlobalData.user_list.any { it.username == newUser }
                     if (exists) {
                         etUser.error = "Username già esistente!"
-                        return@setOnClickListener
+                        etUser.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
+                        isValid = false // C'è un errore
                     }
                 }
 
-                // Validazione Password
+                // 3. Controllo Lunghezza Password
                 if (newPass.length < 8) {
                     etPass.error = "Minimo 8 caratteri"
-                    return@setOnClickListener
+                    etPass.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
+                    isValid = false
                 }
+
+                // 4. Controllo Coincidenza Password
                 if (newPass != confirmPass) {
                     etConfirmPass.error = "Le password non coincidono!"
-                    return@setOnClickListener
+                    etConfirmPass.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
+                    isValid = false
                 }
 
-                // Se i controlli sono passati, salvo
-                GlobalData.currentUser?.apply {
-                    name = etName.text.toString()
-                    surname = etSurname.text.toString()
-                    date = etDate.text.toString()
-                    citta = etCity.text.toString()
-                    username = newUser
-                    password = newPass
+                // 5. Solo se isValid è rimasto TRUE salviamo i dati
+                if (isValid) {
+                    GlobalData.currentUser?.apply {
+                        name = etName.text.toString()
+                        surname = etSurname.text.toString()
+                        date = etDate.text.toString()
+                        citta = etCity.text.toString()
+                        username = newUser
+                        password = newPass
+                    }
+                    Toast.makeText(context, "Profilo aggiornato!", Toast.LENGTH_SHORT).show()
+                    setEditingMode(false)
                 }
-
-                Toast.makeText(context, "Profilo aggiornato!", Toast.LENGTH_SHORT).show()
-                setEditingMode(false)
             }
-
         }
 
         etDate.setOnClickListener {
@@ -166,6 +184,21 @@ class UserDataFragment : Fragment() {
                 showDatePicker(etDate)
             }
         }
+
+        fun setupClearErrorOnType(til: TextInputLayout, et: TextInputEditText) {
+            et.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    resetFieldError(til, et)
+                }
+                override fun afterTextChanged(s: Editable?) {}
+            })
+        }
+
+        // Configura i campi
+        setupClearErrorOnType(tilUser, etUser)
+        setupClearErrorOnType(tilPass, etPass)
+        setupClearErrorOnType(tilConfirmPass, etConfirmPass)
 
         return view
     }
@@ -189,5 +222,12 @@ class UserDataFragment : Fragment() {
         dialog.datePicker.maxDate = System.currentTimeMillis()
         dialog.show()
     }
+}
+
+fun resetFieldError(til: TextInputLayout, et: TextInputEditText) {
+    til.error = null
+    til.isErrorEnabled = false
+    // Appena scrive, rimettiamo il colore normale (es. il verde che hai già nell'XML)
+    et.backgroundTintList = null // Ripristina il colore di default definito nell'XML
 }
 
