@@ -22,6 +22,15 @@ import com.example.superspan.model.Question
 import com.example.superspan.model.TipoDomanda
 import com.example.superspan.ui.activity.GlobalData
 
+object ApplicationGlobal{
+    val application_list = mutableListOf<Application>()
+
+    val question_list = mutableListOf<Question>(
+            Question("A", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa),
+            Question("B", "", null, tipo = TipoDomanda.Aperta)
+    )
+}
+
 class ApplicationFragment : Fragment(){
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,7 +94,7 @@ class ApplicationFragment : Fragment(){
                 risposte = stringaUnica
             )
 
-            GlobalData.application_list.add(newApplication)
+            ApplicationGlobal.application_list.add(newApplication)
 
             Toast.makeText(context, "Candidatura Inviata!", Toast.LENGTH_SHORT).show()
             parentFragmentManager.popBackStack()
@@ -94,38 +103,9 @@ class ApplicationFragment : Fragment(){
         btnInvia.isEnabled = false;
         btnInvia.alpha = 0.3f;
 
-        val textWatcher = object : TextWatcher {
-
-            override fun afterTextChanged(s: Editable?) {
-                controlloValidita()
-            }
-
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-
-            }
-
-            override fun onTextChanged(
-                s: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-
-            }
-
-        }
-
     }
 
     private fun getQuestions() : List<Question>{
-        return listOf(
-            Question("A", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa),
-            Question("B", "", null, tipo = TipoDomanda.Aperta)
-        )
+        return ApplicationGlobal.question_list
     }
 }

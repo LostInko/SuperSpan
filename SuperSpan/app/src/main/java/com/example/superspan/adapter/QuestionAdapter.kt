@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.model.Question
@@ -88,6 +89,14 @@ class QuestionAdapter (
                         cardView.strokeWidth = 2 // Spessore 1dp
                     }
 
+                    if(domanda.answer.isBlank()){
+                        cardView.strokeColor = Color.parseColor("#4DFF0000")
+                        cardView.strokeWidth = 8
+                    } else {
+                        cardView.strokeColor = Color.parseColor("#BDBDBD")
+                        cardView.strokeWidth = 2
+                    }
+
                     onDataChanged()
                 }
                 override fun afterTextChanged(s: Editable?) {}
@@ -118,7 +127,6 @@ class QuestionAdapter (
 
             groupAnswer.setOnCheckedChangeListener(null)
             groupAnswer.removeAllViews()
-
 
             domanda.options?.forEach { opzione ->
                 val radioButton = RadioButton(itemView.context).apply {
@@ -163,7 +171,6 @@ class QuestionAdapter (
                     radioButton.isChecked = true
                 }
 
-
             }
 
             groupAnswer.setOnCheckedChangeListener { group, checkedId ->
@@ -191,7 +198,5 @@ class QuestionAdapter (
             is MultiplaViewHolder -> holder.bind(domanda)
         }
     }
-
-
 
 }

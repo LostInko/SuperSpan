@@ -39,7 +39,7 @@ object GlobalData {
     // Lista di utenti memorizzata in RAM (si resetta se l'app viene completamente chiusa)
     var user_list = mutableListOf<User>()
 
-    val application_list = mutableListOf<Application>()
+
     var currentUser: User? = null
 }
 class RegisterActivity : AppCompatActivity() {
