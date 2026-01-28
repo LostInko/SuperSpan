@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
@@ -77,7 +78,7 @@ class OrderFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        view.findViewById<ImageView>(R.id.btnPay)?.setOnClickListener {
+        view.findViewById<Button>(R.id.btnPay)?.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, OrderConfirmationFragment())
                 .addToBackStack(null)

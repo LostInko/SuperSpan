@@ -191,16 +191,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/bg_button_primary_pill">
 
-            <ImageView
+            <Button
                 android:id="@+id/btnPay"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginTop="13dp"
-                android:src="@drawable/arrow_forward" />
+                android:layout_height="wrap_content"
+                android:text="Avanti"
+                android:textSize="20sp"/>
 
         </LinearLayout>
     </LinearLayout>

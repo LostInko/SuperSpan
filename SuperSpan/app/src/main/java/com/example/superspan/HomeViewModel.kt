@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.superspan.R
 import com.example.superspan.model.Address
+import com.example.superspan.model.Order
 import com.example.superspan.model.Product
 import com.example.superspan.model.parsedPrice
 
@@ -18,7 +19,7 @@ class HomeViewModel : ViewModel() {
     val selectedAddress = MutableLiveData<Address?>()
     val favorites = MutableLiveData<List<Product>>(emptyList())
 
-
+    val orders = MutableLiveData<List<Order>>(emptyList())
 
     init {
         products.value = mutableListOf(
@@ -31,11 +32,17 @@ class HomeViewModel : ViewModel() {
 
         cartTotal.value = 0.0
 
-        // 2. Chiamiamo la funzione per caricare gli indirizzi all'avvio
+
         loadAddresses()
     }
 
-    // 3. Funzione per caricare i dati (Spostata fuori da init)
+    fun addOrder(newOrder : Order){
+        val currentOrders = orders.value.orEmpty().toMutableList()
+
+        currentOrders.add(newOrder)
+        orders.value = currentOrders
+    }
+
     fun loadAddresses() {
         val list = listOf(
             Address("Cagliari", "Via del Nastro Azzurro 17", "09131", "Casa Mia", isSelected = true),
@@ -66,6 +73,16 @@ class HomeViewModel : ViewModel() {
             product.parsedPrice().toDouble() * product.qty.toDouble()
         }
         cartTotal.postValue(total)
+    }
+
+    fun clearCart() {
+        val list = products.value ?: return
+
+        list.forEach { product ->
+            product.qty = 0
+        }
+
+        notifyChange()
     }
 
     fun refreshProducts() {

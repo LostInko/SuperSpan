@@ -5,11 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.superspan.R
 import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.viewmodel.HomeViewModel
+import androidx.core.graphics.toColorInt
+import com.example.superspan.model.Order
+import com.google.android.material.card.MaterialCardView
 
 class OrderConfirmationFragment : Fragment() {
 
@@ -46,8 +50,6 @@ class OrderConfirmationFragment : Fragment() {
 
         val cardCreditCard = view.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardCreditCard)
         val cardCash = view.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardCash)
-        val tvCreditCard = view.findViewById<android.widget.TextView>(R.id.tvCreditCard)
-        val tvCash = view.findViewById<android.widget.TextView>(R.id.tvCash)
 
         // Listener sui click
         cardCreditCard.setOnClickListener { selectPayment("CREDIT_CARD", view) }
@@ -73,20 +75,46 @@ class OrderConfirmationFragment : Fragment() {
             tvTotalPrice?.text = formatted
         }
 
+        val btnPay = view.findViewById<android.widget.Button>(R.id.btnPay)
+        btnPay.setOnClickListener {
+            val cartProducts = vm.products.value?.filter { it.qty > 0 } ?: emptyList()
+            val selectedAddress = vm.getSelectedAddress()
+            val selectedShop = GlobalData.selectedShop ?: "Negozio non selezionato"
+
+            if (cartProducts.isNotEmpty() && selectedAddress != null) {
+                val newOrder = Order(
+                    products = cartProducts,
+                    address = selectedAddress,
+                    shop = selectedShop
+                )
+
+                vm.addOrder(newOrder)
+
+                Toast.makeText(requireContext(), "Ordine effettuato con successo!", Toast.LENGTH_LONG).show()
+
+                vm.clearCart()
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, HomeSectionFragment())
+                    .commit()
+            } else {
+                Toast.makeText(requireContext(), "Errore: Carrello vuoto o indirizzo mancante", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     }
 
     private fun selectPayment(method: String, view: View) {
         paymentMethod = method
 
-        val cardCreditCard = view.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardCreditCard)
-        val cardCash = view.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardCash)
-        val tvCreditCard = view.findViewById<android.widget.TextView>(R.id.tvCreditCard)
-        val tvCash = view.findViewById<android.widget.TextView>(R.id.tvCash)
+        val cardCreditCard = view.findViewById<MaterialCardView>(R.id.cardCreditCard)
+        val cardCash = view.findViewById<MaterialCardView>(R.id.cardCash)
+        val tvCreditCard = view.findViewById<TextView>(R.id.tvCreditCard)
+        val tvCash = view.findViewById<TextView>(R.id.tvCash)
 
         val colorGreenText = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.greenText)
         val colorGreenIcon = androidx.core.content.ContextCompat.getColor(requireContext(), R.color.greenIcon)
         val colorWhite = androidx.core.content.ContextCompat.getColor(requireContext(), android.R.color.white)
-        val colorInactiveText = android.graphics.Color.parseColor("#A0A0A0")
+        val colorInactiveText = "#A0A0A0".toColorInt()
 
         if (method == "CREDIT_CARD") {
             // --- CARTA DI CREDITO SELEZIONATA (Attiva) ---

@@ -106,25 +106,31 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:padding="12dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="Negozio Selezionato"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="SuperSpan, "
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/greenText"/>
+                            android:textColor="@color/greenText"
+                            android:textSize="16sp" />
+
                         <TextView
                             android:id="@+id/tvSelectedShop"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="SuperSpan, Cagliari Via Ottone 3"
                             android:textColor="@color/greenText"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -141,9 +147,16 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Indirizzo selezionato"
+                            android:textStyle="bold"
+                            android:textSize="18sp"/>
 
                         <TextView
                             android:id="@+id/tvSelectedAddressName"
@@ -151,8 +164,7 @@
                             android:layout_height="wrap_content"
                             android:text="Casa di Gino"
                             android:textColor="#000000"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="16sp" />
 
                         <TextView
                             android:id="@+id/tvSelectedAddress"
@@ -160,7 +172,7 @@
                             android:layout_height="wrap_content"
                             android:text="Cagliari, Via Enrico VIII 4 "
 
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -189,7 +201,6 @@
                     android:clickable="true"
                     android:focusable="true"
                     app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
                     android:backgroundTint="@color/white"
                     app:strokeColor="@color/greenText"
                     app:strokeWidth="2dp">
@@ -214,7 +225,6 @@
                     android:clickable="true"
                     android:focusable="true"
                     app:cardCornerRadius="16dp"
-                    app:cardElevation="4dp"
                     app:strokeColor="@android:color/transparent"
                     app:strokeWidth="0dp">
 
@@ -271,16 +281,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/bg_button_primary_pill">
 
-            <ImageView
+            <Button
                 android:id="@+id/btnPay"
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginTop="13dp"
-                android:src="@drawable/arrow_forward" />
+                android:layout_height="wrap_content"
+                android:text="Avanti"
+                android:textSize="20sp"/>
 
         </LinearLayout>
     </LinearLayout>
