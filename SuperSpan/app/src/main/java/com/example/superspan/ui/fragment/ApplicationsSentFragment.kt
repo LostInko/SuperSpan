@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.adapter.JobOfferAdapter
+import com.example.superspan.adapter.JobOfferSentAdapter
 import com.example.superspan.model.JobOffer
 import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.viewmodel.WorkWithUsViewModel
@@ -44,15 +45,13 @@ class ApplicationsSentFragment : Fragment() {
 
         vm = ViewModelProvider(requireActivity())[WorkWithUsViewModel::class.java]
 
-        recyclerJobOffers = view.findViewById(R.id.recyclerJobOffers)
+        recyclerJobOffers = view.findViewById(R.id.recyclerJobOffersSent)
         recyclerJobOffers.layoutManager = GridLayoutManager(context, 1)
 
         val etSearch = view.findViewById<EditText>(R.id.search_bar)
 
         val currentUserId = GlobalData.currentUser!!.username
         myAppliedOffers = vm.getAppliedOffersForUser(currentUserId)
-
-
 
         // 3. LOGICA DI FILTRO DIRETTA (DEBUG MODE)
         // Recuperiamo tutte le offerte dal ViewModel
@@ -81,11 +80,11 @@ class ApplicationsSentFragment : Fragment() {
                 myAppliedOffers.filter { it.name.contains(query, ignoreCase = true) }
             }
 
-            recyclerJobOffers.adapter = JobOfferAdapter(
+            recyclerJobOffers.adapter = JobOfferSentAdapter(
                 jobOfferList = offersToShow,
 
                 onItemClick = { jobOffer ->
-                    val fragment = JobOfferFragment.newInstance(
+                    val fragment = JobOfferSentFragment.newInstance(
                         id = jobOffer.id,
                         name = jobOffer.name,
                         location = jobOffer.location,

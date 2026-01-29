@@ -91,7 +91,7 @@ class ApplicationFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listQuestion = getQuestions()
+        val listQuestion = ApplicationGlobal.question_list
         val btnInvia = view.findViewById<ConstraintLayout>(R.id.btnInvia)
         val cbPrivacy = view.findViewById<CheckBox>(R.id.cbPrivacy)
 
@@ -156,7 +156,5 @@ class ApplicationFragment : Fragment(){
 
     }
 
-    private fun getQuestions() : List<Question>{
-        return ApplicationGlobal.question_list
-    }
+
 }
