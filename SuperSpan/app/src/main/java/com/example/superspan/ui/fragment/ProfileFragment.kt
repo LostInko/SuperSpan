@@ -71,7 +71,13 @@ class ProfileFragment : Fragment() {
         }
 
         //Clicco su 'le tue candidature'
-
+        cardJob.setOnClickListener {
+            val fragment = ApplicationsSentFragment() // Assicurati che il nome della classe sia corretto
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null) // Permette di tornare indietro al profilo col tasto "back"
+                .commit()
+        }
 
 
 

@@ -32,15 +32,6 @@ class WorkWithUsFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_work_with_us, container, false)
 
-        val pgFragment = ApplicationsSentFragment()
-
-        view.findViewById<AppCompatImageView>(R.id.btnApplications)?.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, pgFragment)
-                .addToBackStack(null)
-                .commit()
-        }
-
         return view
     }
 

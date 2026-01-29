@@ -66,11 +66,6 @@ class ApplicationsSentFragment : Fragment() {
             myApplicationIds.contains(offer.id)
         }
 
-        // --- DEBUG TOAST (Ti dirà quanti ne ha trovati) ---
-        Toast.makeText(context,
-            "Utente: $currentUserId\nCandidature trovate: ${myApplicationIds.size}\nOfferte corrispondenti: ${myApplicationIds.size}",
-            Toast.LENGTH_LONG
-        ).show()
 
         fun updateList(query: String?) {
 
@@ -84,19 +79,22 @@ class ApplicationsSentFragment : Fragment() {
                 jobOfferList = offersToShow,
 
                 onItemClick = { jobOffer ->
-                    val fragment = JobOfferSentFragment.newInstance(
-                        id = jobOffer.id,
-                        name = jobOffer.name,
-                        location = jobOffer.location,
-                        shift = jobOffer.shift,
-                        wage = jobOffer.wage,
-                        desc = jobOffer.description,
-                        req = jobOffer.requirements
-                    )
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .addToBackStack(null)
-                        .commit()
+                    for (application in ApplicationGlobal.application_list){
+                        if (application.offerId == jobOffer.id){
+                            val fragment = ApplicationCheckFragment.newInstance(
+                                id = jobOffer.id,
+                                name = jobOffer.name,
+                                location = jobOffer.location,
+                                shift = jobOffer.shift,
+                                wage = jobOffer.wage,
+                                risp = application.risposte
+                            )
+                            parentFragmentManager.beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .addToBackStack(null)
+                                .commit()
+                        }
+                    }
                 },
             )
         }

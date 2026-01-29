@@ -32,8 +32,7 @@ class ApplicationCheckFragment : Fragment() {
         private const val ARG_LOCATION = "arg_location"
         private const val ARG_SHIFT = "arg_shift"
         private const val ARG_WAGE = "arg_wage"
-        private const val ARG_DESC = "arg_desc"
-        private const val ARG_REQ = "arg_req"
+        private const val ARG_RISP = "arg_risp"
 
         /**
          * Costruttore consigliato: passa anche l'indice se lo conosci.
@@ -46,8 +45,7 @@ class ApplicationCheckFragment : Fragment() {
             location: String,
             shift: String,
             wage: String,
-            desc: String,
-            req: String
+            risp: String
         ): ApplicationCheckFragment {
             return ApplicationCheckFragment().apply {
                 arguments = Bundle().apply {
@@ -56,8 +54,7 @@ class ApplicationCheckFragment : Fragment() {
                     putString(ARG_LOCATION, location)
                     putString(ARG_SHIFT, shift)
                     putString(ARG_WAGE, wage)
-                    putString(ARG_DESC, desc)
-                    putString(ARG_REQ, req)
+                    putString(ARG_RISP, risp)
                 }
             }
         }
@@ -70,8 +67,7 @@ class ApplicationCheckFragment : Fragment() {
     private val jobOfferLocation: String by lazy { arguments?.getString(ARG_LOCATION).orEmpty() }
     private val jobOfferShift: String by lazy { arguments?.getString(ARG_SHIFT).orEmpty() }
     private val jobOfferWage: String by lazy { arguments?.getString(ARG_WAGE).orEmpty() }
-    private val jobOfferDesc: String by lazy { arguments?.getString(ARG_DESC).orEmpty() }
-    private val jobOfferReq: String by lazy { arguments?.getString(ARG_REQ).orEmpty() }
+    private val appicationRisp: String by lazy { arguments?.getString(ARG_RISP).orEmpty() }
 
 
 
@@ -101,9 +97,16 @@ class ApplicationCheckFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(requireContext())
 
         val listQuestion = ApplicationGlobal.question_list
+        val answers = appicationRisp.split("###")
+
+        listQuestion.forEachIndexed { index, question ->
+            // Verifichiamo che esista una risposta per questo indice per evitare crash
+            if (index < answers.size) {
+                question.answer = answers[index]
+            }
+        }
 
         rv.adapter = QuestionCheckAdapter(listQuestion)
-
 
         return v
     }

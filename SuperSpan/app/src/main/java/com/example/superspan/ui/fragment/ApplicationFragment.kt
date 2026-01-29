@@ -136,7 +136,7 @@ class ApplicationFragment : Fragment(){
                 answers.add(domanda.answer)
             }
 
-            val stringaUnica = answers.joinToString { "###" }
+            val stringaUnica = answers.joinToString ( "###" )
 
             val newApplication = Application(
                 name = applicationName,

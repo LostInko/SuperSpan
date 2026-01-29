@@ -33,58 +33,26 @@ class QuestionCheckAdapter (
             tvAnswer.text = domanda.answer
         }
     }
-    companion object {
-        private const val TYPE_APERTA = 0
-        private const val TYPE_MULTIPLA = 1
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        if (listaDomande[position].tipo == TipoDomanda.Aperta) return TYPE_APERTA
-        else return TYPE_MULTIPLA
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.view_check_question, parent, false)
+
         QuestionCheckViewHolder(view)
 
-        return JobOfferSentAdapter.JobOfferSentViewHolder(view)
+        return QuestionCheckViewHolder(view)
     }
 
     override fun getItemCount() = listaDomande.size
 
-    // ViewHolder per Domanda Aperta
-    inner class ApertaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvDomanda : TextView = itemView.findViewById(R.id.question_text)
-        val etAnswer : TextInputEditText = itemView.findViewById(R.id.etAnswer)
-        val cardView = itemView.findViewById<MaterialCardView>(R.id.answerBox)
-
-        fun bind(domanda : Question){
-            tvDomanda.text = domanda.title
-
-            etAnswer.setText(domanda.answer)
-
-        }
-    }
-
-    // ViewHolder per Domanda Multipla
-    inner class MultiplaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvDomanda : TextView = itemView.findViewById(R.id.multiple_question_text)
-        val groupAnswer : RadioGroup = itemView.findViewById(R.id.groupAnswer)
-        val cardView = itemView.findViewById<MaterialCardView>(R.id.answerBox)
-
-        fun bind(domanda : Question){
-            tvDomanda.text = domanda.title
-
-
-        }
-    }
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val domanda = listaDomande[position]
-        when (holder) {
-            is ApertaViewHolder -> holder.bind(domanda)
-            is MultiplaViewHolder -> holder.bind(domanda)
-        }
+        // Cast del holder generico al tuo specifico QuestionCheckViewHolder
+        val questionHolder = holder as QuestionCheckViewHolder
+
+        // Recupero della domanda corretta dalla lista
+        val domandaCorrente = listaDomande[position]
+
+        // Associazione dei dati alla vista
+        questionHolder.bind(domandaCorrente)
     }
 
 }
