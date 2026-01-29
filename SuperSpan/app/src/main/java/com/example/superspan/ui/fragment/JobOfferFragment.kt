@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -96,22 +97,34 @@ class JobOfferFragment : Fragment() {
         }
 
         val btnCandidati = v.findViewById<ConstraintLayout>(R.id.btn_candidati)
+        val currentUserId = GlobalData.currentUser!!.username
 
         btnCandidati.setOnClickListener {
 
-            val fragmentDomande = ApplicationFragment.newInstance(
-                id = -1,
-                userId = GlobalData.currentUser!!.name,
-                name = jobOfferName,
-                offerId = jobOfferId,
-                risposte = ""
-            )
+            val myApplicationIds = ApplicationGlobal.application_list
+                .filter { it.userId == currentUserId } // Filtra per utente corretto
+                .map { it.offerId } // Prende solo gli ID (che sono Int)
 
+            if(myApplicationIds.contains(jobOfferId)){
+                val dialog = AlertDialog.Builder(requireContext())
+                dialog.setTitle("Attenzione! Hai già inviato una candidatura per questa posizione!")
+                dialog.setPositiveButton("Ok", null)
+                dialog.create()
 
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragmentDomande) // R.id.fragment_container è l'ID nel tuo layout activity
-                .addToBackStack(null) // Permette all'utente di tornare indietro col tasto back
-                .commit()
+                Toast.makeText(context, "Hai già inviato una candidatura per questa posizione!", Toast.LENGTH_SHORT).show()
+            } else {
+                val fragmentDomande = ApplicationFragment.newInstance(
+                    userId = GlobalData.currentUser!!.name,
+                    name = jobOfferName,
+                    offerId = jobOfferId,
+                    risposte = ""
+                )
+
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragmentDomande) // R.id.fragment_container è l'ID nel tuo layout activity
+                    .addToBackStack(null) // Permette all'utente di tornare indietro col tasto back
+                    .commit()
+            }
         }
 
 

@@ -70,6 +70,16 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tvEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nessuna candidatura inviata"
+            android:textSize="16sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

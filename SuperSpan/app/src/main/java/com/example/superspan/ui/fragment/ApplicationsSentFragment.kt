@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
@@ -50,6 +51,8 @@ class ApplicationsSentFragment : Fragment() {
 
         val etSearch = view.findViewById<EditText>(R.id.search_bar)
 
+        val emptyView : TextView = view.findViewById(R.id.tvEmpty)
+
         val currentUserId = GlobalData.currentUser!!.username
         myAppliedOffers = vm.getAppliedOffersForUser(currentUserId)
 
@@ -74,6 +77,8 @@ class ApplicationsSentFragment : Fragment() {
             } else {
                 myAppliedOffers.filter { it.name.contains(query, ignoreCase = true) }
             }
+            
+            emptyView.visibility = if(offersToShow.isNullOrEmpty()) View.VISIBLE else View.GONE
 
             recyclerJobOffers.adapter = JobOfferSentAdapter(
                 jobOfferList = offersToShow,
