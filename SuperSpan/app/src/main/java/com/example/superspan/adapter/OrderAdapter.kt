@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.model.Order
 
-class OrderAdapter : ListAdapter<Order, OrderAdapter.OrderViewHolder>(OrderDiffCallback()) {
+class OrderAdapter(private val onItemClick: (Order) -> Unit) : ListAdapter<Order, OrderAdapter.OrderViewHolder>(OrderDiffCallback(),) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -33,9 +33,16 @@ class OrderAdapter : ListAdapter<Order, OrderAdapter.OrderViewHolder>(OrderDiffC
             tvOrderShop.text = "Negozio: ${order.shop}"
             tvOrderAddress.text = "Consegnato a: ${order.address.Address}, ${order.address.City}"
 
-            val totalItems = order.products.sumOf { order.products.count() }
+            val totalItems = order.products.sumOf { it.qty }
             tvOrderProductsSummary.text = "$totalItems prodotti acquistati"
         }
+    }
+
+    override fun onBindViewHolder(holder: OrderViewHolder, position: Int, payloads: List<Any?>) {
+        val order = getItem(position)
+        holder.bind(order)
+
+        holder.itemView.setOnClickListener { onItemClick(order) }
     }
 
     // DiffUtil serve per aggiornare solo gli elementi cambiati, migliorando le performance

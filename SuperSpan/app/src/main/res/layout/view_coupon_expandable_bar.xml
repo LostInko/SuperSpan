@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/couponExpandableBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/bg_expandable_bar"
+    android:padding="12dp"
+    android:visibility="gone">
+
+    <!-- Header tappabile: più basso e stondata -->
+    <LinearLayout
+        android:id="@+id/couponExpandableHeader"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:id="@+id/couponExpandableTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Coupon attivato"
+            android:textStyle="bold"
+            android:textColor="@color/greenText"
+            android:textSize="16sp" />
+
+        <!-- Chevron: giù/su -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/couponExpandableChevron"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:srcCompat="@drawable/ic_chevron_down"
+            app:tint="@color/greenIcon" />
+
+        <!-- X per chiudere/rimuovere il coupon -->
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/couponCloseButton"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="8dp"
+            app:srcCompat="@drawable/ic_close"
+            app:tint="@color/greenIcon" />
+    </LinearLayout>
+
+    <!-- Contenuto espanso -->
+    <LinearLayout
+        android:id="@+id/couponExpandedContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:paddingTop="8dp">
+
+        <!-- Nome del coupon usato -->
+        <TextView
+            android:id="@+id/couponNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome coupon"
+            android:textStyle="bold"
+            android:textColor="@color/greenText"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- QR code -->
+        <ImageView
+            android:id="@+id/couponQrImage"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/qr_code" />
+    </LinearLayout>
+</LinearLayout>

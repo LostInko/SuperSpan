@@ -93,5 +93,5 @@
             android:scaleType="fitCenter"
             android:contentDescription="@string/app_name" />
     </LinearLayout>
-
+    <include layout="@layout/view_coupon_expandable_bar" />
 </LinearLayout>
