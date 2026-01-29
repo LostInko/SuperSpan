@@ -23,12 +23,6 @@ class QuestionAdapter (
     private val listaDomande: List<Question>,
     private val onDataChanged: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    class QuestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val questionTitle: TextView = itemView.findViewById(R.id.offerTitle)
-        val questionAnswer: TextView = itemView.findViewById(R.id.offerLocation)
-        val questionChoices: TextView = itemView.findViewById(R.id.offerShift)
-    }
     companion object {
         private const val TYPE_APERTA = 0
         private const val TYPE_MULTIPLA = 1
@@ -68,15 +62,7 @@ class QuestionAdapter (
 
             etAnswer.setText(domanda.answer)
 
-            if (domanda.hasError) {
-                // Se c'è errore -> Bordo ROSSO e un po' più spesso
-                cardView.strokeColor = Color.parseColor("#4DFF0000")
-                cardView.strokeWidth = 4 // Spessore 2dp (circa)
-            } else {
-                // Se è tutto ok -> Bordo GRIGIO normale
-                cardView.strokeColor = Color.parseColor("#BDBDBD")
-                cardView.strokeWidth = 2 // Spessore 1dp
-            }
+            updateErrorState(domanda)
 
             currentTextWatcher = object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -85,36 +71,31 @@ class QuestionAdapter (
 
                     if(domanda.hasError) {
                         domanda.hasError = false
-                        cardView.strokeColor = Color.parseColor("#BDBDBD")
-                        cardView.strokeWidth = 2 // Spessore 1dp
                     }
-
-                    if(domanda.answer.isBlank()){
-                        cardView.strokeColor = Color.parseColor("#4DFF0000")
-                        cardView.strokeWidth = 8
-                    } else {
-                        cardView.strokeColor = Color.parseColor("#BDBDBD")
-                        cardView.strokeWidth = 2
-                    }
+                    updateErrorState(domanda)
 
                     onDataChanged()
                 }
                 override fun afterTextChanged(s: Editable?) {
                     domanda.answer = s.toString()
 
-                    if(domanda.answer.isBlank()){
-                        cardView.strokeColor = Color.parseColor("#4DFF0000")
-                        cardView.strokeWidth = 8
-                    } else {
-                        cardView.strokeColor = Color.parseColor("#BDBDBD")
-                        cardView.strokeWidth = 2
-                    }
+                    updateErrorState(domanda)
 
                     onDataChanged()
                 }
             }
 
             etAnswer.addTextChangedListener(currentTextWatcher)
+        }
+
+        private fun updateErrorState(domanda: Question) {
+            if (domanda.hasError || domanda.answer.isBlank()) {
+                cardView.strokeColor = Color.parseColor("#4DFF0000")
+                cardView.strokeWidth = 4
+            } else {
+                cardView.strokeColor = Color.parseColor("#BDBDBD")
+                cardView.strokeWidth = 2
+            }
         }
     }
 
@@ -162,12 +143,6 @@ class QuestionAdapter (
                     params.setMargins(0, 8, 0, 8) // Spazio sopra e sotto (in pixel approssimati)
                     layoutParams = params
 
-                    /*setOnCheckedChangeListener { _, isChecked ->
-                        if (isChecked) {
-                            domanda.answer = opzione // Salva la risposta nel tuo oggetto Domanda
-                            onDataChanged()
-                        }
-                    }*/
                 }
                 groupAnswer.addView(radioButton)
 
@@ -179,17 +154,6 @@ class QuestionAdapter (
 
             groupAnswer.setOnCheckedChangeListener { group, checkedId ->
                 val selectedButton = group.findViewById<RadioButton>(checkedId)
-                /*if(selectedButton != null) {
-                    domanda.answer = selectedButton.text.toString()
-
-                    if (domanda.hasError) {
-                        domanda.hasError = false
-                        cardView.strokeColor = Color.parseColor("#BDBDBD")
-                        cardView.strokeWidth = 2
-                    }
-
-                    onDataChanged()
-                }*/
 
                 selectedButton?.let {
                     domanda.answer = it.text.toString()
@@ -219,6 +183,5 @@ class QuestionAdapter (
             is MultiplaViewHolder -> holder.bind(domanda)
         }
     }
-
 
 }

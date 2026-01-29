@@ -49,7 +49,6 @@ class ApplicationFragment : Fragment(){
          */
 
         fun newInstance(
-            id : Int,
             name : String,
             userId: String,
             offerId: Int,
@@ -58,7 +57,6 @@ class ApplicationFragment : Fragment(){
         ): ApplicationFragment {
             return ApplicationFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(ARG_ID, id)
                     putString(ARG_NAME, name)
                     putString(ARG_USER_ID, userId)
                     putInt(ARG_JOB_OFFER, offerId)
