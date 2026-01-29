@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    >
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/TVsearch_bar"
@@ -14,8 +14,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:hintEnabled="false"
-        app:boxBackgroundColor="@android:color/transparent">
+        app:hintEnabled="false">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/search_bar"
@@ -27,8 +26,9 @@
             android:inputType="textFilter"
             android:drawableStart="@drawable/ic_search_fast"
             android:drawablePadding="12dp"
-            android:background="@android:color/transparent" />
+            />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

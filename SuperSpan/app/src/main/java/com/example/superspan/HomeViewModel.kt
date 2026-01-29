@@ -88,16 +88,16 @@ class HomeViewModel : ViewModel() {
             Product("Bagnoschiuma Dove", "500ml", "2,90€", R.drawable.dove_bagnoschiuma, ProductCategory.CURA_PERSONALE),
 
             // --- INFANZIA E NEONATI ---
-            /*Product("Pannolini Taglia 4", "Pacco x24", "7,90€", R.drawable.pannolini, ProductCategory.CURA_NEONATO),
-            Product("Omogeneizzato Pera", "2 x 80g", "1,60€", R.drawable.omogeneizzato, ProductCategory.CURA_NEONATO),
+            Product("Pannolini Taglia 4", "Pacco x24", "7,90€", R.drawable.pannolini, ProductCategory.CURA_NEONATO),
+            Product("Omogeneizzato Manzo", "2 x 80g", "1,60€", R.drawable.omogeneizzato, ProductCategory.CURA_NEONATO),
 
             // --- CURA DELLA CASA ---
             Product("Detersivo Piatti", "1L", "1,40€", R.drawable.detersivo_piatti, ProductCategory.PULIZIE),
-            Product("Carta Igienica", "4 rotoli", "2,50€", R.drawable.carta_igienica, ProductCategory.PULIZIE),
+            Product("Scottex", "6 rotoli", "2,50€", R.drawable.scottex, ProductCategory.PULIZIE),
 
             // --- AMICI ANIMALI ---
             Product("Croccantini Gatto", "1.5kg", "4,80€", R.drawable.croccantini_gatto, ProductCategory.ANIMALI),
-            Product("Cibo Cani Manzo", "400g", "1,10€", R.drawable.lattina_cane, ProductCategory.ANIMALI),*/
+            Product("Cibo Cani Manzo", "400g", "1,10€", R.drawable.lattina_cane, ProductCategory.ANIMALI),
         )
 
         cartTotal.value = 0.0

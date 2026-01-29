@@ -38,42 +38,40 @@ class ProductsSectionFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = CategoryAdapter(emptyList()) { categoriaSelezionata ->
-            println("Hai cliccato su: $categoriaSelezionata")
+            // Transizione al fragment dei prodotti filtrati
+            val nextFrag = CategoryProductFragment.newInstance(categoriaSelezionata)
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, nextFrag)
+                .addToBackStack(null)
+                .commit()
         }
         recyclerView.adapter = adapter
 
         val tabLayout = view.findViewById<TabLayout>(R.id.tabLayout)
 
-        // Listener per i tab
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                // Gestione colore speciale per Offerte
                 updateOfferteTabStyle(tab, true)
-                filtraCategorie(tab?.text.toString())
+                filtraCategorie(tab?.text.toString()) // Filtra quando cambi Tab
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                // Torna al rosso sbiadito se deselezionato
                 updateOfferteTabStyle(tab, false)
             }
-
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        // Inizializziamo il colore dei tab al caricamento
+        // Inizializza i colori e carica la categoria iniziale
         for (i in 0 until tabLayout.tabCount) {
             val tab = tabLayout.getTabAt(i)
             updateOfferteTabStyle(tab, tab?.isSelected == true)
         }
 
+        // Forza il primo caricamento
         filtraCategorie("Generale")
 
         return view
     }
 
-    /**
-     * Cerca il tab con testo "Offerte" e ne cambia il colore del testo
-     */
     private fun updateOfferteTabStyle(tab: TabLayout.Tab?, isSelected: Boolean) {
         if (tab?.text == "Offerte") {
             tab.view.allViews.filterIsInstance<TextView>().forEach { textView ->

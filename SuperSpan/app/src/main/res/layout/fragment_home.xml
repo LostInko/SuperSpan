@@ -141,16 +141,14 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- RECYCLER NON-SCROLLABLE (si adatta e scorre con la pagina) -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerProducts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="32dp" />
+            android:paddingBottom="32dp"
+            android:clipToPadding="false" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

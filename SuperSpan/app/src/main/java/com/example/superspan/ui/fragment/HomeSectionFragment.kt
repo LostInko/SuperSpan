@@ -75,15 +75,34 @@ class HomeSectionFragment : Fragment() {
         }
 
         recyclerProducts.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            private fun dp(view: View, v: Int) = (v * view.resources.displayMetrics.density).toInt()
+            private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
+
             override fun getItemOffsets(
                 outRect: android.graphics.Rect,
                 view: View,
                 parent: RecyclerView,
                 state: RecyclerView.State
             ) {
-                val space = dp(view, 8)
-                outRect.set(space, space, space, space)
+                val position = parent.getChildAdapterPosition(view)
+                val spanCount = 2
+                val spacing = dp(12) // Spazio tra le card (uguale alla pagina prodotti)
+
+                // Spazio orizzontale
+                if (position % spanCount == 0) {
+                    // Card di sinistra
+                    outRect.left = dp(16) // Margine esterno sinistro
+                    outRect.right = spacing / 2
+                } else {
+                    // Card di destra
+                    outRect.left = spacing / 2
+                    outRect.right = dp(16) // Margine esterno destro
+                }
+
+                // Spazio verticale
+                outRect.bottom = spacing
+                if (position < spanCount) {
+                    outRect.top = 0
+                }
             }
         })
 
