@@ -33,16 +33,71 @@ class HomeViewModel : ViewModel() {
     init {
         // Inizializza prodotti (con categorie)
         products.value = mutableListOf(
-            Product("Succo ACE", "Brik 0.2L x 6", "1,75€", R.drawable.succo_ace, ProductCategory.BEVANDE),
-            Product("Ichnusa non filtrata", "50cl", "1,56€", R.drawable.ichnusa_non_filtrata, ProductCategory.BEVANDE),
-            Product("Latte Arborea", "1lt", "1,32€", R.drawable.latte_arborea, ProductCategory.BEVANDE),
-            Product("Salsiccia classica stagionata", "All'etto", "2,03€", R.drawable.salsiccia_secca_murru, ProductCategory.AFFETTATI),
+            // --- BEVANDE ANALCOLICHE ---
+            Product("Succo ACE", "Brik 0.2L x 6", "1,75€", R.drawable.succo_ace, ProductCategory.BEVANDE_ANALCOLICHE),
+            Product("Acqua Naturale", "6 x 1.5L", "1,92€", R.drawable.acqua_naturale, ProductCategory.BEVANDE_ANALCOLICHE),
+            Product("Coca Cola", "1.5L", "1,85€", R.drawable.coca_cola, ProductCategory.BEVANDE_ANALCOLICHE),
+            Product("The al Limone", "1.5L", "1,45€", R.drawable.the_limone, ProductCategory.BEVANDE_ANALCOLICHE),
+
+            // --- BEVANDE ALCOLICHE ---
+            Product("Ichnusa non filtrata", "50cl", "1,56€", R.drawable.ichnusa_non_filtrata, ProductCategory.BEVANDE_ALCOLICHE),
+            Product("Vino Vermentino", "75cl", "6,50€", R.drawable.vino_vermentino, ProductCategory.BEVANDE_ALCOLICHE),
+            Product("Birra Moretti", "66cl", "1,20€", R.drawable.birra_moretti, ProductCategory.BEVANDE_ALCOLICHE),
+            Product("Prosecco DOC", "75cl", "5,90€", R.drawable.prosecco, ProductCategory.BEVANDE_ALCOLICHE),
+
+            // --- ORTOFRUTTA ---
+            Product("Banane", "Al kg", "1,99€", R.drawable.banane, ProductCategory.FRUTTA_VERDURA),
+            Product("Mele Gala", "Al kg", "2,15€", R.drawable.mele_gala, ProductCategory.FRUTTA_VERDURA),
+            Product("Insalata Mista", "200g", "1,20€", R.drawable.insalata_mista, ProductCategory.FRUTTA_VERDURA),
+
+            // --- CARNE ---
+            Product("Petto di Pollo", "Al kg", "9,50€", R.drawable.petto_pollo, ProductCategory.CARNE),
+            Product("Macinato Scelto", "500g", "5,40€", R.drawable.macinato_bovino, ProductCategory.CARNE),
+
+            // --- PESCE ---
+            Product("Bastoncini di Pesce", "Confezione 10", "3,50€", R.drawable.bastoncini_findus, ProductCategory.PESCE),
+            Product("Salmone Affumicato", "100g", "4,20€", R.drawable.salmone_affumicato, ProductCategory.PESCE),
+
+            // --- LATTICINI ---
+            Product("Latte Arborea", "1lt", "1,32€", R.drawable.latte_arborea, ProductCategory.LATTICINI),
+            Product("Yogurt Greco", "150g", "1,15€", R.drawable.yogurt_greco, ProductCategory.LATTICINI),
+            Product("Parmigiano Reggiano", "250g", "5,90€", R.drawable.parmigiano, ProductCategory.LATTICINI),
+
+
+            // --- SALUMI E FORMAGGI ---
+            Product("Salsiccia stagionata", "All'etto", "2,03€", R.drawable.salsiccia_secca_murru, ProductCategory.AFFETTATI),
+            Product("Prosciutto Crudo", "100g", "3,20€", R.drawable.prosciutto_crudo, ProductCategory.AFFETTATI),
+
+            // --- PASTA ---
             Product("Ravioli ricotta e spinaci", "", "2,30€", R.drawable.ravioli_ricotta_cossu, ProductCategory.PASTA),
+            Product("Spaghetti n.5", "500g", "0,99€", R.drawable.spaghetti_barilla, ProductCategory.PASTA),
+            Product("Penne Rigate", "500g", "0,99€", R.drawable.penne_rigate, ProductCategory.PASTA),
+
+            // --- SNACK E PATATINE ---
+            Product("Patatine Classiche", "50g", "1,30€", R.drawable.patatine_classiche, ProductCategory.SNACK),
+            Product("Taralli Pugliesi", "250g", "1,70€", R.drawable.taralli, ProductCategory.SNACK),
+
+            // --- DOLCI E BISCOTTI ---
+            Product("Biscotti Gocciole", "500g", "2,85€", R.drawable.gocciole, ProductCategory.DOLCI),
+            Product("Kinder Cereali", "9 x 20g", "3,99€", R.drawable.kinder, ProductCategory.DOLCI),
+            Product("Cornetti Classici", "Confezione x6", "2,20€", R.drawable.cornetti, ProductCategory.DOLCI),
+
+            // --- BELLEZZA E IGIENE ---
             Product("LOreal Invisifix", "100ml", "3,49€", R.drawable.gel_loreal, ProductCategory.CURA_PERSONALE),
-            Product("Shampoo Classico H&S", "90ml", "2,64€", R.drawable.hes_shampoo, ProductCategory.CURA_PERSONALE),
-            Product("Pantene Balsamo", "180ml", "2,19€", R.drawable.pantene_balsamo, ProductCategory.CURA_PERSONALE),
-            Product("Garnier Metodo Ricci", "200ml", "4,49€", R.drawable.shampoo_garnier, ProductCategory.CURA_PERSONALE),
-            Product("Cera Phenomenal", "100ml", "6,20€", R.drawable.cera_phenomenal, ProductCategory.CURA_PERSONALE)
+            Product("Shampoo H&S", "90ml", "2,64€", R.drawable.hes_shampoo, ProductCategory.CURA_PERSONALE),
+            Product("Bagnoschiuma Dove", "500ml", "2,90€", R.drawable.dove_bagnoschiuma, ProductCategory.CURA_PERSONALE),
+
+            // --- INFANZIA E NEONATI ---
+            /*Product("Pannolini Taglia 4", "Pacco x24", "7,90€", R.drawable.pannolini, ProductCategory.CURA_NEONATO),
+            Product("Omogeneizzato Pera", "2 x 80g", "1,60€", R.drawable.omogeneizzato, ProductCategory.CURA_NEONATO),
+
+            // --- CURA DELLA CASA ---
+            Product("Detersivo Piatti", "1L", "1,40€", R.drawable.detersivo_piatti, ProductCategory.PULIZIE),
+            Product("Carta Igienica", "4 rotoli", "2,50€", R.drawable.carta_igienica, ProductCategory.PULIZIE),
+
+            // --- AMICI ANIMALI ---
+            Product("Croccantini Gatto", "1.5kg", "4,80€", R.drawable.croccantini_gatto, ProductCategory.ANIMALI),
+            Product("Cibo Cani Manzo", "400g", "1,10€", R.drawable.lattina_cane, ProductCategory.ANIMALI),*/
         )
 
         cartTotal.value = 0.0

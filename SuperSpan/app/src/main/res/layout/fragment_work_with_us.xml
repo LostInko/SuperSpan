@@ -64,7 +64,7 @@
                 style="@style/Widget.SuperSpan.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Cosa vuoi cercare?"
+                android:hint="Cerca offerta di lavoro"
                 android:textSize="18sp"
                 android:inputType="textFilter"
                 android:drawableStart="@drawable/ic_search_fast"
