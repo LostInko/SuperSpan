@@ -76,6 +76,17 @@ class HomeViewModel : ViewModel() {
         selectedAddress.value = selected
     }
 
+    fun addAddress(newAddress: Address) {
+        val currentList = addresses.value?.toMutableList() ?: mutableListOf()
+        val updatedList = currentList.map { it.copy(isSelected = false) }.toMutableList()
+
+        val addressToAdd = newAddress.copy(isSelected = true)
+        updatedList.add(addressToAdd)
+
+        addresses.value = updatedList
+        selectedAddress.value = addressToAdd
+    }
+
     // -------------------------
     //         CARRELLO
     // -------------------------

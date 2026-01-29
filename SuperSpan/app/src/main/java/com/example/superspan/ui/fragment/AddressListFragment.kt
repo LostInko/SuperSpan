@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
@@ -34,8 +35,19 @@ class AddressListFragment : Fragment() {
             }
         }
 
+        // Binding dei componenti
+        val backButton = view.findViewById<ImageView>(R.id.btnBackTop)
+
+        backButton.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+
         fabAdd.setOnClickListener {
-            // Navigate to "Add New Address" Fragment
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, AddAddressFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         return view
@@ -47,8 +59,6 @@ class AddressListFragment : Fragment() {
         // Bottone back (in testa alla pagina)
         view.findViewById<View>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
-            // Oppure, se usi Navigation Component:
-            // findNavController().navigateUp()
         }
     }
 }
