@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:background="@drawable/bg_product"
     android:padding="10dp"
@@ -48,55 +49,30 @@
 
         </LinearLayout>
 
+    </LinearLayout>
 
+    <View
+        android:layout_width="30dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-        <!-- Turno + Icona -->
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <com.google.android.material.chip.ChipGroup
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_calendar"
-                />
-
-            <TextView
-                android:id="@+id/offerShift"
+            <com.google.android.material.chip.Chip
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Turno Notte"
-                android:layout_marginStart="8dp"
-                style="@style/descProduct" />
+                android:text="In lavorazione"
+                app:chipIcon="@drawable/clock"
+                android:textStyle="bold"/>
 
-        </LinearLayout>
-
-        <!-- Paga + Icona -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/dollarsign_circle"
-                />
-
-            <TextView
-                android:id="@+id/offerWage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="€€"
-                android:layout_marginStart="8dp"
-                style="@style/descProduct" />
-
-        </LinearLayout>
+        </com.google.android.material.chip.ChipGroup>
 
     </LinearLayout>
 

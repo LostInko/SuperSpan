@@ -18,9 +18,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.adapter.QuestionAdapter
 import com.example.superspan.model.Application
+import com.example.superspan.model.JobOffer
 import com.example.superspan.model.Question
 import com.example.superspan.model.TipoDomanda
 import com.example.superspan.ui.activity.GlobalData
+import com.example.superspan.viewmodel.WorkWithUsViewModel
+import org.w3c.dom.Text
 
 object ApplicationGlobal{
     val application_list = mutableListOf<Application>()
@@ -32,12 +35,54 @@ object ApplicationGlobal{
 }
 
 class ApplicationFragment : Fragment(){
+
+    companion object {
+        private const val ARG_ID = "-1"
+        private const val ARG_NAME = "arg_name"
+        private const val ARG_USER_ID = "arg_user_id"
+        private const val ARG_JOB_OFFER = "arg_job_offer"
+        private const val ARG_RISPOSTE = "arg_risposte"
+
+        /**
+         * Costruttore consigliato: passa anche l'indice se lo conosci.
+         * Se non lo hai, usa -1: il fragment farà fallback per nome.
+         */
+
+        fun newInstance(
+            id : Int,
+            name : String,
+            userId: String,
+            offerId: Int,
+            risposte: String
+
+        ): ApplicationFragment {
+            return ApplicationFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_ID, id)
+                    putString(ARG_NAME, name)
+                    putString(ARG_USER_ID, userId)
+                    putInt(ARG_JOB_OFFER, offerId)
+                    putString(ARG_RISPOSTE, risposte)
+                }
+            }
+        }
+    }
+
+    private lateinit var vm: WorkWithUsViewModel
+    private val applicationName: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_NAME).orEmpty() }
+    private val applicationUserId: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_USER_ID).orEmpty() }
+    private val applicationOfferId: Int by lazy { arguments?.getInt(ARG_JOB_OFFER) ?: -2 }
+    private val applicationRisposte: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_RISPOSTE).orEmpty() }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_job_applications, container, false)
+
+        view.findViewById<TextView>(R.id.offerTitle)?.text = applicationName
+
         return(view)
     }
 
@@ -46,7 +91,7 @@ class ApplicationFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listQuestion = getQuestions()
+        val listQuestion = ApplicationGlobal.question_list
         val btnInvia = view.findViewById<ConstraintLayout>(R.id.btnInvia)
         val cbPrivacy = view.findViewById<CheckBox>(R.id.cbPrivacy)
 
@@ -78,7 +123,12 @@ class ApplicationFragment : Fragment(){
         btnInvia.setOnClickListener {
             val user = GlobalData.currentUser
             val currentUserId = user!!.username
-            val currentOfferId = requireArguments().getString("candidaturaId") ?: "offerta_generica"
+            val currentOfferId = applicationOfferId
+
+            if (applicationOfferId == -1) {
+                Toast.makeText(context, "Errore: Offerta non trovata", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val answers = mutableListOf<String>()
 
@@ -86,9 +136,10 @@ class ApplicationFragment : Fragment(){
                 answers.add(domanda.answer)
             }
 
-            val stringaUnica = answers.joinToString { "###" }
+            val stringaUnica = answers.joinToString ( "###" )
 
             val newApplication = Application(
+                name = applicationName,
                 userId = currentUserId,
                 offerId = currentOfferId,
                 risposte = stringaUnica
@@ -105,7 +156,5 @@ class ApplicationFragment : Fragment(){
 
     }
 
-    private fun getQuestions() : List<Question>{
-        return ApplicationGlobal.question_list
-    }
+
 }

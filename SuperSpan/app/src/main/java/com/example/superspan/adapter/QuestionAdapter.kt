@@ -56,8 +56,8 @@ class QuestionAdapter (
 
     // ViewHolder per Domanda Aperta
     inner class ApertaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvDomanda : TextView = itemView.findViewById<TextView>(R.id.question_text)
-        val etAnswer : TextInputEditText = itemView.findViewById<TextInputEditText>(R.id.etAnswer)
+        val tvDomanda : TextView = itemView.findViewById(R.id.question_text)
+        val etAnswer : TextInputEditText = itemView.findViewById(R.id.etAnswer)
         var currentTextWatcher : TextWatcher? = null
         val cardView = itemView.findViewById<MaterialCardView>(R.id.answerBox)
 
@@ -99,7 +99,19 @@ class QuestionAdapter (
 
                     onDataChanged()
                 }
-                override fun afterTextChanged(s: Editable?) {}
+                override fun afterTextChanged(s: Editable?) {
+                    domanda.answer = s.toString()
+
+                    if(domanda.answer.isBlank()){
+                        cardView.strokeColor = Color.parseColor("#4DFF0000")
+                        cardView.strokeWidth = 8
+                    } else {
+                        cardView.strokeColor = Color.parseColor("#BDBDBD")
+                        cardView.strokeWidth = 2
+                    }
+
+                    onDataChanged()
+                }
             }
 
             etAnswer.addTextChangedListener(currentTextWatcher)
@@ -115,18 +127,10 @@ class QuestionAdapter (
         fun bind(domanda : Question){
             tvDomanda.text = domanda.title
 
-            if (domanda.hasError) {
-                // Se c'è errore -> Bordo ROSSO e un po' più spesso
-                cardView.strokeColor = Color.parseColor("#4DFF0000")
-                cardView.strokeWidth = 4 // Spessore 2dp (circa)
-            } else {
-                // Se è tutto ok -> Bordo GRIGIO normale
-                cardView.strokeColor = Color.parseColor("#BDBDBD")
-                cardView.strokeWidth = 2 // Spessore 1dp
-            }
-
             groupAnswer.setOnCheckedChangeListener(null)
             groupAnswer.removeAllViews()
+
+            updateErrorState(domanda)
 
             domanda.options?.forEach { opzione ->
                 val radioButton = RadioButton(itemView.context).apply {
@@ -158,12 +162,12 @@ class QuestionAdapter (
                     params.setMargins(0, 8, 0, 8) // Spazio sopra e sotto (in pixel approssimati)
                     layoutParams = params
 
-                    setOnCheckedChangeListener { _, isChecked ->
+                    /*setOnCheckedChangeListener { _, isChecked ->
                         if (isChecked) {
                             domanda.answer = opzione // Salva la risposta nel tuo oggetto Domanda
                             onDataChanged()
                         }
-                    }
+                    }*/
                 }
                 groupAnswer.addView(radioButton)
 
@@ -175,7 +179,7 @@ class QuestionAdapter (
 
             groupAnswer.setOnCheckedChangeListener { group, checkedId ->
                 val selectedButton = group.findViewById<RadioButton>(checkedId)
-                if(selectedButton != null) {
+                /*if(selectedButton != null) {
                     domanda.answer = selectedButton.text.toString()
 
                     if (domanda.hasError) {
@@ -185,9 +189,26 @@ class QuestionAdapter (
                     }
 
                     onDataChanged()
+                }*/
+
+                selectedButton?.let {
+                    domanda.answer = it.text.toString()
+                    domanda.hasError = false
+                    updateErrorState(domanda)
+                    onDataChanged()
                 }
             }
 
+        }
+
+        private fun updateErrorState(domanda: Question) {
+            if (domanda.hasError) {
+                cardView.strokeColor = Color.parseColor("#4DFF0000")
+                cardView.strokeWidth = 4
+            } else {
+                cardView.strokeColor = Color.parseColor("#BDBDBD")
+                cardView.strokeWidth = 2
+            }
         }
     }
 
@@ -198,5 +219,6 @@ class QuestionAdapter (
             is MultiplaViewHolder -> holder.bind(domanda)
         }
     }
+
 
 }

@@ -11,7 +11,11 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
+import com.example.superspan.adapter.QuestionAdapter
+import com.example.superspan.adapter.QuestionCheckAdapter
 import com.example.superspan.model.JobOffer
 import com.example.superspan.model.Question
 import com.example.superspan.ui.activity.GlobalData
@@ -20,7 +24,7 @@ import com.example.superspan.viewmodel.WorkWithUsViewModel
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 
-class JobOfferFragment : Fragment() {
+class ApplicationCheckFragment : Fragment() {
 
     companion object {
         private const val ARG_ID = "arg_id"
@@ -28,8 +32,7 @@ class JobOfferFragment : Fragment() {
         private const val ARG_LOCATION = "arg_location"
         private const val ARG_SHIFT = "arg_shift"
         private const val ARG_WAGE = "arg_wage"
-        private const val ARG_DESC = "arg_desc"
-        private const val ARG_REQ = "arg_req"
+        private const val ARG_RISP = "arg_risp"
 
         /**
          * Costruttore consigliato: passa anche l'indice se lo conosci.
@@ -42,18 +45,16 @@ class JobOfferFragment : Fragment() {
             location: String,
             shift: String,
             wage: String,
-            desc: String,
-            req: String
-        ): JobOfferFragment {
-            return JobOfferFragment().apply {
+            risp: String
+        ): ApplicationCheckFragment {
+            return ApplicationCheckFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_ID, id)
                     putString(ARG_NAME, name)
                     putString(ARG_LOCATION, location)
                     putString(ARG_SHIFT, shift)
                     putString(ARG_WAGE, wage)
-                    putString(ARG_DESC, desc)
-                    putString(ARG_REQ, req)
+                    putString(ARG_RISP, risp)
                 }
             }
         }
@@ -62,12 +63,11 @@ class JobOfferFragment : Fragment() {
     private lateinit var vm: WorkWithUsViewModel
 
     private val jobOfferId : Int by lazy { arguments?.getInt(ARG_ID) ?: -1 }
-    private val jobOfferName: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_NAME).orEmpty() }
-    private val jobOfferLocation: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_LOCATION).orEmpty() }
-    private val jobOfferShift: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_SHIFT).orEmpty() }
-    private val jobOfferWage: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_WAGE).orEmpty() }
-    private val jobOfferDesc: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_DESC).orEmpty() }
-    private val jobOfferReq: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_REQ).orEmpty() }
+    private val jobOfferName: String by lazy { arguments?.getString(ARG_NAME).orEmpty() }
+    private val jobOfferLocation: String by lazy { arguments?.getString(ARG_LOCATION).orEmpty() }
+    private val jobOfferShift: String by lazy { arguments?.getString(ARG_SHIFT).orEmpty() }
+    private val jobOfferWage: String by lazy { arguments?.getString(ARG_WAGE).orEmpty() }
+    private val appicationRisp: String by lazy { arguments?.getString(ARG_RISP).orEmpty() }
 
 
 
@@ -80,40 +80,33 @@ class JobOfferFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.fragment_job_offer, container, false)
+        val v = inflater.inflate(R.layout.fragment_application_sent_check, container, false)
 
         // ---- Bind dati statici (coerenti con l'XML) ----
         v.findViewById<TextView>(R.id.offer_title)?.text = jobOfferName
         v.findViewById<Chip>(R.id.offer_location)?.text = jobOfferLocation
         v.findViewById<Chip>(R.id.offer_shift)?.text = jobOfferShift
         v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage
-        v.findViewById<TextView>(R.id.offer_description)?.text = jobOfferDesc
-        v.findViewById<TextView>(R.id.offer_requisiti)?.text = jobOfferReq
 
         // ---- Back (ID unico presente: btnBackTop) ----
         v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        val btnCandidati = v.findViewById<ConstraintLayout>(R.id.btn_candidati)
+        var rv : RecyclerView = v.findViewById(R.id.rvQuestions)
+        rv.layoutManager = LinearLayoutManager(requireContext())
 
-        btnCandidati.setOnClickListener {
+        val listQuestion = ApplicationGlobal.question_list
+        val answers = appicationRisp.split("###")
 
-            val fragmentDomande = ApplicationFragment.newInstance(
-                id = -1,
-                userId = GlobalData.currentUser!!.name,
-                name = jobOfferName,
-                offerId = jobOfferId,
-                risposte = ""
-            )
-
-
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragmentDomande) // R.id.fragment_container è l'ID nel tuo layout activity
-                .addToBackStack(null) // Permette all'utente di tornare indietro col tasto back
-                .commit()
+        listQuestion.forEachIndexed { index, question ->
+            // Verifichiamo che esista una risposta per questo indice per evitare crash
+            if (index < answers.size) {
+                question.answer = answers[index]
+            }
         }
 
+        rv.adapter = QuestionCheckAdapter(listQuestion)
 
         return v
     }
