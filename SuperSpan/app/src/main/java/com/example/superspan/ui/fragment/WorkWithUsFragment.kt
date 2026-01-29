@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -28,7 +29,7 @@ class WorkWithUsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         val view = inflater.inflate(R.layout.fragment_work_with_us, container, false)
 
         val pgFragment = ApplicationsSentFragment()
@@ -66,8 +67,6 @@ class WorkWithUsFragment : Fragment() {
                     jobOfferList = filteredList,
 
                     onItemClick = { jobOffer ->
-                        val fullList = vm.jobOffers.value.orEmpty()
-                        val index = fullList.indexOfFirst { it.id == jobOffer.id }
 
                         val fragment = JobOfferFragment.newInstance(
                             id = jobOffer.id,

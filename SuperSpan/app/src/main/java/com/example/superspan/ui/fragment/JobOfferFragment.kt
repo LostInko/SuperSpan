@@ -61,7 +61,7 @@ class JobOfferFragment : Fragment() {
 
     private lateinit var vm: WorkWithUsViewModel
 
-    private val jobOfferId : Int = arguments?.getInt(ARG_ID) ?: -1
+    private val jobOfferId : Int by lazy { arguments?.getInt(ARG_ID) ?: -1 }
     private val jobOfferName: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_NAME).orEmpty() }
     private val jobOfferLocation: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_LOCATION).orEmpty() }
     private val jobOfferShift: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_SHIFT).orEmpty() }
@@ -98,15 +98,6 @@ class JobOfferFragment : Fragment() {
         val btnCandidati = v.findViewById<ConstraintLayout>(R.id.btn_candidati)
 
         btnCandidati.setOnClickListener {
-            val thisJobOffer = JobOffer(
-                jobOfferId,
-                jobOfferName,
-                jobOfferLocation,
-                jobOfferShift,
-                jobOfferWage,
-                jobOfferDesc,
-                jobOfferReq
-            )
 
             val fragmentDomande = ApplicationFragment.newInstance(
                 id = -1,

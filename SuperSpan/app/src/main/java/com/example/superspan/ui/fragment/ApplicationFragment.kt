@@ -71,7 +71,7 @@ class ApplicationFragment : Fragment(){
     private lateinit var vm: WorkWithUsViewModel
     private val applicationName: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_NAME).orEmpty() }
     private val applicationUserId: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_USER_ID).orEmpty() }
-    private val applicationOfferId: Int = arguments?.getInt(ARG_JOB_OFFER) ?: -4
+    private val applicationOfferId: Int by lazy { arguments?.getInt(ARG_JOB_OFFER) ?: -2 }
     private val applicationRisposte: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_RISPOSTE).orEmpty() }
 
     override fun onCreateView(
@@ -147,7 +147,7 @@ class ApplicationFragment : Fragment(){
 
             ApplicationGlobal.application_list.add(newApplication)
 
-            Toast.makeText(context, "Candidatura Inviata! - $currentOfferId -", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Candidatura Inviata!", Toast.LENGTH_SHORT).show()
             parentFragmentManager.popBackStack()
         }
 
