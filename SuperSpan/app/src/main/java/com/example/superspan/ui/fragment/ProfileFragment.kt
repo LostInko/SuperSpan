@@ -32,8 +32,8 @@ class ProfileFragment : Fragment() {
         val cardLogout = view.findViewById<MaterialCardView>(R.id.card_logout)
         val cardDate = view.findViewById<MaterialCardView>(R.id.card_data)
         val cardJob = view.findViewById<MaterialCardView>(R.id.card_job)
-        val cardAdress = view.findViewById<androidx.cardview.widget.CardView>(R.id.card_adress)
-        val cardOrder = view.findViewById<androidx.cardview.widget.CardView>(R.id.card_order)
+        val cardAdress = view.findViewById<CardView>(R.id.card_adress)
+        val cardOrder = view.findViewById<CardView>(R.id.card_order)
 
         val name = user?.name ?: "Utente"
         val surname = user?.surname ?: "Utente"
@@ -54,7 +54,7 @@ class ProfileFragment : Fragment() {
 
         //Clicco su 'i tuoi indirizzi'
         cardAdress.setOnClickListener {
-            val fragment = AddressFragment()// Assicurati che il nome della classe sia corretto
+            val fragment = AddressListFragment()// Assicurati che il nome della classe sia corretto
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null) // Permette di tornare indietro al profilo col tasto "back"

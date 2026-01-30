@@ -8,6 +8,8 @@ import com.example.superspan.model.Order
 import com.example.superspan.model.Product
 import com.example.superspan.model.ProductCategory
 import com.example.superspan.model.parsedPrice
+import com.example.superspan.ui.activity.GlobalData
+import java.util.Collections.list
 
 class HomeViewModel : ViewModel() {
 
@@ -110,13 +112,14 @@ class HomeViewModel : ViewModel() {
     //         INDIRIZZI
     // -------------------------
     fun loadAddresses() {
-        val list = listOf(
-            Address("Cagliari", "Via del Nastro Azzurro 17", "09131", "Casa Mia", isSelected = true),
-            Address("Cagliari", "Via Bruxelles 13", "09129", "Casa di Alice", isSelected = false)
-        )
-        addresses.value = list
-        // Aggiorna selectedAddress coerentemente allo stato isSelected
-        selectedAddress.value = list.find { it.isSelected }
+        // Prendiamo l'utente loggato dal tuo GlobalData
+        val user = GlobalData.currentUser
+
+        if (user != null) {
+            // Carichiamo solo i SUOI indirizzi
+            addresses.value = user.addresses
+            selectedAddress.value = user.addresses.find { it.isSelected }
+        }
     }
 
     fun getSelectedAddress(): Address? =
@@ -132,13 +135,13 @@ class HomeViewModel : ViewModel() {
     }
 
     fun addAddress(newAddress: Address) {
-        val currentList = addresses.value?.toMutableList() ?: mutableListOf()
-        val updatedList = currentList.map { it.copy(isSelected = false) }.toMutableList()
+        val user = GlobalData.currentUser ?: return
+        user.addresses.forEach { it.isSelected = false }
 
         val addressToAdd = newAddress.copy(isSelected = true)
-        updatedList.add(addressToAdd)
+        user.addresses.add(addressToAdd)
 
-        addresses.value = updatedList
+        addresses.value = user.addresses
         selectedAddress.value = addressToAdd
     }
 

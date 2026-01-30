@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.superspan.R
+import com.example.superspan.model.Address
 import com.example.superspan.model.User
 
 
@@ -43,7 +44,9 @@ class MainActivity : AppCompatActivity() {
         // Questo serve al test iniziale per avere un utente già registrato.
         GlobalData.user_list.add(
             0,
-            User("Admin", "Admin", "1234", "Cagliari", "admin", "admin")
+            User("Admin", "Admin", "1234", "Cagliari", "admin", "admin", addresses = mutableListOf(
+                Address("Cagliari", "Via del Nastro Azzurro 17", "09131", "Casa Mia", isSelected = true),
+                Address("Cagliari", "Via Buxelles 13", "09129", "Casa di Alice", isSelected = false)))
         )
         GlobalData.user_list.add(
             1,

@@ -6,6 +6,6 @@ data class User (
     var date : String,
     var citta : String,
     var username : String,
-    var password : String
-
+    var password : String,
+    val addresses : MutableList<Address> = mutableListOf(),
 )
