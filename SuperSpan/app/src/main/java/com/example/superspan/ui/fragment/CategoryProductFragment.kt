@@ -1,6 +1,7 @@
 package com.example.superspan.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,9 +22,13 @@ class CategoryProductFragment : Fragment() {
 
     companion object {
         private const val ARG_CATEGORY_LABEL = "category_label"
+        private const val ARG_PARENT_SECTION = "parent_section"
 
-        fun newInstance(label: String) = CategoryProductFragment().apply {
-            arguments = Bundle().apply { putString(ARG_CATEGORY_LABEL, label) }
+        fun newInstance(label: String, parentSection: String) = CategoryProductFragment().apply {
+            arguments = Bundle().apply {
+                putString(ARG_CATEGORY_LABEL, label)
+                putString(ARG_PARENT_SECTION, parentSection)
+            }
         }
     }
 
@@ -33,6 +38,7 @@ class CategoryProductFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_category_product, container, false)
         val categoryLabel = arguments?.getString(ARG_CATEGORY_LABEL) ?: ""
+        val parentSection = arguments?.getString(ARG_PARENT_SECTION) ?: "Generale"
 
         // barra di ricerca
         val searchEditText = view.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.search_bar)
@@ -52,8 +58,18 @@ class CategoryProductFragment : Fragment() {
         rv.layoutManager = GridLayoutManager(requireContext(), 2)
 
         // Filtriamo i prodotti in base alla label della categoria
-        val filteredList = viewModel.products.value?.filter {
-            it.category.label == categoryLabel || categoryLabel == "Vedi tutto"
+        val filteredList = viewModel.products.value?.filter { product ->
+            when (categoryLabel) {
+                "Vedi tutto" -> {
+                    // Se il tab è "Generale", mostra tutto.
+                    // Altrimenti mostra solo i prodotti la cui categoria appartiene a quel tab.
+                    parentSection == "Generale" || product.category.parentTab == parentSection
+                }
+                else -> {
+                    // Filtro normale per singola categoria
+                    product.category.label == categoryLabel
+                }
+            }
         } ?: emptyList()
 
         adapter = ProductAdapter(
@@ -73,6 +89,8 @@ class CategoryProductFragment : Fragment() {
         )
 
         rv.adapter = adapter
+
+
         return view
     }
 }

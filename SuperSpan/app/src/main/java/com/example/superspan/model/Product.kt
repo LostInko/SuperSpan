@@ -1,24 +1,33 @@
 package com.example.superspan.model
-enum class ProductCategory(val label: String) {
-    // --- ALIMENTARI (Tab: Alimentari) ---
-    FRUTTA_VERDURA("Ortofrutta"),
-    CARNE("Carne"),
-    PESCE("Pesce"),
-    AFFETTATI("Salumi"),
-    LATTICINI("Latte, Yogurt e Formaggi"),
-    PASTA("Pasta"),
-    BEVANDE_ALCOLICHE("Bevande alcoliche"),
-    BEVANDE_ANALCOLICHE("Bevande analcoliche"),
+enum class ProductCategory(val label: String, val parentTab: String) {
+    // --- ALIMENTARI ---
+    FRUTTA_VERDURA("Ortofrutta", "Alimentari"),
+    CARNE("Carne", "Alimentari"),
+    PESCE("Pesce", "Alimentari"),
+    AFFETTATI("Salumi", "Alimentari"),
+    LATTICINI("Latte, Yogurt e Formaggi", "Alimentari"),
+    PASTA("Pasta", "Alimentari"),
+    BEVANDE_ALCOLICHE("Bevande alcoliche", "Alimentari"),
+    BEVANDE_ANALCOLICHE("Bevande analcoliche", "Alimentari"),
+    SNACK("Snack e Patatine", "Alimentari"),
+    DOLCI("Dolci e Biscotti", "Alimentari"),
 
-    SNACK("Snack e Patatine"),
-    DOLCI("Dolci e Biscotti"),
+    // --- CASA E PERSONA ---
+    CURA_PERSONALE("Bellezza e Igiene", "Casa"),
+    CURA_NEONATO("Infanzia e Neonati", "Casa"),
+    PULIZIE("Cura della Casa", "Casa"),
+    ANIMALI("Amici Animali", "Casa");
 
-    // --- CASA E PERSONA (Tab: Casa) ---
-    CURA_PERSONALE("Bellezza e Igiene"), // Shampoo, bagnoschiuma, etc.
-    CURA_NEONATO("Infanzia e Neonati"),   // Pannolini, pappe
-    PULIZIE("Cura della Casa"),           // Detersivi, carta igienica
-    ANIMALI("Amici Animali"),             // Cibo per cani e gatti
-
+    companion object {
+        // Funzione per ottenere tutte le label di una specifica macro-categoria
+        fun getLabelsByTab(tabName: String): List<String> {
+            return if (tabName == "Generale") {
+                values().map { it.label }
+            } else {
+                values().filter { it.parentTab == tabName }.map { it.label }
+            }
+        }
+    }
 }
 
 data class Product(

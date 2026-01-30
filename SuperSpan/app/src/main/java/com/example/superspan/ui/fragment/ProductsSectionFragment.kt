@@ -26,6 +26,8 @@ class ProductsSectionFragment : Fragment() {
     private val softRed = Color.parseColor("#4DFF0000") // Rosso sbiadito
     private val activeRed = Color.parseColor("#FF0000") // Rosso acceso
 
+    private var currentTabName: String = "Generale" // Variabile per tracciare il tab attivo
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,8 +40,8 @@ class ProductsSectionFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         adapter = CategoryAdapter(emptyList()) { categoriaSelezionata ->
-            // Transizione al fragment dei prodotti filtrati
-            val nextFrag = CategoryProductFragment.newInstance(categoriaSelezionata)
+            // Passiamo sia la categoria cliccata che il tab attivo
+            val nextFrag = CategoryProductFragment.newInstance(categoriaSelezionata, currentTabName)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, nextFrag)
                 .addToBackStack(null)
@@ -51,8 +53,9 @@ class ProductsSectionFragment : Fragment() {
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                currentTabName = tab?.text.toString() // Aggiorno il tab attivo
                 updateOfferteTabStyle(tab, true)
-                filtraCategorie(tab?.text.toString()) // Filtra quando cambi Tab
+                filtraCategorie(currentTabName)
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 updateOfferteTabStyle(tab, false)
@@ -81,38 +84,9 @@ class ProductsSectionFragment : Fragment() {
     }
 
     private fun filtraCategorie(nomeTab: String) {
-        val listaFiltrata = mutableListOf<String>()
+        val listaFiltrata = ProductCategory.getLabelsByTab(nomeTab).toMutableList()
 
-        when (nomeTab) {
-            "Generale" -> {
-                // Mostra tutto l'Enum in ordine alfabetico o di inserimento
-                listaFiltrata.addAll(ProductCategory.values().map { it.label })
-            }
-            "Alimentari" -> {
-                listaFiltrata.add(ProductCategory.FRUTTA_VERDURA.label)
-                listaFiltrata.add(ProductCategory.CARNE.label)
-                listaFiltrata.add(ProductCategory.PESCE.label)
-                listaFiltrata.add(ProductCategory.PASTA.label)
-                listaFiltrata.add(ProductCategory.AFFETTATI.label)
-                listaFiltrata.add(ProductCategory.LATTICINI.label)
-                listaFiltrata.add(ProductCategory.BEVANDE_ALCOLICHE.label)
-                listaFiltrata.add(ProductCategory.BEVANDE_ANALCOLICHE.label)
-                listaFiltrata.add(ProductCategory.SNACK.label)
-                listaFiltrata.add(ProductCategory.DOLCI.label)
-
-            }
-            "Casa" -> {
-                listaFiltrata.add(ProductCategory.CURA_PERSONALE.label)
-                listaFiltrata.add(ProductCategory.PULIZIE.label)
-                listaFiltrata.add(ProductCategory.ANIMALI.label)
-                listaFiltrata.add(ProductCategory.CURA_NEONATO.label)
-            }
-            "Offerte" -> {
-                // Qui puoi mettere categorie speciali dedicate agli sconti
-
-            }
-        }
-
+        // Aggiungiamo sempre il "Vedi tutto" in fondo
         listaFiltrata.add("Vedi tutto")
         adapter.updateData(listaFiltrata)
     }
