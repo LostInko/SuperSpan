@@ -9,11 +9,13 @@
         android:id="@+id/cv_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Il tuo Curriculum"
+        android:text="Allega il tuo Curriculum"
         style="@style/textProduct"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:layout_marginBottom="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />
@@ -53,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Carica il tuo CV (PDF)"
+                android:text="Carica il tuo CV (.pdf)"
                 style="@style/descProduct"
                 android:textStyle="bold" />
         </LinearLayout>
