@@ -13,7 +13,7 @@ import com.example.superspan.model.Product
 import kotlin.math.roundToInt
 
 class ProductAdapter(
-    private val productList: List<Product>,
+    private var productList: List<Product>,
     private val onItemClick: (Product) -> Unit,
     private val onCartChanged: () -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
@@ -100,6 +100,11 @@ class ProductAdapter(
     }
 
     override fun getItemCount(): Int = productList.size
+
+    fun updateList(newList: List<Product>) {
+        productList = newList
+        notifyDataSetChanged()
+    }
 
     // --- Helpers ---
 
