@@ -6,6 +6,19 @@
     <string name="cart_test">Carrello</string>
     <string name="profile_test">Profilo</string>
     <string name="navbar_demo_app_label">SuperSpan Demo (NavBar)</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Stile sottolineato-->
+    <string name="password_dimenticata"><u>Password dimenticata?</u></string>
+    <string name="coupon_online">Coupon online</string>
+    <string name="pasta_three_for_two_title">Pasta • 3×2 (stesso prodotto)</string>
+    <string name="deal_hint_three_for_two">×3 (paghi 2 + 1 omaggio)</string>
+    <string name="confirm">Conferma</string>
+
+    <string name="bancofrutta_title">Coupon sconto bancofrutta</string>
+    <string name="bancofrutta_explain">Confermi di attivare il coupon sconto bancofrutta? Il coupon sarà aggiunto ai tuoi coupon attivi.</string>
+    <string name="activate_coupon">Attiva coupon</string>
+    <string name="cancel">Annulla</string>
+    <string name="bancofrutta_activated">Coupon sconto bancofrutta attivato</string>
+
 </resources>

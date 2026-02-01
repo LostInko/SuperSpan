@@ -9,7 +9,23 @@ import com.example.superspan.model.Product
 import com.example.superspan.model.ProductCategory
 import com.example.superspan.model.parsedPrice
 import com.example.superspan.ui.activity.GlobalData
-import java.util.Collections.list
+import java.util.UUID
+
+// =======================
+//   COUPON: TIPI & MODEL
+// =======================
+enum class CouponType {
+    THREE_FOR_ONE,           // 3×1 • Cura personale
+    PASTA_THREE_FOR_TWO,     // Pasta • 3×2 (stesso prodotto)
+    BANCOFRUTTA_DISCOUNT     // Coupon sconto bancofrutta
+}
+
+data class ActiveCoupon(
+    val id: String = UUID.randomUUID().toString(),
+    val type: CouponType,
+    val title: String,         // Es. "3×1 • Cura personale"
+    val detail: String? = null // Es. "Spaghetti n.5"
+)
 
 class HomeViewModel : ViewModel() {
 
@@ -28,7 +44,14 @@ class HomeViewModel : ViewModel() {
     val orders = MutableLiveData<List<Order>>(emptyList())
     val selectedOrder = MutableLiveData<Order?>()
 
-    // -- Coupon --
+    // ======================
+    //        COUPON
+    // ======================
+    // Nuova struttura: LISTA di coupon attivi
+    private val _activeCoupons = MutableLiveData<List<ActiveCoupon>>(emptyList())
+    val activeCoupons: MutableLiveData<List<ActiveCoupon>> get() = _activeCoupons
+
+    // Campi legacy per compatibilità con UI precedente
     val isAnyCouponActivated = MutableLiveData(false)
     val activatedCouponName = MutableLiveData<String?>(null)
 
@@ -65,9 +88,8 @@ class HomeViewModel : ViewModel() {
             Product("Yogurt Greco", "150g", "1,15€", R.drawable.yogurt_greco, ProductCategory.LATTICINI),
             Product("Parmigiano Reggiano", "250g", "5,90€", R.drawable.parmigiano, ProductCategory.LATTICINI),
 
-
             // --- SALUMI E FORMAGGI ---
-            Product("Salsiccia stagionata", "All'etto", "2,03€", R.drawable.salsiccia_secca_murru, ProductCategory.AFFETTATI),
+            Product("Salsiccia stagionata", "100g", "2,03€", R.drawable.salsiccia_secca_murru, ProductCategory.AFFETTATI),
             Product("Prosciutto Crudo", "100g", "3,20€", R.drawable.prosciutto_crudo, ProductCategory.AFFETTATI),
 
             // --- PASTA ---
@@ -88,6 +110,9 @@ class HomeViewModel : ViewModel() {
             Product("LOreal Invisifix", "100ml", "3,49€", R.drawable.gel_loreal, ProductCategory.CURA_PERSONALE),
             Product("Shampoo H&S", "90ml", "2,64€", R.drawable.hes_shampoo, ProductCategory.CURA_PERSONALE),
             Product("Bagnoschiuma Dove", "500ml", "2,90€", R.drawable.dove_bagnoschiuma, ProductCategory.CURA_PERSONALE),
+            Product("Pantene Balsamo","180ml", "2,19€", R.drawable.pantene_balsamo, ProductCategory.CURA_PERSONALE),
+            Product("Garnier Metodo Ricci","200ml", "4,49€", R.drawable.shampoo_garnier, ProductCategory.CURA_PERSONALE),
+            Product("Cera Phenomenal","100ml","6,20€", R.drawable.cera_phenomenal, ProductCategory.CURA_PERSONALE),
 
             // --- INFANZIA E NEONATI ---
             Product("Pannolini Taglia 4", "Pacco x24", "7,90€", R.drawable.pannolini, ProductCategory.CURA_NEONATO),
@@ -225,20 +250,77 @@ class HomeViewModel : ViewModel() {
     // -------------------------
     //           COUPON
     // -------------------------
-    /** Imposta direttamente nome e stato attivo del coupon. */
+
+    /** Nuovo metodo: controlla se è già attivo un coupon di quel tipo. */
+    fun hasActiveCouponOfType(type: CouponType): Boolean {
+        val list = _activeCoupons.value ?: return false
+        return list.any { it.type == type }
+    }
+
+    /** Nuovo metodo: attiva un coupon (evita duplicati per tipo). */
+    fun activateCoupon(type: CouponType, title: String, detail: String? = null) {
+        val current = _activeCoupons.value ?: emptyList()
+        if (current.any { it.type == type }) return // blocca duplicati
+
+        val updated = current + ActiveCoupon(type = type, title = title, detail = detail)
+        _activeCoupons.value = updated
+
+        // aggiorna campi legacy
+        isAnyCouponActivated.value = updated.isNotEmpty()
+        updateLegacyName()
+    }
+
+    /** Overload legacy: per compatibilità con chiamate vecchie `activateCoupon(name)` */
     fun activateCoupon(name: String) {
+        // Prova a inferire il tipo dal titolo (best-effort, evita crash)
+        val lower = name.lowercase()
+        val inferredType: CouponType? = when {
+            lower.contains("3×1") || lower.contains("3x1") || lower.contains("cura personale") -> CouponType.THREE_FOR_ONE
+            lower.contains("3×2") || lower.contains("3x2") || lower.contains("pasta") -> CouponType.PASTA_THREE_FOR_TWO
+            lower.contains("bancofrutta") -> CouponType.BANCOFRUTTA_DISCOUNT
+            else -> null
+        }
+
+        if (inferredType != null) {
+            activateCoupon(inferredType, name, null)
+            return
+        }
+
+        // Fallback estrema: solo legacy fields (non aggiunge in lista)
         isAnyCouponActivated.value = true
         activatedCouponName.value = name
     }
 
-    /** Solo il flag (usato nel 3×1 dopo conferma). */
+    /** Legacy: flag usato prima; lo manteniamo (utile per analytics o compat). */
     fun markCouponActivated() {
         isAnyCouponActivated.value = true
+        // verrà riallineato quando si chiama activateCoupon(type,...)
     }
 
-    /** Disattiva qualsiasi coupon e pulisce il nome. */
+    /** Rimuove uno specifico coupon per id. */
+    fun removeCouponById(id: String) {
+        val current = _activeCoupons.value ?: emptyList()
+        val updated = current.filterNot { it.id == id }
+        _activeCoupons.value = updated
+
+        isAnyCouponActivated.value = updated.isNotEmpty()
+        updateLegacyName()
+    }
+
+    /** Disattiva tutti i coupon. */
     fun clearActivatedCoupon() {
+        _activeCoupons.value = emptyList()
         isAnyCouponActivated.value = false
         activatedCouponName.value = null
+    }
+
+    /** Aggiorna il nome singolo (compatibilità con UI precedente). */
+    private fun updateLegacyName() {
+        val first = _activeCoupons.value?.firstOrNull()
+        activatedCouponName.value = when {
+            first == null -> null
+            first.detail.isNullOrBlank() -> first.title
+            else -> "${first.title} — ${first.detail}"
+        }
     }
 }

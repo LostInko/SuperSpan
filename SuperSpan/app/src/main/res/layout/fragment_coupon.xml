@@ -1,107 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- CONTENUTO SCORRIBILE -->
-    <ScrollView
-        android:id="@+id/scrollArea"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:padding="16dp"
-        app:layout_constrainedHeight="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/couponExpandableBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+    <!-- CONTENUTO PAGINA (rimane fermo; l’overlay si sovrappone) -->
+    <LinearLayout
+        android:id="@+id/pageContent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <!-- Titolo -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Coupon in negozio"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="@color/greenText" />
+
+            <!-- Bottone info -->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnInfo"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:srcCompat="@drawable/ic_info"
+                app:tint="@color/greenIcon" />
+        </LinearLayout>
+
+        <!-- Immagini coupon -->
+        <LinearLayout
+            android:id="@+id/couponsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- 1 -->
+            <ImageView
+                android:id="@+id/imgCoupon1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/app_name" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="12dp"/>
+
+            <!-- 2 -->
+            <ImageView
+                android:id="@+id/imgCoupon2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/app_name" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="12dp"/>
+
+            <!-- 3 -->
+            <ImageView
+                android:id="@+id/imgCoupon3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/app_name" />
+        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/contentContainer"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- TITOLO 1 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="@string/coupon_online"
-                    android:textSize="32sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/greenText"/>
-            </LinearLayout>
-
-            <!-- CARD ONLINE -->
-            <RelativeLayout
-                android:id="@+id/btnOnline"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:background="@android:color/transparent">
-
-                <ImageView
-                    android:id="@+id/imgOnlineCoupon"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/coupon_online"/>
-            </RelativeLayout>
-
-            <!-- TITOLO 2 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:text="Coupon in negozio"
-                    android:textSize="32sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/greenText"/>
-            </LinearLayout>
-
-            <!-- CARD IN NEGOZIO -->
-            <RelativeLayout
-                android:id="@+id/btnShop"
-                android:layout_width="match_parent"
-                android:layout_height="220dp">
-
-                <ImageView
-                    android:id="@+id/imgShopCoupon"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/coupon_store"/>
-            </RelativeLayout>
-
+            android:layout_height="25dp">
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
-    <!-- BARRA ESPANDIBILE FISSA IN BASSO (FUORI dallo ScrollView) -->
+    <!-- OVERLAY: Barra espandibile sopra la pagina -->
     <include
-        android:id="@+id/couponExpandableBar"
         layout="@layout/view_coupon_expandable_bar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_gravity="bottom"
+        android:layout_margin="12dp" />
+</FrameLayout>
