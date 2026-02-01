@@ -44,6 +44,8 @@ object ApplicationGlobal{
     )
 
     val docs_list = mutableListOf<Document>(
+        Document(tipo = TipoFile.CV),
+        Document(tipo = TipoFile.Video)
     )
 }
 
@@ -91,15 +93,13 @@ class ApplicationFragment : Fragment(){
     private var positionToUpdate: Int = -1
 
     // 1. IL LAUNCHER (come prima, ma ora aggiorna la lista)
-    private val pickPdfFile = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+    private val pickFileLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null && positionToUpdate != -1) {
             // Ottieni il nome del file (funzione definita nella risposta precedente)
             val fileName = getFileNameFromUri(requireContext(), uri)
 
-            // 2. AGGIORNA I DATI
-            val item = docs_list[positionToUpdate]
-            item.fileName = fileName
-            item.fileUri = uri // Salva l'uri per l'upload futuro
+            docs_list[positionToUpdate].fileName = fileName
+            docs_list[positionToUpdate].fileUri = uri // Salva l'uri per l'upload futuro
 
             // 3. NOTIFICA L'ADAPTER CHE I DATI SONO CAMBIATI
             // Questo farà ridisegnare la riga con il nuovo nome del file
@@ -110,7 +110,6 @@ class ApplicationFragment : Fragment(){
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -120,25 +119,9 @@ class ApplicationFragment : Fragment(){
 
         view.findViewById<TextView>(R.id.offerTitle)?.text = applicationName
 
-        // Popola la lista con dati finti per test
-        docs_list.add(Document()) // Elemento 1 vuoto
-        docs_list.add(Document()) // Elemento 2 vuoto
-
-        val rvDocs = view.findViewById<RecyclerView>(R.id.rvFiles)
-
-        // Inizializza l'Adapter passando la logica del click
-        adapter = DocumentsAdapter(docs_list) { position ->
-            // Questa è la callback che viene eseguita quando clicchi la card nell'adapter
-            positionToUpdate = position // Memorizzo quale riga ho cliccato
-            pickPdfFile.launch("application/pdf") // Apro il picker
-        }
-
-        rvDocs.adapter = adapter
-
         return(view)
     }
 
-    private lateinit var recyclerView: RecyclerView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -147,8 +130,8 @@ class ApplicationFragment : Fragment(){
         val btnInvia = view.findViewById<ConstraintLayout>(R.id.btnInvia)
         val cbPrivacy = view.findViewById<CheckBox>(R.id.cbPrivacy)
 
-        recyclerView = view.findViewById(R.id.rvQuestions)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val rvQuestions : RecyclerView = view.findViewById(R.id.rvQuestions)
+        rvQuestions.layoutManager = LinearLayoutManager(requireContext())
 
         val controlloValidita = {
             val blankAnswer = listQuestion.any() { it.answer.isBlank() }
@@ -159,11 +142,31 @@ class ApplicationFragment : Fragment(){
             } else {
                 btnInvia.isEnabled = false;
                 btnInvia.alpha = 0.3f;
-                recyclerView.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
+                rvQuestions.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
             }
         }
 
-        recyclerView.adapter = QuestionAdapter(listQuestion, controlloValidita)
+        rvQuestions.adapter = QuestionAdapter(listQuestion, controlloValidita)
+
+        val rvFiles : RecyclerView = view.findViewById(R.id.rvFiles)
+
+        rvFiles.layoutManager = LinearLayoutManager(requireContext())
+        rvFiles.isNestedScrollingEnabled = false
+
+        adapter = DocumentsAdapter(docs_list) { position ->
+            // Questa è la callback che viene eseguita quando clicchi la card nell'adapter
+            positionToUpdate = position // Memorizzo quale riga ho cliccato
+            val item = docs_list[positionToUpdate]
+            if(item.tipo == TipoFile.CV) {
+                pickFileLauncher.launch("application/pdf") // Apro il picker
+            } else {
+                pickFileLauncher.launch("video/*") // Apro il picker
+            }
+
+        }
+
+        rvFiles.adapter = adapter
+
 
         // ---- Back (ID unico presente: btnBackTop) ----
         view.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
@@ -208,34 +211,35 @@ class ApplicationFragment : Fragment(){
 
     }
 
+    fun getFileNameFromUri(context: Context, uri: Uri): String? {
+        var result: String? = null
 
-}
+        if (uri.scheme == "content") {
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    // 1. Ottieni l'indice della colonna in una variabile
+                    val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
 
-fun getFileNameFromUri(context: Context, uri: Uri): String? {
-    var result: String? = null
-
-    if (uri.scheme == "content") {
-        val cursor = context.contentResolver.query(uri, null, null, null, null)
-        cursor?.use {
-            if (it.moveToFirst()) {
-                // 1. Ottieni l'indice della colonna in una variabile
-                val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-
-                // 2. Controlla che l'indice sia valido (quindi >= 0)
-                if (nameIndex >= 0) {
-                    result = it.getString(nameIndex)
+                    // 2. Controlla che l'indice sia valido (quindi >= 0)
+                    if (nameIndex >= 0) {
+                        result = it.getString(nameIndex)
+                    }
                 }
             }
         }
-    }
 
-    if (result == null) {
-        result = uri.path
-        val cut = result?.lastIndexOf('/')
-        if (cut != -1 && cut != null) {
-            result = result?.substring(cut + 1)
+        if (result == null) {
+            result = uri.path
+            val cut = result?.lastIndexOf('/')
+            if (cut != -1 && cut != null) {
+                result = result.substring(cut + 1)
+            }
         }
+
+        return result
     }
 
-    return result
 }
+
+
