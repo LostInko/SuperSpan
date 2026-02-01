@@ -48,16 +48,16 @@ class DocumentsAdapter(
 
         fun bind(item: Document, position: Int) {
 
-            // Colore testo: nero se c'è file, grigio se default (opzionale)
             if (item.fileName != null) {
                 tvCvName.text = item.fileName
-                tvCvName.setTextColor(Color.BLACK)
+                cardUploadCv.strokeColor = Color.parseColor("#BDBDBD")
+                cardUploadCv.strokeWidth = 2
             } else {
                 tvCvName.text = "Carica il tuo CV (.pdf)"
-                tvCvName.setTextColor(Color.GRAY)
+                cardUploadCv.strokeColor = Color.parseColor("#4DFF0000")
+                cardUploadCv.strokeWidth = 4
             }
 
-            // Al click, invochiamo la callback verso l'Activity
             cardUploadCv.setOnClickListener {
                 onAttachClick(position)
             }
@@ -70,16 +70,16 @@ class DocumentsAdapter(
 
         fun bind(item: Document, position: Int) {
 
-            // Colore testo: nero se c'è video, grigio se default (opzionale)
             if (item.fileName != null) {
                 tvVideoName.text = item.fileName
-                tvVideoName.setTextColor(Color.BLACK)
+                cardUploadVideo.strokeColor = Color.parseColor("#BDBDBD")
+                cardUploadVideo.strokeWidth = 2
             } else {
                 tvVideoName.text = "Carica il tuo Video (vari formati supportati)"
-                tvVideoName.setTextColor(Color.GRAY)
+                cardUploadVideo.strokeColor = Color.parseColor("#4DFF0000")
+                cardUploadVideo.strokeWidth = 4
             }
 
-            // Al click, invochiamo la callback verso l'Activity
             cardUploadVideo.setOnClickListener {
                 onAttachClick(position)
             }
