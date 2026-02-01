@@ -6,18 +6,22 @@ import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.adapter.AddressAdapter // Assicurati di importarlo
 import com.example.superspan.adapter.CartAdapter
+import com.example.superspan.adapter.SwipeToDeleteCallback
 import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.viewmodel.HomeViewModel
 
@@ -26,6 +30,7 @@ class CartFragment : Fragment() {
     private var tvCartAmountInActivity: TextView? = null
     private var tvTotalPrice: TextView? = null
     private lateinit var vm : HomeViewModel
+    private lateinit var cartAdapter: CartAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,17 +39,36 @@ class CartFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_cart, container, false)
 
 
-        tvTotalPrice = view.findViewById<TextView>(R.id.tv_total_price)
+        tvTotalPrice = view.findViewById(R.id.tv_total_price)
         vm = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
 
         val recyclerViewProduct = view.findViewById<RecyclerView>(R.id.recyclerCart)
         recyclerViewProduct.layoutManager = LinearLayoutManager(requireContext())
 
+        cartAdapter = CartAdapter(mutableListOf(), vm)
+        recyclerViewProduct.adapter = cartAdapter
+
+        val tvEmptyCart = view.findViewById<TextView>(R.id.tvEmptyCart)
+        val layoutMenu = view.findViewById<LinearLayout>(R.id.layoutMenu)
+        val btnPay = view.findViewById<Button>(R.id.btnPay)
+
         vm.products.observe(viewLifecycleOwner) { allProducts ->
             val itemsInCart = allProducts.filter { it.qty > 0 }
-            recyclerViewProduct.adapter = CartAdapter(itemsInCart, vm)
+
+            if (itemsInCart.isEmpty()) {
+                tvEmptyCart.visibility = VISIBLE
+                recyclerViewProduct.visibility = View.GONE
+                layoutMenu.visibility = View.GONE
+                btnPay.isEnabled = false
+                btnPay.alpha = 0.6f;
+            } else {
+                tvEmptyCart.visibility = View.GONE
+                cartAdapter.updateData(itemsInCart) // Usiamo il nuovo metodo
+            }
         }
+
+        setupSwipe(recyclerViewProduct)
 
         val shopSpinner = view.findViewById<AppCompatSpinner>(R.id.spinnerStores)
         val shopList = listOf("Cagliari, Via Baccaredda 71", "Cagliari, Via Dante 134", "Selargius, Via Piave 62")
@@ -98,4 +122,10 @@ class CartFragment : Fragment() {
         }
     }
 
+    private fun setupSwipe(recyclerView: RecyclerView) {
+        val swipeHandler = SwipeToDeleteCallback(cartAdapter)
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
 }

@@ -61,7 +61,7 @@ class OrderFragment : Fragment() {
         recyclerViewProduct.layoutManager = LinearLayoutManager(requireContext())
 
         vm.products.observe(viewLifecycleOwner) { allProducts ->
-            val itemsInCart = allProducts.filter { it.qty > 0 }
+            val itemsInCart = allProducts.filter { it.qty > 0 }.toMutableList()
             recyclerViewProduct.adapter = CartAdapter(itemsInCart, vm)
         }
 

@@ -8,12 +8,26 @@
     android:background="#F8F9FA"
     tools:context=".ui.fragment.CartFragment">
 
+    <TextView
+        android:id="@+id/tvEmptyCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="264dp"
+        android:text="Il carrello è vuoto\nI prodotti che aggiungerai verranno mostrati qui"
+        android:textAlignment="center"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottomLayout"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottomLayout">
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,21 +50,21 @@
                     android:layout_height="40dp"
                     android:background="@drawable/bg_circle_button"
                     android:padding="8dp"
-                    app:srcCompat="@drawable/ic_back"
-                    app:tint="@color/greenIcon"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:srcCompat="@drawable/ic_back"
+                    app:tint="@color/greenIcon" />
 
                 <TextView
                     android:id="@+id/tv_header_title"
                     android:layout_width="170dp"
                     android:layout_height="41dp"
+                    android:gravity="center"
                     android:text="Il tuo carrello"
                     android:textColor="@color/greenText"
                     android:textSize="25sp"
                     android:textStyle="bold"
-                    android:gravity="center"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.191"
@@ -78,6 +92,7 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
+            android:id="@+id/layoutMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

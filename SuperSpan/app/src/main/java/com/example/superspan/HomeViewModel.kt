@@ -205,6 +205,32 @@ class HomeViewModel : ViewModel() {
         updateCartTotal()
     }
 
+    fun removeFromCart(product: Product) {
+        val currentList = products.value ?: mutableListOf()
+
+        currentList.remove(product)
+
+        //resettiamo la quantità a 0
+        product.qty = 0
+        products.value = currentList
+
+        notifyChange()
+    }
+
+    fun updateProductQuantity(product: Product, newQty: Int) {
+        val currentProducts = products.value ?: return
+
+        // Cerchiamo il prodotto e aggiorniamo la quantità
+        currentProducts.find { it.name == product.name }?.let {
+            it.qty = newQty
+        }
+
+        // Notifichiamo il cambiamento alla UI
+        products.value = currentProducts
+
+        notifyChange()
+    }
+
     // -------------------------
     //         PREFERITI
     // -------------------------

@@ -11,9 +11,20 @@ import com.example.superspan.model.Product
 import com.example.superspan.viewmodel.HomeViewModel
 
 class CartAdapter(
-    private val cartList: List<Product>,
+    private var cartList: MutableList<Product>,
     private val vm: HomeViewModel // Passiamo il ViewModel per gestire i click
 ) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
+
+    private var swipedPosition = -1
+
+    fun setItemSwiped(position: Int) {
+        val previousPosition = swipedPosition
+        swipedPosition = position
+
+        // Notifichiamo i cambiamenti per far scattare le animazioni
+        if (previousPosition != -1) notifyItemChanged(previousPosition)
+        notifyItemChanged(swipedPosition)
+    }
 
     class CartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgProduct: ImageView = view.findViewById(R.id.imgProduct)
@@ -23,6 +34,8 @@ class CartAdapter(
         val txtCount: TextView = view.findViewById(R.id.txtCount)
         val btnPlus: View = view.findViewById(R.id.btnPlus)
         val btnMinus: View = view.findViewById(R.id.btnMinus)
+        val viewForeground: View = view.findViewById(R.id.viewForeground)
+        val btnDelete: View = view.findViewById(R.id.btnDelete)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
@@ -31,17 +44,64 @@ class CartAdapter(
         return CartViewHolder(view)
     }
 
+    //Aggiorna la lista senza ricreare l'adapter
+    fun updateData(newList: List<Product>) {
+        cartList.clear()
+        cartList.addAll(newList)
+        notifyDataSetChanged()
+    }
+
+    fun isItemOpen(position: Int): Boolean {
+        return swipedPosition == position
+    }
+
+    fun closeSwipedItem() {
+        val prev = swipedPosition
+        swipedPosition = -1
+        if (prev != -1) notifyItemChanged(prev)
+    }
+
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         val product = cartList[position]
 
-        // 1. Binding dei dati
         holder.txtTitle.text = product.name
         holder.txtPrice.text = product.price
         holder.txtDesc.text = product.description
         holder.txtCount.text = product.qty.toString()
+        holder.viewForeground.translationX = 0f
 
         if (product.imageRes != 0) {
             holder.imgProduct.setImageResource(product.imageRes)
+        }
+
+        val buttonWidth = holder.btnDelete.width.toFloat()
+        // CONTROLLO ANIMAZIONE COINCIDENTE
+        if (position == swipedPosition) {
+            // Se lo stato è "aperto", forziamo la traslazione sulla larghezza del bottone
+            holder.viewForeground.animate()
+                .translationX(-buttonWidth)
+                .setDuration(200)
+                .start()
+        } else {
+            // Se è chiuso, torna a zero
+            holder.viewForeground.animate()
+                .translationX(0f)
+                .setDuration(200)
+                .start()
+        }
+
+        holder.viewForeground.setOnClickListener {
+            if (swipedPosition == position) {
+                // Se l'utente clicca sul prodotto aperto (invece di swippare), lo richiudiamo
+                closeSwipedItem()
+            } else {
+                // Qui potresti aprire la pagina di dettaglio del prodotto, se prevista
+            }
+        }
+
+        holder.btnDelete.setOnClickListener {
+            swipedPosition = -1
+            vm.updateProductQuantity(product, 0)
         }
 
         // 2. Gestione Visibilità (visto che nel tuo XML sono 'gone' di default)
