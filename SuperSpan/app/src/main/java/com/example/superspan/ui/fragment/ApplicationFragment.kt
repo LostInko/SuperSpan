@@ -34,6 +34,7 @@ import com.example.superspan.model.TipoDomanda
 import com.example.superspan.model.TipoFile
 import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.ui.fragment.ApplicationGlobal.docs_list
+import com.example.superspan.ui.fragment.ApplicationGlobal.question_list
 import com.example.superspan.viewmodel.WorkWithUsViewModel
 import org.w3c.dom.Text
 import java.io.File
@@ -154,12 +155,27 @@ class ApplicationFragment : Fragment(){
             }
         }
 
-        rvQuestions.adapter = QuestionAdapter(listQuestion, controlloValidita)
+
 
         val rvFiles : RecyclerView = view.findViewById(R.id.rvFiles)
 
         rvFiles.layoutManager = LinearLayoutManager(requireContext())
         rvFiles.isNestedScrollingEnabled = false
+
+        if (savedInstanceState == null) {
+            docs_list.clear()
+            tempVideoUri = null
+            positionToUpdate = -1
+            docs_list.add(Document(tipo = TipoFile.CV))
+            docs_list.add(Document(tipo = TipoFile.Video))
+
+            question_list.clear()
+            question_list.add(Question("A", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa))
+            question_list.add(Question("B", "", null, tipo = TipoDomanda.Aperta))
+            question_list.add(Question("C", "", null, tipo = TipoDomanda.Aperta))
+            question_list.add(Question("D", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa))
+
+        }
 
         adapter = DocumentsAdapter(docs_list) { position ->
             // Questa è la callback che viene eseguita quando clicchi la card nell'adapter
@@ -172,6 +188,8 @@ class ApplicationFragment : Fragment(){
             }
 
         }
+
+        rvQuestions.adapter = QuestionAdapter(listQuestion, controlloValidita)
 
         rvFiles.adapter = adapter
 

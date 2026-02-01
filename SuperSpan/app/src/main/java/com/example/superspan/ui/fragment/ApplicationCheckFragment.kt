@@ -93,8 +93,8 @@ class ApplicationCheckFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        var rv : RecyclerView = v.findViewById(R.id.rvQuestions)
-        rv.layoutManager = LinearLayoutManager(requireContext())
+        var rvQuestion : RecyclerView = v.findViewById(R.id.rvQuestions)
+        rvQuestion.layoutManager = LinearLayoutManager(requireContext())
 
         val listQuestion = ApplicationGlobal.question_list
         val answers = appicationRisp.split("###")
@@ -106,7 +106,12 @@ class ApplicationCheckFragment : Fragment() {
             }
         }
 
-        rv.adapter = QuestionCheckAdapter(listQuestion)
+        rvQuestion.adapter = QuestionCheckAdapter(listQuestion)
+
+        val rvFiles : RecyclerView = v.findViewById(R.id.rvFiles)
+        rvFiles.layoutManager = LinearLayoutManager(requireContext())
+
+
 
         return v
     }
