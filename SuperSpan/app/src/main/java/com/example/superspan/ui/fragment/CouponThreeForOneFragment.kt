@@ -135,11 +135,14 @@ class CouponThreeForOneFragment : Fragment() {
             if (selected.size == 3) {
                 it.performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM)
                 vm.markCouponActivated()
-                vm.activateCoupon("3×1 • Cura personale")
+                vm.activateCoupon(
+                    type = com.example.superspan.viewmodel.CouponType.THREE_FOR_ONE,
+                    title = "3×1 • Cura personale",
+                    detail = null
+                )
                 Toast.makeText(requireContext(), "Coupon confermato", Toast.LENGTH_SHORT).show()
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             } else {
-                // Non dovrebbe accadere, è disabilitato
                 Toast.makeText(requireContext(), "Seleziona 3 prodotti", Toast.LENGTH_SHORT).show()
             }
         }

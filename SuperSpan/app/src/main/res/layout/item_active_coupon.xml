@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingVertical="8dp">
+
+    <!-- Card verticale: titolo + QR -->
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Titolo coupon -->
+        <TextView
+            android:id="@+id/tvCouponName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Titolo coupon"
+            android:textStyle="bold"
+            android:textColor="@color/greenText"
+            android:textSize="14sp"
+            android:paddingEnd="44dp" />
+        <!-- ^ paddingEnd per lasciare spazio alla X in overlay -->
+
+        <!-- QR grande sotto il titolo -->
+        <ImageView
+            android:id="@+id/imgCouponQr"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginTop="6dp"
+            android:scaleType="centerInside"
+            android:adjustViewBounds="true"
+            android:src="@drawable/qr_code"
+            android:contentDescription="@string/app_name" />
+    </LinearLayout>
+
+    <!-- Pulsante X (overlay in alto a destra) -->
+    <ImageView
+        android:id="@+id/btnRemoveCoupon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="end|top"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="6dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_close"
+        android:tint="@color/greenIcon"/>
+</FrameLayout>

@@ -12,5 +12,14 @@
     <!--Stile sottolineato-->
     <string name="password_dimenticata"><u>Password dimenticata?</u></string>
     <string name="coupon_online">Coupon online</string>
+    <string name="pasta_three_for_two_title">Pasta • 3×2 (stesso prodotto)</string>
+    <string name="deal_hint_three_for_two">×3 (paghi 2 + 1 omaggio)</string>
+    <string name="confirm">Conferma</string>
+
+    <string name="bancofrutta_title">Coupon sconto bancofrutta</string>
+    <string name="bancofrutta_explain">Confermi di attivare il coupon sconto bancofrutta? Il coupon è valido per una spesa minima di 5€.</string>
+    <string name="activate_coupon">Attiva coupon</string>
+    <string name="cancel">Annulla</string>
+    <string name="bancofrutta_activated">Coupon sconto bancofrutta attivato</string>
 
 </resources>

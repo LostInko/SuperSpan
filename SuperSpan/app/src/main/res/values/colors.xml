@@ -10,6 +10,9 @@
     <color name="productPanel">#DCF5E1</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="gray_600">#757575</color>
+
+
     <!-- Testo (tema chiaro) -->
     <color name="text_primary">#FF000000</color>      <!-- nero pieno -->
     <color name="text_secondary">#8A000000</color>    <!-- 54% nero (Material) -->

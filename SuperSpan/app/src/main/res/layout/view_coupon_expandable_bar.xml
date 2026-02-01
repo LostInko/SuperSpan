@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_marginTop="12dp"
     android:background="@drawable/bg_expandable_bar"
     android:padding="12dp"
-    android:visibility="gone">
+    android:visibility="gone"
+    android:elevation="6dp"> <!-- opzionale, per staccarsi dal contenuto -->
 
-    <!-- Header tappabile: più basso e stondata -->
+    <!-- Header tappabile -->
     <LinearLayout
         android:id="@+id/couponExpandableHeader"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="22dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingHorizontal="8dp"
@@ -28,26 +27,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Coupon attivato"
+            android:text="Coupon attivi"
             android:textStyle="bold"
             android:textColor="@color/greenText"
             android:textSize="16sp" />
 
-        <!-- Chevron: giù/su -->
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/couponExpandableChevron"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            app:srcCompat="@drawable/ic_chevron_down"
-            app:tint="@color/greenIcon" />
-
-        <!-- X per chiudere/rimuovere il coupon -->
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/couponCloseButton"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="8dp"
-            app:srcCompat="@drawable/ic_close"
+            app:srcCompat="@drawable/ic_chevron_up"
             app:tint="@color/greenIcon" />
     </LinearLayout>
 
@@ -60,23 +49,10 @@
         android:visibility="gone"
         android:paddingTop="8dp">
 
-        <!-- Nome del coupon usato -->
-        <TextView
-            android:id="@+id/couponNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nome coupon"
-            android:textStyle="bold"
-            android:textColor="@color/greenText"
-            android:textSize="14sp"
-            android:layout_marginBottom="8dp" />
-
-        <!-- QR code -->
-        <ImageView
-            android:id="@+id/couponQrImage"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvActiveCoupons"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/qr_code" />
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
     </LinearLayout>
 </LinearLayout>

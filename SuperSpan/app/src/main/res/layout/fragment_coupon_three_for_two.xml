@@ -1,0 +1,124 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnBackTop"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_circle_button"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/greenIcon" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:text="@string/pasta_three_for_two_title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/greenText" />
+
+    </LinearLayout>
+
+    <!-- Lista prodotti -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvProducts"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false" />
+
+    <!-- Bottom bar: 3 slot + label + conferma -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:orientation="vertical"
+        android:background="@drawable/bg_bottom_panel">
+
+        <!-- Slots (3 uguali; 2 pagati in rosso, 1 omaggio neutro) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/slot1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_question"
+                android:background="@drawable/bg_slot_neutral" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/slot2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_question"
+                android:background="@drawable/bg_slot_neutral" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/slot3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_question"
+                android:background="@drawable/bg_slot_neutral" />
+        </LinearLayout>
+
+        <!-- Etichetta sotto gli slot -->
+        <TextView
+            android:id="@+id/tvDealHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/deal_hint_three_for_two"
+            android:textSize="12sp"
+            android:textColor="@color/gray_600"
+            android:gravity="center" />
+
+        <!-- Bottone conferma -->
+        <TextView
+            android:id="@+id/btnConfirmBar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="@string/confirm"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_confirm_bar_disabled" />
+    </LinearLayout>
+
+</LinearLayout>

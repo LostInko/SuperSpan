@@ -33,12 +33,7 @@
             android:textStyle="bold"
             android:textColor="@color/greenText" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btnInfo"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            app:srcCompat="@drawable/ic_info"
-            app:tint="@color/greenIcon" />
+
     </LinearLayout>
 
     <!-- Lista prodotti -->
