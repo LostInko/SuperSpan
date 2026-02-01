@@ -1,6 +1,9 @@
 package com.example.superspan.ui.fragment
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
@@ -16,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +36,7 @@ import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.ui.fragment.ApplicationGlobal.docs_list
 import com.example.superspan.viewmodel.WorkWithUsViewModel
 import org.w3c.dom.Text
+import java.io.File
 
 object ApplicationGlobal{
     val application_list = mutableListOf<Application>()
@@ -83,30 +88,33 @@ class ApplicationFragment : Fragment(){
 
     private lateinit var vm: WorkWithUsViewModel
     private val applicationName: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_NAME).orEmpty() }
-    private val applicationUserId: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_USER_ID).orEmpty() }
     private val applicationOfferId: Int by lazy { arguments?.getInt(ARG_JOB_OFFER) ?: -2 }
-    private val applicationRisposte: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_RISPOSTE).orEmpty() }
 
     private lateinit var adapter: DocumentsAdapter
 
     // Variabile per ricordare quale riga stiamo modificando
     private var positionToUpdate: Int = -1
+    private var tempVideoUri: Uri? = null // Qui salviamo l'URI prima di aprire la camera
 
     // 1. IL LAUNCHER (come prima, ma ora aggiorna la lista)
     private val pickFileLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null && positionToUpdate != -1) {
-            // Ottieni il nome del file (funzione definita nella risposta precedente)
-            val fileName = getFileNameFromUri(requireContext(), uri)
+        handleFileResult(uri)
+    }
 
-            docs_list[positionToUpdate].fileName = fileName
-            docs_list[positionToUpdate].fileUri = uri // Salva l'uri per l'upload futuro
+    private val takeVideoLauncher = registerForActivityResult(ActivityResultContracts.CaptureVideo()) { success ->
+        if (success && tempVideoUri != null) {
+            handleFileResult(tempVideoUri)
+        } else {
+            Toast.makeText(requireContext(), "Video non registrato", Toast.LENGTH_SHORT).show()
+        }
+    }
 
-            // 3. NOTIFICA L'ADAPTER CHE I DATI SONO CAMBIATI
-            // Questo farà ridisegnare la riga con il nuovo nome del file
-            adapter.notifyItemChanged(positionToUpdate)
-
-            // Reset della posizione
-            positionToUpdate = -1
+    private val requestCameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            launchCamera()
+        } else {
+            Toast.makeText(requireContext(), "Permesso fotocamera necessario", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -160,7 +168,7 @@ class ApplicationFragment : Fragment(){
             if(item.tipo == TipoFile.CV) {
                 pickFileLauncher.launch("application/pdf") // Apro il picker
             } else {
-                pickFileLauncher.launch("video/*") // Apro il picker
+                showVideoOptionsDialog()
             }
 
         }
@@ -209,6 +217,62 @@ class ApplicationFragment : Fragment(){
         btnInvia.isEnabled = false;
         btnInvia.alpha = 0.3f;
 
+    }
+
+    private fun showVideoOptionsDialog() {
+        val options = arrayOf("Registra Video", "Scegli dalla Galleria")
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Carica Video")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> checkCameraPermissionAndOpen() // Registra
+                    1 -> pickFileLauncher.launch("video/*") // Galleria
+                }
+            }
+            .show()
+    }
+
+    private fun checkCameraPermissionAndOpen() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            launchCamera()
+        } else {
+            requestCameraPermission.launch(Manifest.permission.CAMERA)
+        }
+    }
+
+    private fun launchCamera() {
+        // 1. Crea un file temporaneo vuoto dove la camera salverà il video
+        tempVideoUri = createTempVideoUri()
+
+        // 2. Lancia la camera passando l'URI
+        takeVideoLauncher.launch(tempVideoUri)
+    }
+
+    // Funzione Helper per creare l'URI sicuro
+    private fun createTempVideoUri(): Uri {
+        val tempFile = File.createTempFile("video_${System.currentTimeMillis()}", ".mp4", requireContext().externalCacheDir)
+
+        // ATTENZIONE: "com.example.superspan.provider" deve essere uguale a quello nel Manifest!
+        // Solitamente è: context.packageName + ".provider"
+        return FileProvider.getUriForFile(
+            requireContext(),
+            "${requireContext().packageName}.provider",
+            tempFile
+        )
+    }
+
+    private fun handleFileResult(uri : Uri?) {
+        if (uri != null && positionToUpdate != -1) {
+            val fileName = getFileNameFromUri(requireContext(), uri)
+
+            docs_list[positionToUpdate].fileName = fileName
+            docs_list[positionToUpdate].fileUri = uri
+
+            adapter.notifyItemChanged(positionToUpdate)
+
+            positionToUpdate = -1
+        }
     }
 
     fun getFileNameFromUri(context: Context, uri: Uri): String? {
