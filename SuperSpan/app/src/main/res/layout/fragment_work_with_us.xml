@@ -76,8 +76,29 @@
         <LinearLayout
             android:id="@+id/filters"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvFilterSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filtra e Ordina"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/greenText"
+                android:gravity="center_vertical"
+                android:drawablePadding="8dp"
+                app:drawableTint="@color/greenText"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground" />
+
+
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
