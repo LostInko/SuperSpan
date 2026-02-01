@@ -1,6 +1,9 @@
 package com.example.superspan.ui.fragment
 
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -9,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -16,12 +20,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
+import com.example.superspan.adapter.DocumentsAdapter
 import com.example.superspan.adapter.QuestionAdapter
 import com.example.superspan.model.Application
+import com.example.superspan.model.Document
 import com.example.superspan.model.JobOffer
 import com.example.superspan.model.Question
 import com.example.superspan.model.TipoDomanda
+import com.example.superspan.model.TipoFile
 import com.example.superspan.ui.activity.GlobalData
+import com.example.superspan.ui.fragment.ApplicationGlobal.docs_list
 import com.example.superspan.viewmodel.WorkWithUsViewModel
 import org.w3c.dom.Text
 
@@ -29,8 +37,13 @@ object ApplicationGlobal{
     val application_list = mutableListOf<Application>()
 
     val question_list = mutableListOf<Question>(
-            Question("A", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa),
-            Question("B", "", null, tipo = TipoDomanda.Aperta)
+        Question("A", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa),
+        Question("B", "", null, tipo = TipoDomanda.Aperta),
+        Question("C", "", null, tipo = TipoDomanda.Aperta),
+        Question("D", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa)
+    )
+
+    val docs_list = mutableListOf<Document>(
     )
 }
 
@@ -72,6 +85,32 @@ class ApplicationFragment : Fragment(){
     private val applicationOfferId: Int by lazy { arguments?.getInt(ARG_JOB_OFFER) ?: -2 }
     private val applicationRisposte: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_RISPOSTE).orEmpty() }
 
+    private lateinit var adapter: DocumentsAdapter
+
+    // Variabile per ricordare quale riga stiamo modificando
+    private var positionToUpdate: Int = -1
+
+    // 1. IL LAUNCHER (come prima, ma ora aggiorna la lista)
+    private val pickPdfFile = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null && positionToUpdate != -1) {
+            // Ottieni il nome del file (funzione definita nella risposta precedente)
+            val fileName = getFileNameFromUri(requireContext(), uri)
+
+            // 2. AGGIORNA I DATI
+            val item = docs_list[positionToUpdate]
+            item.fileName = fileName
+            item.fileUri = uri // Salva l'uri per l'upload futuro
+
+            // 3. NOTIFICA L'ADAPTER CHE I DATI SONO CAMBIATI
+            // Questo farà ridisegnare la riga con il nuovo nome del file
+            adapter.notifyItemChanged(positionToUpdate)
+
+            // Reset della posizione
+            positionToUpdate = -1
+        }
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,6 +119,21 @@ class ApplicationFragment : Fragment(){
         val view = inflater.inflate(R.layout.fragment_job_applications, container, false)
 
         view.findViewById<TextView>(R.id.offerTitle)?.text = applicationName
+
+        // Popola la lista con dati finti per test
+        docs_list.add(Document()) // Elemento 1 vuoto
+        docs_list.add(Document()) // Elemento 2 vuoto
+
+        val rvDocs = view.findViewById<RecyclerView>(R.id.rvFiles)
+
+        // Inizializza l'Adapter passando la logica del click
+        adapter = DocumentsAdapter(docs_list) { position ->
+            // Questa è la callback che viene eseguita quando clicchi la card nell'adapter
+            positionToUpdate = position // Memorizzo quale riga ho cliccato
+            pickPdfFile.launch("application/pdf") // Apro il picker
+        }
+
+        rvDocs.adapter = adapter
 
         return(view)
     }
@@ -155,4 +209,33 @@ class ApplicationFragment : Fragment(){
     }
 
 
+}
+
+fun getFileNameFromUri(context: Context, uri: Uri): String? {
+    var result: String? = null
+
+    if (uri.scheme == "content") {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                // 1. Ottieni l'indice della colonna in una variabile
+                val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+
+                // 2. Controlla che l'indice sia valido (quindi >= 0)
+                if (nameIndex >= 0) {
+                    result = it.getString(nameIndex)
+                }
+            }
+        }
+    }
+
+    if (result == null) {
+        result = uri.path
+        val cut = result?.lastIndexOf('/')
+        if (cut != -1 && cut != null) {
+            result = result?.substring(cut + 1)
+        }
+    }
+
+    return result
 }
