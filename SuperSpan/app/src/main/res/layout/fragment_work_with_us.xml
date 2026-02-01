@@ -74,30 +74,41 @@
 
 
         <LinearLayout
-            android:id="@+id/filters"
+            android:id="@+id/filtersContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="12dp"
-            android:gravity="center_vertical">
+            android:paddingVertical="12dp">
 
-            <TextView
-                android:id="@+id/tvFilterSort"
-                android:layout_width="wrap_content"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardFilterSort"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Filtra e Ordina"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/greenText"
-                android:gravity="center_vertical"
-                android:drawablePadding="8dp"
-                app:drawableTint="@color/greenText"
-                android:padding="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground" />
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                android:backgroundTint="@color/white"
+                app:strokeColor="#A0A0A0"
+                app:strokeWidth="1dp">
 
+                <TextView
+                    android:id="@+id/tvFilterSort"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp"
+                    android:text="Filtra e Ordina le offerte"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:drawableStart="@drawable/ic_filter_list"
+                    android:drawablePadding="12dp"
+                    app:drawableTint="@color/black"
+                    android:textStyle="normal" />
+
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
