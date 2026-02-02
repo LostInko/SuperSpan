@@ -132,6 +132,34 @@ class CouponSectionFragment : Fragment() {
             barAdapter.submit(list)
             if (list.isNotEmpty()) collapseExpandableContent(view) // rimani chiuso by default
         }
+
+        view.findViewById<View>(R.id.btnInfo).setOnClickListener {
+            showInfoDialog()
+        }
+    }
+
+
+    /**
+     * Mostra un pop-up informativo sulle modalità di utilizzo dei coupon
+     */
+    private fun showInfoDialog() {
+        // 1. Inflate del layout
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_coupon_info, null)
+
+        // 2. Creazione del Dialog con MaterialAlertDialogBuilder per supporto bordi arrotondati
+        val dialog = com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        // 3. Gestione del tasto di chiusura
+        dialogView.findViewById<View>(R.id.btnOk).setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
+        // Rendi lo sfondo del container del dialog trasparente per far vedere i bordi arrotondati del layout (se applicati)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
     /**
