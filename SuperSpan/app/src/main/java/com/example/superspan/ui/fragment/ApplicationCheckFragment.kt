@@ -125,13 +125,6 @@ class ApplicationCheckFragment : Fragment() {
             listQuestion.add(newQuestion)
         }
 
-        val rvFiles : RecyclerView = v.findViewById(R.id.rvFiles)
-        rvFiles.layoutManager = LinearLayoutManager(requireContext())
-
-
-
-
-
         rvQuestion.adapter = QuestionCheckAdapter(listQuestion)
 
         return v

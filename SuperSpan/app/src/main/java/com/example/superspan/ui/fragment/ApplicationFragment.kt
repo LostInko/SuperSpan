@@ -142,20 +142,6 @@ class ApplicationFragment : Fragment(){
         val rvQuestions : RecyclerView = view.findViewById(R.id.rvQuestions)
         rvQuestions.layoutManager = LinearLayoutManager(requireContext())
 
-        val controlloValidita = {
-            val blankAnswer = listQuestion.any() { it.answer.isBlank() }
-
-            if (!blankAnswer && cbPrivacy.isChecked) {
-                btnInvia.isEnabled = true;
-                btnInvia.alpha = 1f;
-            } else {
-                btnInvia.isEnabled = false;
-                btnInvia.alpha = 0.3f;
-                rvQuestions.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
-            }
-        }
-
-
 
         val rvFiles : RecyclerView = view.findViewById(R.id.rvFiles)
 
@@ -177,7 +163,21 @@ class ApplicationFragment : Fragment(){
 
         }
 
-        adapter = DocumentsAdapter(docs_list) { position ->
+        val controlloValidita = {
+            val blankAnswer = listQuestion.any() { it.answer.isBlank() }
+            val blankDocs = docs_list.any() {it.fileName == ""}
+
+            if (!blankAnswer && !blankDocs && cbPrivacy.isChecked) {
+                btnInvia.isEnabled = true;
+                btnInvia.alpha = 1f;
+            } else {
+                btnInvia.isEnabled = false;
+                btnInvia.alpha = 0.3f;
+                rvQuestions.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
+            }
+        }
+
+        adapter = DocumentsAdapter(docs_list, controlloValidita) { position ->
             // Questa è la callback che viene eseguita quando clicchi la card nell'adapter
             positionToUpdate = position // Memorizzo quale riga ho cliccato
             val item = docs_list[positionToUpdate]

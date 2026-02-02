@@ -15,6 +15,7 @@ import com.google.android.material.card.MaterialCardView
 class DocumentsAdapter(
     private val items: MutableList<Document>,
     // Callback: Passiamo la posizione dell'elemento cliccato
+    private val onDataChanged: () -> Unit,
     private val onAttachClick: (Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -48,7 +49,7 @@ class DocumentsAdapter(
 
         fun bind(item: Document, position: Int) {
 
-            if (item.fileName != null) {
+            if (item.fileName != "") {
                 tvCvName.text = item.fileName
                 cardUploadCv.strokeColor = Color.parseColor("#BDBDBD")
                 cardUploadCv.strokeWidth = 2
@@ -57,6 +58,8 @@ class DocumentsAdapter(
                 cardUploadCv.strokeColor = Color.parseColor("#4DFF0000")
                 cardUploadCv.strokeWidth = 4
             }
+
+            onDataChanged()
 
             cardUploadCv.setOnClickListener {
                 onAttachClick(position)
@@ -70,7 +73,7 @@ class DocumentsAdapter(
 
         fun bind(item: Document, position: Int) {
 
-            if (item.fileName != null) {
+            if (item.fileName != "") {
                 tvVideoName.text = item.fileName
                 cardUploadVideo.strokeColor = Color.parseColor("#BDBDBD")
                 cardUploadVideo.strokeWidth = 2
@@ -79,6 +82,8 @@ class DocumentsAdapter(
                 cardUploadVideo.strokeColor = Color.parseColor("#4DFF0000")
                 cardUploadVideo.strokeWidth = 4
             }
+
+            onDataChanged()
 
             cardUploadVideo.setOnClickListener {
                 onAttachClick(position)
