@@ -33,16 +33,19 @@ enum class ProductCategory(val label: String, val parentTab: String) {
 data class Product(
     val name: String,
     val description: String,
-    val price: String,
+    val price: String, // Prezzo originale (es. "2,50€")
     val imageRes: Int,
     val category: ProductCategory,
     var qty: Int = 0,
-    var isFavorite: Boolean = false
+    var isFavorite: Boolean = false,
+    var discountPrice: String? = null // Nuovo: prezzo scontato (es. "1,99€")
 )
 
-fun Product.parsedPrice(): Double =
-    this.price
+fun Product.parsedPrice(): Double {
+    val priceToParse = discountPrice ?: this.price
+    return priceToParse
         .replace("€", "")
         .replace(",", ".")
         .trim()
         .toDoubleOrNull() ?: 0.0
+}
