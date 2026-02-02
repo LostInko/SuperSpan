@@ -11,11 +11,8 @@ import com.example.superspan.model.Document
 import com.example.superspan.model.TipoFile
 import com.google.android.material.card.MaterialCardView
 
-// IL TUO ADAPTER
 class DocumentsAdapter(
     private val items: MutableList<Document>,
-    // Callback: Passiamo la posizione dell'elemento cliccato
-    private val onDataChanged: () -> Unit,
     private val onAttachClick: (Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -59,7 +56,6 @@ class DocumentsAdapter(
                 cardUploadCv.strokeWidth = 4
             }
 
-            onDataChanged()
 
             cardUploadCv.setOnClickListener {
                 onAttachClick(position)
@@ -83,7 +79,6 @@ class DocumentsAdapter(
                 cardUploadVideo.strokeWidth = 4
             }
 
-            onDataChanged()
 
             cardUploadVideo.setOnClickListener {
                 onAttachClick(position)

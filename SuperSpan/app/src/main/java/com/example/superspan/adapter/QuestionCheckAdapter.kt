@@ -20,7 +20,7 @@ import com.google.android.material.textfield.TextInputEditText
 import org.w3c.dom.Text
 
 class QuestionCheckAdapter (
-    private val listaDomande: List<Question>
+    private var listaDomande: List<Question>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class QuestionCheckViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -43,6 +43,11 @@ class QuestionCheckAdapter (
     }
 
     override fun getItemCount() = listaDomande.size
+
+    fun updateList(newList: List<Question>) {
+        listaDomande = newList
+        notifyDataSetChanged()
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         // Cast del holder generico al tuo specifico QuestionCheckViewHolder
