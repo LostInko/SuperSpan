@@ -92,7 +92,8 @@ class ApplicationsSentFragment : Fragment() {
                                 location = jobOffer.location,
                                 shift = jobOffer.shift,
                                 wage = jobOffer.wage,
-                                risp = application.risposte
+                                risp = application.risposte,
+                                files = application.files
                             )
                             parentFragmentManager.beginTransaction()
                                 .replace(R.id.fragment_container, fragment)

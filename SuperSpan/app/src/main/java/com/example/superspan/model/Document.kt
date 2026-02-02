@@ -6,7 +6,8 @@ enum class TipoFile {CV, Video}
 
 
 data class Document(
-    var fileName: String? = null,
+    var fileTitle : String,
+    var fileName: String,
     var fileUri: Uri? = null,
     var tipo : TipoFile? = TipoFile.CV
 )

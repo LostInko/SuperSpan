@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.adapter.QuestionAdapter
 import com.example.superspan.adapter.QuestionCheckAdapter
+import com.example.superspan.model.Application
 import com.example.superspan.model.JobOffer
 import com.example.superspan.model.Question
+import com.example.superspan.model.TipoDomanda
 import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.viewmodel.HomeViewModel
 import com.example.superspan.viewmodel.WorkWithUsViewModel
@@ -33,6 +35,8 @@ class ApplicationCheckFragment : Fragment() {
         private const val ARG_SHIFT = "arg_shift"
         private const val ARG_WAGE = "arg_wage"
         private const val ARG_RISP = "arg_risp"
+        private const val ARG_FILES = "arg_files"
+
 
         /**
          * Costruttore consigliato: passa anche l'indice se lo conosci.
@@ -45,7 +49,8 @@ class ApplicationCheckFragment : Fragment() {
             location: String,
             shift: String,
             wage: String,
-            risp: String
+            risp: String,
+            files : String
         ): ApplicationCheckFragment {
             return ApplicationCheckFragment().apply {
                 arguments = Bundle().apply {
@@ -55,6 +60,7 @@ class ApplicationCheckFragment : Fragment() {
                     putString(ARG_SHIFT, shift)
                     putString(ARG_WAGE, wage)
                     putString(ARG_RISP, risp)
+                    putString(ARG_FILES, files)
                 }
             }
         }
@@ -68,6 +74,8 @@ class ApplicationCheckFragment : Fragment() {
     private val jobOfferShift: String by lazy { arguments?.getString(ARG_SHIFT).orEmpty() }
     private val jobOfferWage: String by lazy { arguments?.getString(ARG_WAGE).orEmpty() }
     private val appicationRisp: String by lazy { arguments?.getString(ARG_RISP).orEmpty() }
+    private val appicationFiles: String by lazy { arguments?.getString(ARG_FILES).orEmpty() }
+
 
 
 
@@ -106,12 +114,25 @@ class ApplicationCheckFragment : Fragment() {
             }
         }
 
-        rvQuestion.adapter = QuestionCheckAdapter(listQuestion)
+        val listFiles = ApplicationGlobal.docs_list
+        val files = appicationFiles.split("&&&")
+        listFiles.forEachIndexed { index, file ->
+            // Verifichiamo che esista una risposta per questo indice per evitare crash
+            if (index < files.size) {
+                file.fileName = files[index]
+            }
+            val newQuestion = Question(title = file.fileTitle, answer = file.fileName, options = listOf(), tipo = TipoDomanda.Aperta, hasError = false )
+            listQuestion.add(newQuestion)
+        }
 
         val rvFiles : RecyclerView = v.findViewById(R.id.rvFiles)
         rvFiles.layoutManager = LinearLayoutManager(requireContext())
 
 
+
+
+
+        rvQuestion.adapter = QuestionCheckAdapter(listQuestion)
 
         return v
     }

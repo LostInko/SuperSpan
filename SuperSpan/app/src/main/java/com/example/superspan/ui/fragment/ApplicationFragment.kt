@@ -50,8 +50,8 @@ object ApplicationGlobal{
     )
 
     val docs_list = mutableListOf<Document>(
-        Document(tipo = TipoFile.CV),
-        Document(tipo = TipoFile.Video)
+        Document(fileTitle = "Allega il tuo curriculum", fileName = "", tipo = TipoFile.CV),
+        Document(fileTitle = "Carica il tuo video presentazione", fileName = "", tipo = TipoFile.Video)
     )
 }
 
@@ -135,7 +135,7 @@ class ApplicationFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listQuestion = ApplicationGlobal.question_list
+        val listQuestion = question_list
         val btnInvia = view.findViewById<ConstraintLayout>(R.id.btnInvia)
         val cbPrivacy = view.findViewById<CheckBox>(R.id.cbPrivacy)
 
@@ -166,8 +166,8 @@ class ApplicationFragment : Fragment(){
             docs_list.clear()
             tempVideoUri = null
             positionToUpdate = -1
-            docs_list.add(Document(tipo = TipoFile.CV))
-            docs_list.add(Document(tipo = TipoFile.Video))
+            docs_list.add(Document(fileTitle = "Allega il tuo curriculum", fileName = "", tipo = TipoFile.CV))
+            docs_list.add(Document(fileTitle = "Carica il tuo video presentazione", fileName = "", tipo = TipoFile.Video))
 
             question_list.clear()
             question_list.add(Question("A", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa))
@@ -219,11 +219,20 @@ class ApplicationFragment : Fragment(){
 
             val stringaUnica = answers.joinToString ( "###" )
 
+            val fileNames = mutableListOf<String>()
+
+            for (file in docs_list){
+                fileNames.add(file.fileName)
+            }
+
+            val filesStringaUnica = fileNames.joinToString("&&&")
+
             val newApplication = Application(
                 name = applicationName,
                 userId = currentUserId,
                 offerId = currentOfferId,
-                risposte = stringaUnica
+                risposte = stringaUnica,
+                files = filesStringaUnica
             )
 
             ApplicationGlobal.application_list.add(newApplication)
@@ -284,7 +293,7 @@ class ApplicationFragment : Fragment(){
         if (uri != null && positionToUpdate != -1) {
             val fileName = getFileNameFromUri(requireContext(), uri)
 
-            docs_list[positionToUpdate].fileName = fileName
+            docs_list[positionToUpdate].fileName = fileName.toString()
             docs_list[positionToUpdate].fileUri = uri
 
             adapter.notifyItemChanged(positionToUpdate)
