@@ -41,7 +41,7 @@ class JobOfferSentFragment : Fragment() {
             name: String,
             location: String,
             shift: String,
-            wage: String,
+            wage: Double,
             desc: String,
             req: String
         ): JobOfferSentFragment {
@@ -51,7 +51,7 @@ class JobOfferSentFragment : Fragment() {
                     putString(ARG_NAME, name)
                     putString(ARG_LOCATION, location)
                     putString(ARG_SHIFT, shift)
-                    putString(ARG_WAGE, wage)
+                    putDouble(ARG_WAGE, wage)
                     putString(ARG_DESC, desc)
                     putString(ARG_REQ, req)
                 }
@@ -65,7 +65,7 @@ class JobOfferSentFragment : Fragment() {
     private val jobOfferName: String by lazy { arguments?.getString(ARG_NAME).orEmpty() }
     private val jobOfferLocation: String by lazy { arguments?.getString(ARG_LOCATION).orEmpty() }
     private val jobOfferShift: String by lazy { arguments?.getString(ARG_SHIFT).orEmpty() }
-    private val jobOfferWage: String by lazy { arguments?.getString(ARG_WAGE).orEmpty() }
+    private val jobOfferWage: Double by lazy { arguments?.getDouble(ARG_WAGE) ?: -2.0 }
     private val jobOfferDesc: String by lazy { arguments?.getString(ARG_DESC).orEmpty() }
 
 
@@ -85,7 +85,7 @@ class JobOfferSentFragment : Fragment() {
         v.findViewById<TextView>(R.id.offer_title)?.text = jobOfferName
         v.findViewById<Chip>(R.id.offer_location)?.text = jobOfferLocation
         v.findViewById<Chip>(R.id.offer_shift)?.text = jobOfferShift
-        v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage
+        v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage.toString()
         v.findViewById<TextView>(R.id.offer_description)?.text = jobOfferDesc
 
         // ---- Back (ID unico presente: btnBackTop) ----

@@ -39,7 +39,7 @@ class JobOfferAdapter(
         holder.offerTitle.text = jobOffers.name
         holder.offerLocation.text = jobOffers.location
         holder.offerShift.text = jobOffers.shift
-        holder.offerWage.text = jobOffers.wage
+        holder.offerWage.text = jobOffers.wage.toString()
         holder.itemView.setOnClickListener { onItemClick(jobOffers) }
     }
 
