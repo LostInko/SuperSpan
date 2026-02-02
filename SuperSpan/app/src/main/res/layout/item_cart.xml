@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -44,7 +45,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:scaleType="centerInside"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                tools:src="@drawable/succo_ace" />
 
             <LinearLayout
                 android:id="@+id/rowTitlePrice"
@@ -63,7 +65,8 @@
                     android:textSize="16sp"
                     android:textColor="#000000"
                     android:maxLines="2"
-                    android:ellipsize="end" />
+                    android:ellipsize="end"
+                    tools:text="Prodotto in offerta" />
 
                 <TextView
                     android:id="@+id/txtDesc"
@@ -73,16 +76,37 @@
                     android:textColor="#666666"
                     android:textSize="13sp"
                     android:maxLines="2"
-                    android:ellipsize="end" />
+                    android:ellipsize="end"
+                    tools:text="Descrizione breve" />
 
-                <TextView
-                    android:id="@+id/txtPrice"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:textStyle="bold"
-                    android:textSize="17sp"
-                    android:textColor="#D60000" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtOldPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/greenText"
+                        android:textSize="12sp"
+                        android:alpha="0.6"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        tools:text="€ 2,50" />
+
+                    <TextView
+                        android:id="@+id/txtPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:textColor="@color/red"
+                        android:fontFamily="sans-serif-black"
+                        tools:text="€ 1,99" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <RelativeLayout
@@ -118,14 +142,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="1"
                         android:textStyle="bold"
                         android:textSize="16sp"
                         android:textColor="@android:color/white"
                         app:layout_constraintStart_toEndOf="@id/btnMinus"
                         app:layout_constraintEnd_toStartOf="@id/btnPlus"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        tools:text="1" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/btnPlus"
