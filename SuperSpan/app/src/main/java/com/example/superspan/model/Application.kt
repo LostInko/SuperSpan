@@ -6,7 +6,8 @@ data class Application (
 
     val userId : String,
     val offerId: Int,
-    val risposte: String
+    val risposte: String,
+    val files: String
 ) {
     companion object {
         private var nextOrderId = 1
