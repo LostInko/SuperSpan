@@ -42,7 +42,7 @@ class JobOfferFragment : Fragment() {
             name: String,
             location: String,
             shift: String,
-            wage: String,
+            wage: Double,
             desc: String,
             req: String
         ): JobOfferFragment {
@@ -52,7 +52,7 @@ class JobOfferFragment : Fragment() {
                     putString(ARG_NAME, name)
                     putString(ARG_LOCATION, location)
                     putString(ARG_SHIFT, shift)
-                    putString(ARG_WAGE, wage)
+                    putDouble(ARG_WAGE, wage)
                     putString(ARG_DESC, desc)
                     putString(ARG_REQ, req)
                 }
@@ -66,7 +66,7 @@ class JobOfferFragment : Fragment() {
     private val jobOfferName: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_NAME).orEmpty() }
     private val jobOfferLocation: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_LOCATION).orEmpty() }
     private val jobOfferShift: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_SHIFT).orEmpty() }
-    private val jobOfferWage: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_WAGE).orEmpty() }
+    private val jobOfferWage: Double by lazy { arguments?.getDouble(ARG_WAGE) ?: -2.0 }
     private val jobOfferDesc: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_DESC).orEmpty() }
     private val jobOfferReq: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_REQ).orEmpty() }
 
@@ -87,7 +87,7 @@ class JobOfferFragment : Fragment() {
         v.findViewById<TextView>(R.id.offer_title)?.text = jobOfferName
         v.findViewById<Chip>(R.id.offer_location)?.text = jobOfferLocation
         v.findViewById<Chip>(R.id.offer_shift)?.text = jobOfferShift
-        v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage
+        v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage.toString()
         v.findViewById<TextView>(R.id.offer_description)?.text = jobOfferDesc
         v.findViewById<TextView>(R.id.offer_requisiti)?.text = jobOfferReq
 

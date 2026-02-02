@@ -13,10 +13,10 @@ class WorkWithUsViewModel : ViewModel() {
 
     init {
         jobOffers.value = mutableListOf(
-            JobOffer(0, "Magazziniere", "Teramo", "Turno notte", "€€", "Lavora in magazzino", "Saper lavorare"),
-            JobOffer(1, "Macellaio", "Genova", "Turno giorno", "€€", "Lavora in macelleria", "Saper lavorare"),
-            JobOffer(2, "Cassiere", "Cagliari", "Turno giorno", "€€", "Lavora in cassa", "Saper lavorare"),
-            JobOffer(3, "Manager", "Milano", "Turno notte", "€€", "Lavora (forse)", "Saper lavorare"),
+            JobOffer(0, "Magazziniere", "Teramo", "Turno notte", 1200.50, "Lavora in magazzino", "Saper lavorare"),
+            JobOffer(1, "Macellaio", "Genova", "Turno giorno", 900.00, "Lavora in macelleria", "Saper lavorare"),
+            JobOffer(2, "Cassiere", "Cagliari", "Turno giorno", 950.00, "Lavora in cassa", "Saper lavorare"),
+            JobOffer(3, "Manager", "Milano", "Turno notte", 1500.00, "Lavora (forse)", "Saper lavorare"),
         )
     }
 

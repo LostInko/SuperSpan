@@ -5,7 +5,7 @@ class JobOffer (
     val name: String,
     val location: String,
     val shift: String,
-    val wage: String,
+    val wage: Double,
     val description: String,
     val requirements: String
 )

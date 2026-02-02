@@ -48,7 +48,7 @@ class ApplicationCheckFragment : Fragment() {
             name: String,
             location: String,
             shift: String,
-            wage: String,
+            wage: Double,
             risp: String,
             files : String
         ): ApplicationCheckFragment {
@@ -58,7 +58,7 @@ class ApplicationCheckFragment : Fragment() {
                     putString(ARG_NAME, name)
                     putString(ARG_LOCATION, location)
                     putString(ARG_SHIFT, shift)
-                    putString(ARG_WAGE, wage)
+                    putDouble(ARG_WAGE, wage)
                     putString(ARG_RISP, risp)
                     putString(ARG_FILES, files)
                 }
@@ -72,7 +72,7 @@ class ApplicationCheckFragment : Fragment() {
     private val jobOfferName: String by lazy { arguments?.getString(ARG_NAME).orEmpty() }
     private val jobOfferLocation: String by lazy { arguments?.getString(ARG_LOCATION).orEmpty() }
     private val jobOfferShift: String by lazy { arguments?.getString(ARG_SHIFT).orEmpty() }
-    private val jobOfferWage: String by lazy { arguments?.getString(ARG_WAGE).orEmpty() }
+    private val jobOfferWage: Double by lazy { arguments?.getDouble(ARG_WAGE) ?: -2.0 }
     private val appicationRisp: String by lazy { arguments?.getString(ARG_RISP).orEmpty() }
     private val appicationFiles: String by lazy { arguments?.getString(ARG_FILES).orEmpty() }
 
@@ -94,7 +94,7 @@ class ApplicationCheckFragment : Fragment() {
         v.findViewById<TextView>(R.id.offer_title)?.text = jobOfferName
         v.findViewById<Chip>(R.id.offer_location)?.text = jobOfferLocation
         v.findViewById<Chip>(R.id.offer_shift)?.text = jobOfferShift
-        v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage
+        v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage.toString()
 
         // ---- Back (ID unico presente: btnBackTop) ----
         v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
@@ -124,12 +124,6 @@ class ApplicationCheckFragment : Fragment() {
             val newQuestion = Question(title = file.fileTitle, answer = file.fileName, options = listOf(), tipo = TipoDomanda.Aperta, hasError = false )
             listQuestion.add(newQuestion)
         }
-
-        val rvFiles : RecyclerView = v.findViewById(R.id.rvFiles)
-        rvFiles.layoutManager = LinearLayoutManager(requireContext())
-
-
-
 
 
         rvQuestion.adapter = QuestionCheckAdapter(listQuestion)
