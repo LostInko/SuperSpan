@@ -183,7 +183,7 @@ class UserDataFragment : Fragment() {
         // Altri listener (Back button, DatePicker, etc.)
         backButton.setOnClickListener {
             if (isEditing) {
-                // Dialog di conferma uscita (come nel tuo codice originale)
+                // Dialog di conferma uscita
                 showExitDialog {
                     loadUserData()
                     setEditingMode(false)
