@@ -62,24 +62,24 @@ class QuestionAdapter (
 
             etAnswer.setText(domanda.answer)
 
-
-            updateErrorState(domanda.answer.isBlank())
+            updateErrorState(domanda)
 
             currentTextWatcher = object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    domanda.answer = s.toString()
 
+                    if(domanda.hasError) {
+                        domanda.hasError = false
+                    }
+                    updateErrorState(domanda)
+
+                    onDataChanged()
                 }
                 override fun afterTextChanged(s: Editable?) {
-                    val testo = s.toString()
-                    domanda.answer = testo
+                    domanda.answer = s.toString()
 
-                    /*if(domanda.hasError) {
-                        domanda.hasError = false
-                        updateErrorState(domanda)
-                    }*/
-
-                    updateErrorState(testo.isBlank())
+                    updateErrorState(domanda)
 
                     onDataChanged()
                 }
@@ -88,8 +88,8 @@ class QuestionAdapter (
             etAnswer.addTextChangedListener(currentTextWatcher)
         }
 
-        private fun updateErrorState(isEmpty : Boolean) {
-            if (isEmpty) {
+        private fun updateErrorState(domanda: Question) {
+            if (domanda.hasError || domanda.answer.isBlank()) {
                 cardView.strokeColor = Color.parseColor("#4DFF0000")
                 cardView.strokeWidth = 4
             } else {
@@ -111,7 +111,7 @@ class QuestionAdapter (
             groupAnswer.setOnCheckedChangeListener(null)
             groupAnswer.removeAllViews()
 
-            updateErrorState(domanda.answer.isBlank())
+            updateErrorState(domanda)
 
             domanda.options?.forEach { opzione ->
                 val radioButton = RadioButton(itemView.context).apply {
@@ -156,18 +156,17 @@ class QuestionAdapter (
                 val selectedButton = group.findViewById<RadioButton>(checkedId)
 
                 selectedButton?.let {
-                    val testo = it.text.toString()
-                    domanda.answer = testo
+                    domanda.answer = it.text.toString()
                     domanda.hasError = false
-                    updateErrorState(testo.isBlank())
+                    updateErrorState(domanda)
                     onDataChanged()
                 }
             }
 
         }
 
-        private fun updateErrorState(isEmpty : Boolean) {
-            if (isEmpty) {
+        private fun updateErrorState(domanda: Question) {
+            if (domanda.hasError) {
                 cardView.strokeColor = Color.parseColor("#4DFF0000")
                 cardView.strokeWidth = 4
             } else {

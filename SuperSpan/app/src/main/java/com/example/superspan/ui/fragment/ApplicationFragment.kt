@@ -48,8 +48,18 @@ import java.io.File
 
 object ApplicationGlobal{
     val application_list = mutableListOf<Application>()
-    val question_list = mutableListOf<Question>()
-    val docs_list = mutableListOf<Document>()
+
+    val question_list = mutableListOf<Question>(
+        Question("A", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa),
+        Question("B", "", null, tipo = TipoDomanda.Aperta),
+        Question("C", "", null, tipo = TipoDomanda.Aperta),
+        Question("D", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa)
+    )
+
+    val docs_list = mutableListOf<Document>(
+        Document(fileTitle = "Allega il tuo curriculum", fileName = "", tipo = TipoFile.CV),
+        Document(fileTitle = "Carica il tuo video presentazione", fileName = "", tipo = TipoFile.Video)
+    )
 }
 
 class ApplicationFragment : Fragment(){
@@ -95,21 +105,23 @@ class ApplicationFragment : Fragment(){
     private var tempVideoUri: Uri? = null
 
 
-    // Launcher per il Curriculum (.pdf)
+    // --- 1. LAUNCHER PER IL CV (PDF) ---
     private val cvLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
+            // Sappiamo per certo che è un CV
             updateDocument(uri, TipoFile.CV)
         }
     }
 
-    // Launcher per il video (dalla galleria)
+    // --- 2. LAUNCHER PER IL VIDEO (GALLERIA) ---
     private val videoGalleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
+            // Sappiamo per certo che è un Video
             updateDocument(uri, TipoFile.Video)
         }
     }
 
-    // Launcher per il video (dalla camera)
+    // --- 3. LAUNCHER PER IL VIDEO (CAMERA) ---
     private val takeVideoLauncher = registerForActivityResult(ActivityResultContracts.CaptureVideo()) { success ->
         if (success && tempVideoUri != null) {
             // Sappiamo per certo che è un Video dalla Camera
@@ -136,6 +148,7 @@ class ApplicationFragment : Fragment(){
 
 
     // References per l'accesso globale a certi elementi
+    private lateinit var summaryOfferTitle: TextView
     private lateinit var btnStepAvanti: Button
     private lateinit var cbPrivacy: CheckBox
 
@@ -164,22 +177,24 @@ class ApplicationFragment : Fragment(){
         val btnStepIndietro = view.findViewById<Button>(R.id.btnStepIndietro)
         cbPrivacy = view.findViewById<CheckBox>(R.id.cbPrivacy)
 
+        summaryOfferTitle = view.findViewById<TextView>(R.id.summaryOfferTitle)
         val rvSummary = view.findViewById<RecyclerView>(R.id.rvSummary)
 
         // Setup RV
 
         // Step 1 - Domande Personali
-        val listStep1 = question_list.take(3)
+
+        val listStep1 = question_list.take(2)
         val rvStep1 = view.findViewById<RecyclerView>(R.id.rvStep1)
         rvStep1.layoutManager = LinearLayoutManager(requireContext())
+        // Dummy callback per validità (gestita al click "Avanti")
         adapterQuestionsStep1 = QuestionAdapter(listStep1) { }
         rvStep1.adapter = adapterQuestionsStep1
 
 
         // Step 2 - Domande di Lavoro
-        val listStep2 = question_list.drop(3)
+        val listStep2 = question_list.drop(2)
         val rvStep2Questions = view.findViewById<RecyclerView>(R.id.rvStep2Questions)
-        rvStep2Questions.isNestedScrollingEnabled = false
         rvStep2Questions.layoutManager = LinearLayoutManager(requireContext())
         adapterQuestionsStep2 = QuestionAdapter(listStep2) { }
         rvStep2Questions.adapter = adapterQuestionsStep2
@@ -188,7 +203,6 @@ class ApplicationFragment : Fragment(){
         // Step 3 - Curriculum
         val listCV = docs_list.filter { it.tipo == TipoFile.CV }.toMutableList()
         val rvStep2File = view.findViewById<RecyclerView>(R.id.rvStep2File)
-        rvStep2File.isNestedScrollingEnabled = false
         rvStep2File.layoutManager = LinearLayoutManager(requireContext())
         adapterFileCV = DocumentsAdapter(listCV) { _ ->
             // Nota: qui positionToUpdate è sempre 0 perché la lista ha 1 elemento
@@ -261,12 +275,6 @@ class ApplicationFragment : Fragment(){
                         isValid = false
                         errorMsg = "Rispondi a tutte le domande personali"
                     }
-                    for(domanda in listStep1){
-                        if (domanda.answer.isBlank()) {
-                            domanda.hasError = true
-                        }
-                    }
-                    adapterQuestionsStep1.notifyDataSetChanged()
                 }
                 1 -> { // Step 2: Lavoro + CV
                     if (listStep2.any { it.answer.isBlank() }) {
@@ -277,12 +285,6 @@ class ApplicationFragment : Fragment(){
                         isValid = false
                         errorMsg = "Allega il curriculum"
                     }
-                    for(domanda in listStep2){
-                        if (domanda.answer.isBlank()) {
-                            domanda.hasError = true
-                        }
-                    }
-                    adapterQuestionsStep2.notifyDataSetChanged()
                 }
                 2 -> { // Step 3: Video
                     if (listVideo[0].fileName.isBlank()) {
@@ -333,8 +335,10 @@ class ApplicationFragment : Fragment(){
     }
 
     private fun populateSummary() {
+        // 1. Popola i dati dell'offerta (Solo Nome)
+        summaryOfferTitle.text = applicationName
 
-        // Crea la lista combinata per l'adapter
+        // 2. Crea la lista combinata per l'adapter
         val summaryList = mutableListOf<Question>()
 
         // Aggiungi tutte le domande
@@ -351,40 +355,25 @@ class ApplicationFragment : Fragment(){
             summaryList.add(fileQuestion)
         }
 
-        // Aggiorna l'adapter
+        // 3. Aggiorna l'adapter
         adapterSummary.updateList(summaryList)
     }
 
-
-    // Funzione che svuota tutti i campi e li ricrea con la "risposta" vuota
+    // Funzione helper per pulire l'onCreateView
     private fun setupInitialData() {
-        // Pulizia lista domande
-        question_list.clear()
-
-        // Domande 1 - Anagrafica
-        val currentUser = GlobalData.currentUser // I dati anagrafici vengono inseriti automaticamente
-        question_list.add(Question("Nome", currentUser!!.name, null, tipo = TipoDomanda.Aperta))
-        question_list.add(Question("Cognome", currentUser.surname, null, tipo = TipoDomanda.Aperta))
-        question_list.add(Question("Città", currentUser.citta, null, tipo = TipoDomanda.Aperta))
-
-
-        // Domande 2 - Lavoro
-        question_list.add(Question("Anni di esperienza lavorativa:", "", listOf("Nessuno", "1 - 2", "3 o più"), tipo = TipoDomanda.Chiusa))
-        question_list.add(Question("Descrivi la tua ultima esperienza lavorativa:", "", null, tipo = TipoDomanda.Aperta))
-        question_list.add(Question("Quali sono i tuoi punti di forza per questa posizione?", "", null, tipo = TipoDomanda.Aperta))
-
-        // Pulizia lista file
         docs_list.clear()
         tempVideoUri = null
         positionToUpdate = -1
-
-        // Aggiunta slot per curriculum e video
         docs_list.add(Document(fileTitle = "Allega il tuo curriculum", fileName = "", tipo = TipoFile.CV))
         docs_list.add(Document(fileTitle = "Carica il tuo video presentazione", fileName = "", tipo = TipoFile.Video))
+
+        question_list.clear()
+        question_list.add(Question("A", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa))
+        question_list.add(Question("B", "", null, tipo = TipoDomanda.Aperta))
+        question_list.add(Question("C", "", null, tipo = TipoDomanda.Aperta))
+        question_list.add(Question("D", "", listOf("a", "b"), tipo = TipoDomanda.Chiusa))
     }
 
-
-    // Invio definitivo della candidatura e salvataggio nella lista
     private fun submitApplication(){
 
         if (applicationOfferId == -1) {
@@ -418,18 +407,25 @@ class ApplicationFragment : Fragment(){
 
     }
 
+    // --- LOGICA AGGIORNAMENTO FILE (SOLUZIONE AL TUO PROBLEMA) ---
     private fun updateDocument(uri: Uri, type: TipoFile, isCamera: Boolean = false) {
+        // 1. Ottieni il nome del file
         val fileName = if (isCamera) {
             "Video_Presentazione.mp4"
         } else {
             getFileNameFromUri(requireContext(), uri) ?: "file_caricato"
         }
 
-        val globalItem = docs_list.find { it.tipo == type }
+        // 2. Aggiorna la lista GLOBALE (quella che verrà inviata)
+        val globalItem = ApplicationGlobal.docs_list.find { it.tipo == type }
         globalItem?.fileName = fileName
         globalItem?.fileUri = uri
 
+        // 3. Notifica l'adapter corretto per aggiornare la grafica
         if (type == TipoFile.CV) {
+            // Importante: Aggiorniamo anche l'oggetto dentro la lista locale dell'adapter se necessario,
+            // ma poiché usiamo oggetti mutabili (puntatori), notify dovrebbe bastare.
+            // Per sicurezza ricarichiamo il dato alla posizione 0.
             adapterFileCV.notifyItemChanged(0)
         } else {
             adapterFileVideo.notifyItemChanged(0)
@@ -459,14 +455,19 @@ class ApplicationFragment : Fragment(){
     }
 
     private fun launchCamera() {
+        // 1. Crea un file temporaneo vuoto dove la camera salverà il video
         tempVideoUri = createTempVideoUri()
 
+        // 2. Lancia la camera passando l'URI
         takeVideoLauncher.launch(tempVideoUri)
     }
 
+    // Funzione Helper per creare l'URI sicuro
     private fun createTempVideoUri(): Uri {
         val tempFile = File.createTempFile("video_${System.currentTimeMillis()}", ".mp4", requireContext().externalCacheDir)
 
+        // ATTENZIONE: "com.example.superspan.provider" deve essere uguale a quello nel Manifest!
+        // Solitamente è: context.packageName + ".provider"
         return FileProvider.getUriForFile(
             requireContext(),
             "${requireContext().packageName}.provider",
@@ -477,11 +478,13 @@ class ApplicationFragment : Fragment(){
     private fun getFileNameFromUri(context: Context, uri: Uri): String {
         var result: String? = null
 
+        // TENTATIVO 1: Prova a chiedere il nome al ContentResolver (metodo standard)
         if (uri.scheme == "content") {
             try {
                 val cursor = context.contentResolver.query(uri, null, null, null, null)
                 cursor?.use {
                     if (it.moveToFirst()) {
+                        // Cerca la colonna del nome display
                         val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                         if (nameIndex >= 0) {
                             result = it.getString(nameIndex)
@@ -489,14 +492,18 @@ class ApplicationFragment : Fragment(){
                     }
                 }
             } catch (e: Exception) {
+                // Ignora errori di permessi o security, passiamo al piano B
                 e.printStackTrace()
             }
         }
 
+        // TENTATIVO 2: Se il risultato è ancora null, prendi l'ultimo pezzo dell'URI
+        // Questo è fondamentale per i file creati con FileProvider (Camera)
         if (result == null) {
             result = uri.lastPathSegment
         }
 
+        // TENTATIVO 3: Pulizia finale (rimuove eventuali percorsi residui)
         if (result != null) {
             val cut = result!!.lastIndexOf('/')
             if (cut != -1) {
@@ -504,6 +511,7 @@ class ApplicationFragment : Fragment(){
             }
         }
 
+        // TENTATIVO 4: Fallback estremo
         return result ?: "File_Sconosciuto"
     }
 
