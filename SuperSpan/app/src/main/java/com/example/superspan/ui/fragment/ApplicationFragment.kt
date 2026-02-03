@@ -55,7 +55,6 @@ object ApplicationGlobal{
 class ApplicationFragment : Fragment(){
 
     companion object {
-        private const val ARG_ID = "-1"
         private const val ARG_NAME = "arg_name"
         private const val ARG_USER_ID = "arg_user_id"
         private const val ARG_JOB_OFFER = "arg_job_offer"
@@ -84,7 +83,7 @@ class ApplicationFragment : Fragment(){
         }
     }
 
-    private val applicationName: String by lazy { arguments?.getString(ApplicationFragment.Companion.ARG_NAME).orEmpty() }
+    private val applicationName: String by lazy { arguments?.getString(ARG_NAME).orEmpty() }
     private val applicationOfferId: Int by lazy { arguments?.getInt(ARG_JOB_OFFER) ?: -2 }
 
     private lateinit var adapterSummary: QuestionCheckAdapter
@@ -169,7 +168,7 @@ class ApplicationFragment : Fragment(){
         // Setup RV
 
         // Step 1 - Domande Personali
-        val listStep1 = question_list.take(3)
+        val listStep1 = question_list.take(3)   // Prende le prime tre domande
         val rvStep1 = view.findViewById<RecyclerView>(R.id.rvStep1)
         rvStep1.layoutManager = LinearLayoutManager(requireContext())
         adapterQuestionsStep1 = QuestionAdapter(listStep1) { }
@@ -177,9 +176,11 @@ class ApplicationFragment : Fragment(){
 
 
         // Step 2 - Domande di Lavoro
-        val listStep2 = question_list.drop(3)
+        val listStep2 = question_list.drop(3) // Prende le domande dopo le prime 3 (dalla 4 in poi)
         val rvStep2Questions = view.findViewById<RecyclerView>(R.id.rvStep2Questions)
-        rvStep2Questions.isNestedScrollingEnabled = false
+
+        rvStep2Questions.isNestedScrollingEnabled = false   // Per forzare l'attributo nelle recycler view, per farle scorrere insieme
+
         rvStep2Questions.layoutManager = LinearLayoutManager(requireContext())
         adapterQuestionsStep2 = QuestionAdapter(listStep2) { }
         rvStep2Questions.adapter = adapterQuestionsStep2
@@ -188,7 +189,9 @@ class ApplicationFragment : Fragment(){
         // Step 3 - Curriculum
         val listCV = docs_list.filter { it.tipo == TipoFile.CV }.toMutableList()
         val rvStep2File = view.findViewById<RecyclerView>(R.id.rvStep2File)
-        rvStep2File.isNestedScrollingEnabled = false
+
+        rvStep2File.isNestedScrollingEnabled = false    // Come sopra
+
         rvStep2File.layoutManager = LinearLayoutManager(requireContext())
         adapterFileCV = DocumentsAdapter(listCV) { _ ->
             // Nota: qui positionToUpdate è sempre 0 perché la lista ha 1 elemento
@@ -199,7 +202,6 @@ class ApplicationFragment : Fragment(){
 
 
         // Step 3 - Video Presentazione
-
         val listVideo = docs_list.filter { it.tipo == TipoFile.Video }.toMutableList()
         val rvStep3Video = view.findViewById<RecyclerView>(R.id.rvStep3Video)
         rvStep3Video.layoutManager = LinearLayoutManager(requireContext())
@@ -212,7 +214,6 @@ class ApplicationFragment : Fragment(){
 
 
         // Step 4 - Riepilogo
-
         rvSummary.layoutManager = LinearLayoutManager(requireContext())
         adapterSummary = QuestionCheckAdapter(emptyList())
         rvSummary.adapter = adapterSummary
@@ -242,7 +243,7 @@ class ApplicationFragment : Fragment(){
         // Init stato iniziale
         updateButtonsState()
 
-        // Logica VALIDAZIONE Step per Step
+        // Logica Step per Step
         btnStepAvanti.setOnClickListener {
             val currentStep = viewFlipper.displayedChild
 
@@ -257,16 +258,15 @@ class ApplicationFragment : Fragment(){
 
             when(currentStep) {
                 0 -> { // Step 1: Dati Personali
-                    if (listStep1.any { it.answer.isBlank() }) {
+                    if (listStep1.any { it.answer.isBlank() }) {    // Se c'è anche solo un campo vuoto, impedisce di andare avanti
                         isValid = false
                         errorMsg = "Rispondi a tutte le domande personali"
                     }
-                    for(domanda in listStep1){
+                    for(domanda in listStep1){  // Controlla quali domande sono vuote e le checka (per essere colorate poi in Question Adapter)
                         if (domanda.answer.isBlank()) {
                             domanda.hasError = true
                         }
                     }
-                    adapterQuestionsStep1.notifyDataSetChanged()
                 }
                 1 -> { // Step 2: Lavoro + CV
                     if (listStep2.any { it.answer.isBlank() }) {
@@ -282,7 +282,6 @@ class ApplicationFragment : Fragment(){
                             domanda.hasError = true
                         }
                     }
-                    adapterQuestionsStep2.notifyDataSetChanged()
                 }
                 2 -> { // Step 3: Video
                     if (listVideo[0].fileName.isBlank()) {
@@ -292,7 +291,7 @@ class ApplicationFragment : Fragment(){
                 }
             }
 
-            if (isValid) {
+            if (isValid) {  // Se isValid è vero, il pulsante Avanti può essere utilizzato
                 viewFlipper.setInAnimation(requireContext(), R.anim.slide_in_right)
                 viewFlipper.setOutAnimation(requireContext(), R.anim.slide_out_left)
                 viewFlipper.showNext()
@@ -302,11 +301,12 @@ class ApplicationFragment : Fragment(){
                 }
 
                 updateButtonsState()
-            } else {
+            } else {    // Messaggio di errore, campi mancanti
                 Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
             }
         }
 
+        // Tasto indietro tra schermate
         btnStepIndietro.setOnClickListener {
             viewFlipper.setInAnimation(requireContext(), android.R.anim.slide_in_left)
             viewFlipper.setOutAnimation(requireContext(), android.R.anim.slide_out_right)
@@ -332,6 +332,7 @@ class ApplicationFragment : Fragment(){
 
     }
 
+    // Mostra la schermata di riepilogo
     private fun populateSummary() {
 
         // Crea la lista combinata per l'adapter
@@ -436,6 +437,7 @@ class ApplicationFragment : Fragment(){
         }
     }
 
+    // Permette di scegliere se registrare il video o caricarlo dalla galleria
     private fun showVideoOptionsDialog() {
         val options = arrayOf("Registra Video", "Scegli dalla Galleria")
 

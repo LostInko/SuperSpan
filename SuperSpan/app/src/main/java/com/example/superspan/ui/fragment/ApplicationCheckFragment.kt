@@ -38,11 +38,6 @@ class ApplicationCheckFragment : Fragment() {
         private const val ARG_FILES = "arg_files"
 
 
-        /**
-         * Costruttore consigliato: passa anche l'indice se lo conosci.
-         * Se non lo hai, usa -1: il fragment farà fallback per nome.
-         */
-
         fun newInstance(
             id : Int,
             name: String,
@@ -90,13 +85,13 @@ class ApplicationCheckFragment : Fragment() {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_application_sent_check, container, false)
 
-        // ---- Bind dati statici (coerenti con l'XML) ----
+        // Collegamento delle View
         v.findViewById<TextView>(R.id.offer_title)?.text = jobOfferName
         v.findViewById<Chip>(R.id.offer_location)?.text = jobOfferLocation
         v.findViewById<Chip>(R.id.offer_shift)?.text = jobOfferShift
         v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage.toString()
 
-        // ---- Back (ID unico presente: btnBackTop) ----
+        // Back button
         v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -108,7 +103,7 @@ class ApplicationCheckFragment : Fragment() {
         val answers = appicationRisp.split("###")
 
         listQuestion.forEachIndexed { index, question ->
-            // Verifichiamo che esista una risposta per questo indice per evitare crash
+            // Verifichiamo che esista una domanda per questo indice per evitare crash
             if (index < answers.size) {
                 question.answer = answers[index]
             }
@@ -117,7 +112,7 @@ class ApplicationCheckFragment : Fragment() {
         val listFiles = ApplicationGlobal.docs_list
         val files = appicationFiles.split("&&&")
         listFiles.forEachIndexed { index, file ->
-            // Verifichiamo che esista una risposta per questo indice per evitare crash
+            // Verifichiamo che esista un file per questo indice per evitare crash
             if (index < files.size) {
                 file.fileName = files[index]
             }
