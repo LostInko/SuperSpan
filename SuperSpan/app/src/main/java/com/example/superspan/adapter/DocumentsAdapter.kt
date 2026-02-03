@@ -27,6 +27,7 @@ class DocumentsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        // In base al tipo di file (CV o Video) viene mostrata una pagina diversa
         return when (viewType) {
             TYPE_CV -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.view_cv_upload, parent, false)
@@ -56,7 +57,6 @@ class DocumentsAdapter(
                 cardUploadCv.strokeWidth = 4
             }
 
-
             cardUploadCv.setOnClickListener {
                 onAttachClick(position)
             }
@@ -79,13 +79,11 @@ class DocumentsAdapter(
                 cardUploadVideo.strokeWidth = 4
             }
 
-
             cardUploadVideo.setOnClickListener {
                 onAttachClick(position)
             }
         }
     }
-
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {

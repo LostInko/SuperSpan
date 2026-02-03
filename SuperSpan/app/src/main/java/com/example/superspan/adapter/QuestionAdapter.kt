@@ -34,6 +34,7 @@ class QuestionAdapter (
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        // In base al tipo di domanda (Aperta o a risosta multipla) mostra una pagina differente
         return when (viewType) {
             TYPE_APERTA -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.view_question, parent, false)
@@ -62,7 +63,7 @@ class QuestionAdapter (
 
             etAnswer.setText(domanda.answer)
 
-
+            // Aggiorna lo stato della domanda, in base al fatto se è vuota o meno
             updateErrorState(domanda.answer.isBlank())
 
             currentTextWatcher = object : TextWatcher {
@@ -73,11 +74,6 @@ class QuestionAdapter (
                 override fun afterTextChanged(s: Editable?) {
                     val testo = s.toString()
                     domanda.answer = testo
-
-                    /*if(domanda.hasError) {
-                        domanda.hasError = false
-                        updateErrorState(domanda)
-                    }*/
 
                     updateErrorState(testo.isBlank())
 
@@ -114,6 +110,8 @@ class QuestionAdapter (
             updateErrorState(domanda.answer.isBlank())
 
             domanda.options?.forEach { opzione ->
+
+                // Impostazioni di stile del radio button
                 val radioButton = RadioButton(itemView.context).apply {
                     text = opzione
                     id = View.generateViewId()
@@ -166,6 +164,7 @@ class QuestionAdapter (
 
         }
 
+        // Aggiorna stile del box domanda
         private fun updateErrorState(isEmpty : Boolean) {
             if (isEmpty) {
                 cardView.strokeColor = Color.parseColor("#4DFF0000")
