@@ -116,7 +116,7 @@ class JobOfferFragment : Fragment() {
                 Toast.makeText(context, "Hai già inviato una candidatura per questa posizione!", Toast.LENGTH_SHORT).show()
             } else {
                 val fragmentDomande = ApplicationFragment.newInstance(
-                    userId = GlobalData.currentUser!!.name,
+                    userId = GlobalData.currentUser!!.username,
                     name = jobOfferName,
                     offerId = jobOfferId,
                     risposte = ""

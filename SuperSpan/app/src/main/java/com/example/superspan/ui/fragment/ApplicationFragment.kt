@@ -376,6 +376,7 @@ class ApplicationFragment : Fragment() {
         )
 
         ApplicationGlobal.application_list.add(newApplication)
+
         Toast.makeText(context, "Candidatura inviata con successo!", Toast.LENGTH_SHORT).show()
         parentFragmentManager.popBackStack()
     }

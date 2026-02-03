@@ -34,8 +34,10 @@ class ApplicationCheckFragment : Fragment() {
         private const val ARG_LOCATION = "arg_location"
         private const val ARG_SHIFT = "arg_shift"
         private const val ARG_WAGE = "arg_wage"
+        private const val ARG_DESC = "arg_desc"
         private const val ARG_RISP = "arg_risp"
         private const val ARG_FILES = "arg_files"
+        private const val ARG_IMG = "arg_img"
 
 
         fun newInstance(
@@ -44,8 +46,10 @@ class ApplicationCheckFragment : Fragment() {
             location: String,
             shift: String,
             wage: Double,
+            desc: String,
             risp: String,
-            files : String
+            files : String,
+            image : Int
         ): ApplicationCheckFragment {
             return ApplicationCheckFragment().apply {
                 arguments = Bundle().apply {
@@ -54,8 +58,10 @@ class ApplicationCheckFragment : Fragment() {
                     putString(ARG_LOCATION, location)
                     putString(ARG_SHIFT, shift)
                     putDouble(ARG_WAGE, wage)
+                    putString(ARG_DESC, desc)
                     putString(ARG_RISP, risp)
                     putString(ARG_FILES, files)
+                    putInt(ARG_IMG, image)
                 }
             }
         }
@@ -68,9 +74,10 @@ class ApplicationCheckFragment : Fragment() {
     private val jobOfferLocation: String by lazy { arguments?.getString(ARG_LOCATION).orEmpty() }
     private val jobOfferShift: String by lazy { arguments?.getString(ARG_SHIFT).orEmpty() }
     private val jobOfferWage: Double by lazy { arguments?.getDouble(ARG_WAGE) ?: -2.0 }
+    private val jobOfferDesc: String by lazy { arguments?.getString(ARG_DESC).orEmpty() }
     private val appicationRisp: String by lazy { arguments?.getString(ARG_RISP).orEmpty() }
     private val appicationFiles: String by lazy { arguments?.getString(ARG_FILES).orEmpty() }
-
+    private val jobOfferImage : Int by lazy { arguments?.getInt(ARG_IMG) ?: -1 }
 
 
 
@@ -90,6 +97,8 @@ class ApplicationCheckFragment : Fragment() {
         v.findViewById<Chip>(R.id.offer_location)?.text = jobOfferLocation
         v.findViewById<Chip>(R.id.offer_shift)?.text = jobOfferShift
         v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage.toString()
+        v.findViewById<TextView>(R.id.offer_description)?.text = jobOfferDesc
+        v.findViewById<ImageView>(R.id.topImage).setImageResource(jobOfferImage)
 
         // Back button
         v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
