@@ -7,5 +7,5 @@ class Question (
     var answer : String,
     val options : List<String>?,
     val tipo: TipoDomanda,
-    var hasError: Boolean = true
+    var hasError: Boolean = false
 )
