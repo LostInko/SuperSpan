@@ -1,8 +1,10 @@
 package com.example.superspan.model
 
 class JobOffer (
-    val id : Int,
-    val name: String,
+    val id : Int,               // Id univoco
+    val name: String,           // Nome da mostrare
+
+    // Altri dati non importanti per il funzionamento della logica
     val location: String,
     val shift: String,
     val wage: Double,

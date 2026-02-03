@@ -59,6 +59,8 @@
         <item name="android:insetBottom">0dp</item>
     </style>
 
+
+
     <!-- Testo per titolo dei prodotti -->
     <style name="textProduct">
         <item name="android:textStyle">bold</item>

@@ -31,11 +31,6 @@ class JobOfferSentFragment : Fragment() {
         private const val ARG_DESC = "arg_desc"
         private const val ARG_REQ = "arg_req"
 
-        /**
-         * Costruttore consigliato: passa anche l'indice se lo conosci.
-         * Se non lo hai, usa -1: il fragment farà fallback per nome.
-         */
-
         fun newInstance(
             id : Int,
             name: String,
@@ -60,8 +55,6 @@ class JobOfferSentFragment : Fragment() {
     }
 
     private lateinit var vm: WorkWithUsViewModel
-
-    private val jobOfferId : Int by lazy { arguments?.getInt(ARG_ID) ?: -1 }
     private val jobOfferName: String by lazy { arguments?.getString(ARG_NAME).orEmpty() }
     private val jobOfferLocation: String by lazy { arguments?.getString(ARG_LOCATION).orEmpty() }
     private val jobOfferShift: String by lazy { arguments?.getString(ARG_SHIFT).orEmpty() }
@@ -81,14 +74,14 @@ class JobOfferSentFragment : Fragment() {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_application_sent_check, container, false)
 
-        // ---- Bind dati statici (coerenti con l'XML) ----
+        // Collegamento delle View
         v.findViewById<TextView>(R.id.offer_title)?.text = jobOfferName
         v.findViewById<Chip>(R.id.offer_location)?.text = jobOfferLocation
         v.findViewById<Chip>(R.id.offer_shift)?.text = jobOfferShift
         v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage.toString()
         v.findViewById<TextView>(R.id.offer_description)?.text = jobOfferDesc
 
-        // ---- Back (ID unico presente: btnBackTop) ----
+        // Back Button
         v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }

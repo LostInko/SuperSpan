@@ -20,16 +20,16 @@ import com.google.android.material.textfield.TextInputEditText
 import org.w3c.dom.Text
 
 class QuestionCheckAdapter (
-    private val listaDomande: List<Question>
+    private var listaDomande: List<Question>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class QuestionCheckViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvDomanda : TextView = itemView.findViewById(R.id.question_text)
         val tvAnswer : TextView = itemView.findViewById(R.id.tvAnswer)
 
+        // Qui (al contrario di QuestionAdapter) sia le domande aperte che quelle chiuse sono considerate uguali, in quanto mostriamo solo la risposta data
         fun bind(domanda : Question){
             tvDomanda.text = domanda.title
-
             tvAnswer.text = domanda.answer
         }
     }
@@ -44,8 +44,12 @@ class QuestionCheckAdapter (
 
     override fun getItemCount() = listaDomande.size
 
+    fun updateList(newList: List<Question>) {
+        listaDomande = newList
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        // Cast del holder generico al tuo specifico QuestionCheckViewHolder
         val questionHolder = holder as QuestionCheckViewHolder
 
         // Recupero della domanda corretta dalla lista

@@ -32,11 +32,6 @@ class JobOfferFragment : Fragment() {
         private const val ARG_DESC = "arg_desc"
         private const val ARG_REQ = "arg_req"
 
-        /**
-         * Costruttore consigliato: passa anche l'indice se lo conosci.
-         * Se non lo hai, usa -1: il fragment farà fallback per nome.
-         */
-
         fun newInstance(
             id : Int,
             name: String,
@@ -63,12 +58,12 @@ class JobOfferFragment : Fragment() {
     private lateinit var vm: WorkWithUsViewModel
 
     private val jobOfferId : Int by lazy { arguments?.getInt(ARG_ID) ?: -1 }
-    private val jobOfferName: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_NAME).orEmpty() }
-    private val jobOfferLocation: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_LOCATION).orEmpty() }
-    private val jobOfferShift: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_SHIFT).orEmpty() }
+    private val jobOfferName: String by lazy { arguments?.getString(ARG_NAME).orEmpty() }
+    private val jobOfferLocation: String by lazy { arguments?.getString(ARG_LOCATION).orEmpty() }
+    private val jobOfferShift: String by lazy { arguments?.getString(ARG_SHIFT).orEmpty() }
     private val jobOfferWage: Double by lazy { arguments?.getDouble(ARG_WAGE) ?: -2.0 }
-    private val jobOfferDesc: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_DESC).orEmpty() }
-    private val jobOfferReq: String by lazy { arguments?.getString(JobOfferFragment.Companion.ARG_REQ).orEmpty() }
+    private val jobOfferDesc: String by lazy { arguments?.getString(ARG_DESC).orEmpty() }
+    private val jobOfferReq: String by lazy { arguments?.getString(ARG_REQ).orEmpty() }
 
 
 
@@ -83,7 +78,7 @@ class JobOfferFragment : Fragment() {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_job_offer, container, false)
 
-        // ---- Bind dati statici (coerenti con l'XML) ----
+        // Collegamento delle View
         v.findViewById<TextView>(R.id.offer_title)?.text = jobOfferName
         v.findViewById<Chip>(R.id.offer_location)?.text = jobOfferLocation
         v.findViewById<Chip>(R.id.offer_shift)?.text = jobOfferShift
@@ -91,7 +86,7 @@ class JobOfferFragment : Fragment() {
         v.findViewById<TextView>(R.id.offer_description)?.text = jobOfferDesc
         v.findViewById<TextView>(R.id.offer_requisiti)?.text = jobOfferReq
 
-        // ---- Back (ID unico presente: btnBackTop) ----
+        // Back Button
         v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -99,11 +94,12 @@ class JobOfferFragment : Fragment() {
         val btnCandidati = v.findViewById<ConstraintLayout>(R.id.btn_candidati)
         val currentUserId = GlobalData.currentUser!!.username
 
+        // Bottone Candidati, rimanda alla pagina che permette di compilare la domanda
         btnCandidati.setOnClickListener {
 
             val myApplicationIds = ApplicationGlobal.application_list
                 .filter { it.userId == currentUserId } // Filtra per utente corretto
-                .map { it.offerId } // Prende solo gli ID (che sono Int)
+                .map { it.offerId } // Prende solo gli ID
 
             if(myApplicationIds.contains(jobOfferId)){
                 val dialog = AlertDialog.Builder(requireContext())
@@ -121,12 +117,11 @@ class JobOfferFragment : Fragment() {
                 )
 
                 parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragmentDomande) // R.id.fragment_container è l'ID nel tuo layout activity
+                    .replace(R.id.fragment_container, fragmentDomande)
                     .addToBackStack(null) // Permette all'utente di tornare indietro col tasto back
                     .commit()
             }
         }
-
 
         return v
     }

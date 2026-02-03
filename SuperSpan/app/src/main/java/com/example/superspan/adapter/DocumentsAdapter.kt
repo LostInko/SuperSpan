@@ -11,10 +11,8 @@ import com.example.superspan.model.Document
 import com.example.superspan.model.TipoFile
 import com.google.android.material.card.MaterialCardView
 
-// IL TUO ADAPTER
 class DocumentsAdapter(
     private val items: MutableList<Document>,
-    // Callback: Passiamo la posizione dell'elemento cliccato
     private val onAttachClick: (Int) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -29,6 +27,7 @@ class DocumentsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        // In base al tipo di file (CV o Video) viene mostrata una pagina diversa
         return when (viewType) {
             TYPE_CV -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.view_cv_upload, parent, false)
@@ -48,7 +47,7 @@ class DocumentsAdapter(
 
         fun bind(item: Document, position: Int) {
 
-            if (item.fileName != null) {
+            if (item.fileName != "") {
                 tvCvName.text = item.fileName
                 cardUploadCv.strokeColor = Color.parseColor("#BDBDBD")
                 cardUploadCv.strokeWidth = 2
@@ -70,7 +69,7 @@ class DocumentsAdapter(
 
         fun bind(item: Document, position: Int) {
 
-            if (item.fileName != null) {
+            if (item.fileName != "") {
                 tvVideoName.text = item.fileName
                 cardUploadVideo.strokeColor = Color.parseColor("#BDBDBD")
                 cardUploadVideo.strokeWidth = 2
@@ -85,7 +84,6 @@ class DocumentsAdapter(
             }
         }
     }
-
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {

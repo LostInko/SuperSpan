@@ -34,6 +34,7 @@ class QuestionAdapter (
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        // In base al tipo di domanda (Aperta o a risosta multipla) mostra una pagina differente
         return when (viewType) {
             TYPE_APERTA -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.view_question, parent, false)
@@ -62,24 +63,19 @@ class QuestionAdapter (
 
             etAnswer.setText(domanda.answer)
 
-            updateErrorState(domanda)
+            // Aggiorna lo stato della domanda, in base al fatto se è vuota o meno
+            updateErrorState(domanda.answer.isBlank())
 
             currentTextWatcher = object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    domanda.answer = s.toString()
 
-                    if(domanda.hasError) {
-                        domanda.hasError = false
-                    }
-                    updateErrorState(domanda)
-
-                    onDataChanged()
                 }
                 override fun afterTextChanged(s: Editable?) {
-                    domanda.answer = s.toString()
+                    val testo = s.toString()
+                    domanda.answer = testo
 
-                    updateErrorState(domanda)
+                    updateErrorState(testo.isBlank())
 
                     onDataChanged()
                 }
@@ -88,8 +84,8 @@ class QuestionAdapter (
             etAnswer.addTextChangedListener(currentTextWatcher)
         }
 
-        private fun updateErrorState(domanda: Question) {
-            if (domanda.hasError || domanda.answer.isBlank()) {
+        private fun updateErrorState(isEmpty : Boolean) {
+            if (isEmpty) {
                 cardView.strokeColor = Color.parseColor("#4DFF0000")
                 cardView.strokeWidth = 4
             } else {
@@ -111,9 +107,11 @@ class QuestionAdapter (
             groupAnswer.setOnCheckedChangeListener(null)
             groupAnswer.removeAllViews()
 
-            updateErrorState(domanda)
+            updateErrorState(domanda.answer.isBlank())
 
             domanda.options?.forEach { opzione ->
+
+                // Impostazioni di stile del radio button
                 val radioButton = RadioButton(itemView.context).apply {
                     text = opzione
                     id = View.generateViewId()
@@ -156,17 +154,19 @@ class QuestionAdapter (
                 val selectedButton = group.findViewById<RadioButton>(checkedId)
 
                 selectedButton?.let {
-                    domanda.answer = it.text.toString()
+                    val testo = it.text.toString()
+                    domanda.answer = testo
                     domanda.hasError = false
-                    updateErrorState(domanda)
+                    updateErrorState(testo.isBlank())
                     onDataChanged()
                 }
             }
 
         }
 
-        private fun updateErrorState(domanda: Question) {
-            if (domanda.hasError) {
+        // Aggiorna stile del box domanda
+        private fun updateErrorState(isEmpty : Boolean) {
+            if (isEmpty) {
                 cardView.strokeColor = Color.parseColor("#4DFF0000")
                 cardView.strokeWidth = 4
             } else {
