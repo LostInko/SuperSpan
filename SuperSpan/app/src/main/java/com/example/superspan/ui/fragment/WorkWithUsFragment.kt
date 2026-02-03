@@ -169,7 +169,8 @@ class WorkWithUsFragment : Fragment() {
                     shift = jobOffer.shift,
                     wage = jobOffer.wage,
                     desc = jobOffer.description,
-                    req = jobOffer.requirements
+                    req = jobOffer.requirements,
+                    image = jobOffer.image
                 )
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, fragment)

@@ -31,6 +31,7 @@ class JobOfferFragment : Fragment() {
         private const val ARG_WAGE = "arg_wage"
         private const val ARG_DESC = "arg_desc"
         private const val ARG_REQ = "arg_req"
+        private const val ARG_IMG = "arg_img"
 
         fun newInstance(
             id : Int,
@@ -39,7 +40,8 @@ class JobOfferFragment : Fragment() {
             shift: String,
             wage: Double,
             desc: String,
-            req: String
+            req: String,
+            image: Int
         ): JobOfferFragment {
             return JobOfferFragment().apply {
                 arguments = Bundle().apply {
@@ -50,6 +52,7 @@ class JobOfferFragment : Fragment() {
                     putDouble(ARG_WAGE, wage)
                     putString(ARG_DESC, desc)
                     putString(ARG_REQ, req)
+                    putInt(ARG_IMG, image)
                 }
             }
         }
@@ -64,6 +67,8 @@ class JobOfferFragment : Fragment() {
     private val jobOfferWage: Double by lazy { arguments?.getDouble(ARG_WAGE) ?: -2.0 }
     private val jobOfferDesc: String by lazy { arguments?.getString(ARG_DESC).orEmpty() }
     private val jobOfferReq: String by lazy { arguments?.getString(ARG_REQ).orEmpty() }
+    private val jobOfferImage : Int by lazy { arguments?.getInt(ARG_IMG) ?: -1 }
+
 
 
 
@@ -85,6 +90,7 @@ class JobOfferFragment : Fragment() {
         v.findViewById<Chip>(R.id.offer_wage)?.text = jobOfferWage.toString()
         v.findViewById<TextView>(R.id.offer_description)?.text = jobOfferDesc
         v.findViewById<TextView>(R.id.offer_requisiti)?.text = jobOfferReq
+        v.findViewById<ImageView>(R.id.topImage).setImageResource(jobOfferImage)
 
         // Back Button
         v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {

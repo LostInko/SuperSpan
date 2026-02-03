@@ -9,5 +9,6 @@ class JobOffer (
     val shift: String,
     val wage: Double,
     val description: String,
-    val requirements: String
+    val requirements: String,
+    val image: Int
 )
