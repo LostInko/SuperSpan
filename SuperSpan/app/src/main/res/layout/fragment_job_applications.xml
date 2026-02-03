@@ -85,9 +85,10 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp"/>
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:fillViewport="true">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,14 +98,16 @@
                         android:id="@+id/rvStep2Questions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"/>
+                        android:layout_marginBottom="16dp"
+                        android:nestedScrollingEnabled="false"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvStep2File"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"/>
                 </LinearLayout>
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>
 
@@ -146,15 +149,6 @@
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp"/>
-
-                <TextView
-                    android:id="@+id/summaryOfferTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Nome Offerta"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
 
                 <View
                     android:layout_width="match_parent"
