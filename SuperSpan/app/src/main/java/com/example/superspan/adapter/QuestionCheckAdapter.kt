@@ -27,9 +27,9 @@ class QuestionCheckAdapter (
         val tvDomanda : TextView = itemView.findViewById(R.id.question_text)
         val tvAnswer : TextView = itemView.findViewById(R.id.tvAnswer)
 
+        // Qui (al contrario di QuestionAdapter) sia le domande aperte che quelle chiuse sono considerate uguali, in quanto mostriamo solo la risposta data
         fun bind(domanda : Question){
             tvDomanda.text = domanda.title
-
             tvAnswer.text = domanda.answer
         }
     }
@@ -50,7 +50,6 @@ class QuestionCheckAdapter (
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        // Cast del holder generico al tuo specifico QuestionCheckViewHolder
         val questionHolder = holder as QuestionCheckViewHolder
 
         // Recupero della domanda corretta dalla lista
