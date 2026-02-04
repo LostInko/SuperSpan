@@ -16,7 +16,7 @@
         android:layout_marginTop="264dp"
         android:text="Il carrello è vuoto\nI prodotti che aggiungerai verranno mostrati qui"
         android:textAlignment="center"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -8,9 +8,11 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import com.example.superspan.R
 import com.example.superspan.viewmodel.HomeViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -72,6 +74,13 @@ class OrderFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         tvCartAmountInActivity = requireActivity().findViewById(R.id.tv_cart_amount)
+        val tvNoAddress = view.findViewById<TextView>(R.id.tvNoAddress)
+        val llAddress = view.findViewById<LinearLayout>(R.id.lladdresses)
+        val btnPay = view.findViewById<Button>(R.id.btnPay)
+        val rcProducts = view.findViewById<RecyclerView>(R.id.recyclerCart)
+        val tvEmptyCart = view.findViewById<TextView>(R.id.tvEmptyCart)
+
+
 
         // Bottone back (in testa alla pagina)
         view.findViewById<View>(R.id.btnBackTop)?.setOnClickListener {
@@ -89,6 +98,32 @@ class OrderFragment : Fragment() {
             val formatted = String.format("%.2f €", total)
             tvCartAmountInActivity?.text = formatted
             tvTotalPrice?.text = formatted
+            if(total == 0.0) {
+                btnPay.isEnabled = false
+            }
+        }
+
+        vm.addresses.observe(viewLifecycleOwner) { allAddresses ->
+            if(allAddresses.isNullOrEmpty()) {
+                llAddress.visibility = View.GONE
+                tvNoAddress.visibility = View.VISIBLE
+                btnPay.isEnabled = false
+                btnPay.alpha = 0.6f;
+            } else {
+                llAddress.visibility = View.VISIBLE
+                tvNoAddress.visibility = View.GONE
+            }
+        }
+
+        vm.products.observe(viewLifecycleOwner){ allProducts ->
+            val itemsInCart = allProducts.filter { it.qty > 0 }
+            if(itemsInCart.isEmpty()) {
+                tvEmptyCart.visibility = View.VISIBLE
+                rcProducts.visibility = View.GONE
+            } else {
+                tvEmptyCart.visibility = View.GONE
+                rcProducts.visibility = View.VISIBLE
+            }
         }
 
     }

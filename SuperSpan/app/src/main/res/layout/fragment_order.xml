@@ -97,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="Change"
+                    android:text="Cambia o Aggiungi"
                     android:textColor="#007BFF"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -111,6 +111,7 @@
                 app:cardElevation="2dp">
 
                 <LinearLayout
+                    android:id="@+id/lladdresses"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -134,6 +135,16 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
+                android:id="@+id/tvNoAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Non hai ancora aggiunto un indirizzo.\nAggiungine uno per continuare l'ordine"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:textStyle="italic"
+                android:visibility="gone"/>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -142,12 +153,26 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/tvEmptyCart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_gravity="center"
+                android:text="Il carrello è vuoto.\nTorna indietro per aggiugerli al carrello e proseguire"
+                android:textAlignment="center"
+                android:visibility="gone"
+                android:textStyle="italic"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerCart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:nestedScrollingEnabled="false" />
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_cart"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
@@ -189,20 +214,15 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btnPay"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_button_primary_pill">
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:text="Avanti"
+            android:textSize="18sp"
+            android:textAllCaps="false" />
 
-            <Button
-                android:id="@+id/btnPay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Avanti"
-                android:textSize="20sp"/>
-
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -54,6 +54,11 @@ class MainActivity : AppCompatActivity() {
                 Address("Quartu Sant'Elena", "Via Roma 12", "09045", "Casa", isSelected = true)
             ))
         )
+        GlobalData.user_list.add(
+            1,
+            User("Diego", "Serra", "13/01/2005", "Cagliari", "d", "s"
+            )
+        )
 
         val fromRegister = intent.getBooleanExtra("fromRegisterActivity", false)
         if (fromRegister) {
