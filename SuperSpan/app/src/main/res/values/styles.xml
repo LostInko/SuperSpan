@@ -63,7 +63,7 @@
 
     <!-- Testo per titolo dei prodotti -->
     <style name="textProduct">
-        <item name="android:textStyle">bold</item>
+
         <item name="android:textSize">14sp</item>
     </style>
 
