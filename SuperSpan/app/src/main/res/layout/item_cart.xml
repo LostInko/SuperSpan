@@ -13,23 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/deleteBack"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:background="#D60000"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/btnDelete"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:padding="24dp"
-                app:srcCompat="@drawable/ic_trash"
-                app:tint="@android:color/white" />
-        </LinearLayout>
-
         <RelativeLayout
             android:id="@+id/viewForeground"
             android:layout_width="match_parent"
@@ -54,6 +37,17 @@
                 android:layout_alignTop="@id/imgProduct"
                 android:layout_marginStart="12dp"
                 android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    app:srcCompat="@drawable/ic_trash"
+                    android:layout_gravity="end"
+                    app:tint="#D60000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txtTitle"
