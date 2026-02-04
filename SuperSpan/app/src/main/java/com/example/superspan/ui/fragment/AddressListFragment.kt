@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
@@ -57,14 +58,14 @@ class AddressListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //val rv = view.findViewById<RecyclerView>(R.id.rvAllAddresses)
-        //val tvEmpty = view.findViewById<TextView>(R.id.tvEmpityAdd)
+        val rv = view.findViewById<RecyclerView>(R.id.rvAllAddresses)
+        val tvEmpty = view.findViewById<ConstraintLayout>(R.id.tvEmptyAdd)
 
         // Bottone back (in testa alla pagina)
         view.findViewById<View>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
-/*
+
         vm.addresses.observe(viewLifecycleOwner) { addresses ->
             if (addresses.isNullOrEmpty()) {
                 tvEmpty.visibility = View.VISIBLE
@@ -73,7 +74,7 @@ class AddressListFragment : Fragment() {
                 tvEmpty.visibility = View.GONE
                 rv.visibility = View.VISIBLE
             }
-        }*/
+        }
 
     }
 }
