@@ -1,6 +1,8 @@
 package com.example.superspan.model
+
+import com.example.superspan.R
+
 enum class ProductCategory(val label: String, val parentTab: String) {
-    // --- ALIMENTARI ---
     FRUTTA_VERDURA("Ortofrutta", "Alimentari"),
     CARNE("Carne", "Alimentari"),
     PESCE("Pesce", "Alimentari"),
@@ -11,21 +13,14 @@ enum class ProductCategory(val label: String, val parentTab: String) {
     BEVANDE_ANALCOLICHE("Bevande analcoliche", "Alimentari"),
     SNACK("Snack e Patatine", "Alimentari"),
     DOLCI("Dolci e Biscotti", "Alimentari"),
-
-    // --- CASA E PERSONA ---
     CURA_PERSONALE("Bellezza e Igiene", "Casa"),
     CURA_NEONATO("Infanzia e Neonati", "Casa"),
     PULIZIE("Cura della Casa", "Casa"),
     ANIMALI("Amici Animali", "Casa");
 
     companion object {
-        // Funzione per ottenere tutte le label di una specifica macro-categoria
         fun getLabelsByTab(tabName: String): List<String> {
-            return if (tabName == "Generale") {
-                values().map { it.label }
-            } else {
-                values().filter { it.parentTab == tabName }.map { it.label }
-            }
+            return values().filter { it.parentTab == tabName || tabName == "Generale" }.map { it.label }
         }
     }
 }
@@ -33,19 +28,22 @@ enum class ProductCategory(val label: String, val parentTab: String) {
 data class Product(
     val name: String,
     val description: String,
-    val price: String, // Prezzo originale (es. "2,50€")
+    val price: String,
     val imageRes: Int,
     val category: ProductCategory,
     var qty: Int = 0,
     var isFavorite: Boolean = false,
-    var discountPrice: String? = null // Nuovo: prezzo scontato (es. "1,99€")
+    var discountPrice: String? = null,
+    var priceWhenAddedToFav: String? = null
 )
 
+// Helper per il calcolo (usato dal carrello e dai coupon)
 fun Product.parsedPrice(): Double {
     val priceToParse = discountPrice ?: this.price
-    return priceToParse
-        .replace("€", "")
-        .replace(",", ".")
-        .trim()
-        .toDoubleOrNull() ?: 0.0
+    return priceToParse.replace("€", "").replace(",", ".").trim().toDoubleOrNull() ?: 0.0
+}
+
+// Helper specifico per il confronto storico
+fun Product.savedNumericPrice(): Double {
+    return priceWhenAddedToFav?.replace("€", "")?.replace(",", ".")?.trim()?.toDoubleOrNull() ?: parsedPrice()
 }

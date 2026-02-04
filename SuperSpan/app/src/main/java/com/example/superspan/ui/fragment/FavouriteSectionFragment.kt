@@ -1,4 +1,3 @@
-
 package com.example.superspan.ui.fragment
 
 import android.os.Bundle
@@ -26,11 +25,7 @@ class FavouriteSectionFragment : Fragment() {
         vm = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favourite, container, false)
     }
 
@@ -42,24 +37,8 @@ class FavouriteSectionFragment : Fragment() {
 
         adapter = FavouriteAdapter(
             items = emptyList(),
-            onRemoveFavorite = { p ->
-                vm.toggleFavoriteByRef(p) // toglie dai preferiti
-            },
-            onOpenDetail = { p ->
-                // Apri il ProductFragment coerente con il tuo costruttore
-                val index = vm.products.value?.indexOfFirst { it.name == p.name } ?: -1
-                val frag = com.example.superspan.ui.fragment.ProductFragment.newInstance(
-                    name = p.name,
-                    desc = p.description,
-                    price = p.price,
-                    imageRes = p.imageRes,
-                    index = index
-                )
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, frag)
-                    .addToBackStack(null)
-                    .commit()
-            }
+            onRemoveFavorite = { p -> vm.toggleFavoriteByRef(p) },
+            onOpenDetail = { p -> /* apri dettaglio */ }
         )
 
         rv.layoutManager = LinearLayoutManager(requireContext())
@@ -71,4 +50,3 @@ class FavouriteSectionFragment : Fragment() {
         }
     }
 }
-

@@ -196,8 +196,8 @@ class HomeViewModel : ViewModel() {
     // -------------------------
     fun updateCartTotal() {
         val list = products.value.orEmpty()
-        val total: Double = list.sumOf { product ->
-            product.parsedPrice() * product.qty.toDouble()
+        val total: Double = list.sumOf { p: Product ->
+            p.parsedPrice() * p.qty.toDouble()
         }
         cartTotal.postValue(total)
     }
@@ -257,6 +257,12 @@ class HomeViewModel : ViewModel() {
     // -------------------------
     fun toggleFavoriteByRef(product: Product) {
         product.isFavorite = !product.isFavorite
+
+        // NUOVO: Se viene aggiunto, salviamo il prezzo attuale come riferimento storico
+        if (product.isFavorite) {
+            product.priceWhenAddedToFav = product.discountPrice ?: product.price
+        }
+
         refreshProducts()
         recomputeFavorites()
     }
@@ -370,4 +376,5 @@ class HomeViewModel : ViewModel() {
             else -> "${first.title} — ${first.detail}"
         }
     }
+
 }
