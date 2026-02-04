@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.adapter.AddressAdapter // Assicurati di importarlo
 import com.example.superspan.adapter.CartAdapter
-import com.example.superspan.adapter.SwipeToDeleteCallback
 import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.viewmodel.HomeViewModel
 
@@ -67,8 +66,6 @@ class CartFragment : Fragment() {
                 cartAdapter.updateData(itemsInCart) // Usiamo il nuovo metodo
             }
         }
-
-        setupSwipe(recyclerViewProduct)
 
         val shopSpinner = view.findViewById<AppCompatSpinner>(R.id.spinnerStores)
         val shopList = listOf("Cagliari, Via Baccaredda 71", "Cagliari, Via Dante 134", "Selargius, Via Piave 62")
@@ -120,12 +117,5 @@ class CartFragment : Fragment() {
             tvCartAmountInActivity?.text = formatted
             tvTotalPrice?.text = formatted
         }
-    }
-
-    private fun setupSwipe(recyclerView: RecyclerView) {
-        val swipeHandler = SwipeToDeleteCallback(cartAdapter)
-
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 }
