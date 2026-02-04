@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
 import com.example.superspan.model.*
+import com.google.android.material.card.MaterialCardView
 
 class FavouriteAdapter(
     private var items: List<Product>,
@@ -18,6 +19,7 @@ class FavouriteAdapter(
 ) : RecyclerView.Adapter<FavouriteAdapter.VH>() {
 
     inner class VH(v: View) : RecyclerView.ViewHolder(v) {
+        val cardRoot: MaterialCardView = v.findViewById(R.id.cardRoot) // Riferimento alla Card
         val imgProduct: ImageView = v.findViewById(R.id.imgProduct)
         val txtTitle: TextView = v.findViewById(R.id.txtTitle)
         val txtOldPrice: TextView = v.findViewById(R.id.txtOldPrice)
@@ -38,7 +40,7 @@ class FavouriteAdapter(
         holder.txtTitle.text = p.name
         holder.imgProduct.setImageResource(p.imageRes)
 
-        // 1. GESTIONE SCONTO ATTUALE
+        // 1. GESTIONE SCONTO ATTUALE (PREZZO BARRATO)
         if (p.discountPrice != null) {
             holder.txtOldPrice.visibility = View.VISIBLE
             holder.txtOldPrice.text = p.price
@@ -57,24 +59,37 @@ class FavouriteAdapter(
         holder.txtSavedPriceValue.text = p.priceWhenAddedToFav ?: (p.discountPrice ?: p.price)
 
         when {
-            diff < 0 -> {
+            diff < 0 -> { // Prezzo diminuito
                 holder.txtPriceDiff.text = String.format("%.2f €", diff).replace(".", ",")
                 holder.txtPriceDiff.setTextColor(Color.parseColor("#2E7D32"))
                 holder.imgTrend.setImageResource(R.drawable.ic_arrow_downward)
                 holder.imgTrend.setColorFilter(Color.parseColor("#2E7D32"))
             }
-            diff > 0 -> {
+            diff > 0 -> { // Prezzo aumentato
                 holder.txtPriceDiff.text = String.format("+%.2f €", diff).replace(".", ",")
                 holder.txtPriceDiff.setTextColor(Color.RED)
                 holder.imgTrend.setImageResource(R.drawable.ic_arrow_upward)
                 holder.imgTrend.setColorFilter(Color.RED)
             }
-            else -> {
+            else -> { // Invariato
                 holder.txtPriceDiff.text = "Invariato"
                 holder.txtPriceDiff.setTextColor(Color.GRAY)
                 holder.imgTrend.setImageResource(R.drawable.ic_remove)
                 holder.imgTrend.setColorFilter(Color.GRAY)
             }
+        }
+
+        // --- MODIFICA: EVIDENZIAZIONE SUPER AFFARE (Sconto > 0.50€) ---
+        if (diff <= -0.50) {
+            // Sfondo verde tenue e bordo verde scuro
+            holder.cardRoot.setCardBackgroundColor(Color.parseColor("#E8F5E9"))
+            holder.cardRoot.strokeColor = Color.parseColor("#2E7D32")
+            holder.cardRoot.strokeWidth = 4 // Bordo più spesso per l'affare
+        } else {
+            // Sfondo standard e bordo neutro
+            holder.cardRoot.setCardBackgroundColor(Color.WHITE)
+            holder.cardRoot.strokeColor = Color.parseColor("#E0E0E0")
+            holder.cardRoot.strokeWidth = 2
         }
 
         holder.itemView.setOnClickListener { onOpenDetail(p) }

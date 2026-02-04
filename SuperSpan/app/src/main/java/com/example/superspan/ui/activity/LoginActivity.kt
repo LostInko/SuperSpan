@@ -50,7 +50,9 @@ class MainActivity : AppCompatActivity() {
         )
         GlobalData.user_list.add(
             1,
-            User("Matteo","Manai","22/11/2004","Quartu Sant'Elena","m","m")
+            User("Matteo", "Manai", "22/11/2004", "Quartu Sant'Elena", "m", "m", addresses = mutableListOf(
+                Address("Quartu Sant'Elena", "Via Roma 12", "09045", "Casa", isSelected = true)
+            ))
         )
 
         val fromRegister = intent.getBooleanExtra("fromRegisterActivity", false)

@@ -133,6 +133,51 @@ class HomeViewModel : ViewModel() {
         applyRandomDiscounts()
         cartTotal.value = 0.0
         loadAddresses()
+
+        // --- SIMULAZIONE CASISTICHE PREFERITI PER UTENTE ATTENTO ---
+        val currentProducts = products.value ?: mutableListOf()
+        if (GlobalData.currentUser?.username == "m") {
+            // 1. CASO DIMINUZIONE: Il prodotto è sceso ulteriormente di prezzo (Successo UX)
+            currentProducts.find { it.name == "Spaghetti n.5" }?.apply {
+                isFavorite = true
+                priceWhenAddedToFav = "1,20€" // Salvato quando costava caro
+//            discountPrice = "0,85€"       // Ora è in super offerta
+            }
+
+            // 2. CASO AUMENTO: L'offerta è scaduta (Urgenza UX)
+            currentProducts.find { it.name == "Patatine Classiche" }?.apply {
+                isFavorite = true
+                priceWhenAddedToFav = "0,90€" // Salvato in offerta
+//            discountPrice = null          // L'offerta è finita
+                // Il prezzo attuale (price) tornerà ad essere quello pieno, es. "5,20€"
+            }
+
+            // 3. CASO INVARIATO: Prezzo stabile (Affidabilità UX)
+            currentProducts.find { it.name == "Latte Arborea" }?.apply {
+                isFavorite = true
+                priceWhenAddedToFav = "1,32€"
+//            discountPrice = "1,32€"
+            }
+
+            // 4. CASO SCONTO ATTUALE VS SALVATO: Sconto presente ma meno conveniente dell'inizio
+            currentProducts.find { it.name == "Detersivo Piatti" }?.apply {
+                isFavorite = true
+                priceWhenAddedToFav = "1,00€" // Lo avevi visto a 1€
+//            discountPrice = "1,25€"       // Ora è scontato, ma costa comunque più di prima
+            }
+
+            // 5. CASO SUPER AFFARE: Il prezzo è crollato (Sconto > 0.50€)
+            currentProducts.find { it.name == "Ichnusa non filtrata" }?.apply {
+                isFavorite = true
+                priceWhenAddedToFav = "2,50€" // Prezzo originale alto
+//            discountPrice = "1,56€"       // Prezzo attuale (Risparmio di 0,94€!)
+            }
+        }
+
+
+
+        // Aggiorna la lista dei preferiti per la UI
+        recomputeFavorites()
     }
 
     // ------------------
