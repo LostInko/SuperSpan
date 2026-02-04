@@ -65,7 +65,6 @@ class OrderHistoryFragment : Fragment() {
             } else {
                 tvEmpty.visibility = View.GONE
                 rv.visibility = View.VISIBLE
-                // Passiamo la lista (già ordinata o invertita per vedere l'ultimo ordine in alto)
                 adapter.submitList(orderList.reversed())
             }
         }
