@@ -43,14 +43,18 @@ class HomeSectionFragment : Fragment() {
             "Benvenuto " + (user?.name ?: "Utente") + "!"
 
         // Osserva la lista prodotti dal ViewModel
+
+        // Osserva la lista prodotti dal ViewModel
         vm.products.observe(viewLifecycleOwner) { productList ->
 
-            val homeProducts = productList.take(4).toMutableList()
+            // FILTRO: Prendi solo i prodotti che hanno un prezzo scontato
+            val discountedProducts = productList.filter { it.discountPrice != null }
+
+            // Mostra i primi 4 prodotti scontati trovati
+            val homeProducts = discountedProducts.take(4).toMutableList()
 
             recyclerProducts.adapter = ProductAdapter(
                 productList = homeProducts,
-
-
                 onItemClick = { product ->
                     val fullList = vm.products.value.orEmpty()
                     val index = fullList.indexOfFirst { it.name == product.name && it.imageRes == product.imageRes }
@@ -67,10 +71,7 @@ class HomeSectionFragment : Fragment() {
                         .addToBackStack(null)
                         .commit()
                 },
-
-
-
-            onCartChanged = { vm.updateCartTotal() }
+                onCartChanged = { vm.updateCartTotal() }
             )
         }
 

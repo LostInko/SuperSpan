@@ -1,12 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
     android:background="@drawable/bg_product"
     android:padding="12dp">
 
-    <!-- IMMAGINE -->
     <ImageView
         android:id="@+id/imgProduct"
         android:layout_width="0dp"
@@ -16,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- TITOLO + PREZZO -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rowTitlePrice"
         android:layout_width="0dp"
@@ -35,24 +35,47 @@
             android:textStyle="bold"
             android:maxLines="2"
             android:ellipsize="end"
+            android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/txtPrice"
+            app:layout_constraintEnd_toStartOf="@id/priceContainerGrid"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="Birra Ichnusa non filtrata" />
 
-        <TextView
-            android:id="@+id/txtPrice"
+        <LinearLayout
+            android:id="@+id/priceContainerGrid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#D60000"
-            android:textStyle="bold"
-            android:textSize="15sp"
+            android:orientation="vertical"
+            android:gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBaseline_toBaselineOf="@+id/txtTitle" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/txtOldPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/greenText"
+                android:textSize="14sp"
+                android:alpha="0.6"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="€ 1,56" />
+
+            <TextView
+                android:id="@+id/txtPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:fontFamily="sans-serif-black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:text="€ 0,98" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- DESCRIZIONE -->
     <TextView
         android:id="@+id/txtDesc"
         android:layout_width="0dp"
@@ -61,9 +84,9 @@
         android:textSize="12sp"
         app:layout_constraintTop_toBottomOf="@id/rowTitlePrice"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="50cl" />
 
-    <!-- CONTROL BAR IN BASSO -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/controlRow"
         android:layout_width="0dp"
@@ -75,7 +98,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <!-- QTY CONTAINER (si espande a sinistra, resta in basso a destra) -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/qtyContainer"
             android:layout_width="48dp"
@@ -83,50 +105,48 @@
             android:background="@drawable/bg_qty_green"
             android:paddingStart="6dp"
             android:paddingEnd="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <!-- "-" -->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btnMinus"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:visibility="gone"
                 android:alpha="0"
                 android:padding="4dp"
-                app:srcCompat="@drawable/ic_minus"
-                app:tint="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_minus"
+                app:tint="@android:color/white" />
 
-            <!-- CONTATORE -->
             <TextView
                 android:id="@+id/txtCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:alpha="0"
-                android:text="1"
-                android:textStyle="bold"
-                android:textSize="14sp"
                 android:textColor="@android:color/white"
-                app:layout_constraintStart_toEndOf="@id/btnMinus"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnPlus"
+                app:layout_constraintStart_toEndOf="@id/btnMinus"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                tools:text="1" />
 
-            <!-- "+" SEMPRE VISIBILE IN BASSO A DESTRA -->
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/btnPlus"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:padding="4dp"
-                app:srcCompat="@drawable/ic_plus"
-                app:tint="@android:color/white"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_plus"
+                app:tint="@android:color/white" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

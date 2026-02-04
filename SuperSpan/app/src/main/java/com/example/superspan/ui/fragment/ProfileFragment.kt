@@ -7,14 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import com.example.superspan.R
-import com.example.superspan.model.User
 import com.example.superspan.ui.activity.GlobalData
 import com.example.superspan.ui.activity.MainActivity
-import com.example.superspan.ui.activity.RegisterActivity
 import com.google.android.material.card.MaterialCardView
 
 class ProfileFragment : Fragment() {
@@ -31,56 +30,72 @@ class ProfileFragment : Fragment() {
         // Binding dei componenti
         val cardLogout = view.findViewById<MaterialCardView>(R.id.card_logout)
         val cardDate = view.findViewById<MaterialCardView>(R.id.card_data)
-        val cardJob = view.findViewById<MaterialCardView>(R.id.card_job)
+        val cardJob = view.findViewById<CardView>(R.id.card_job)
         val cardAdress = view.findViewById<CardView>(R.id.card_adress)
         val cardOrder = view.findViewById<CardView>(R.id.card_order)
 
+        // Riferimento alla TextView sopra la Carta Fedeltà (PNG)
+        val tvNomeSuCarta = view.findViewById<TextView>(R.id.tv_nome_cognome_carta)
+
+        // Impostazione testi Header
         val name = user?.name ?: "Utente"
-        val surname = user?.surname ?: "Utente"
-        view.findViewById<TextView>(R.id.user_name).text = "$name $surname"
+        val surname = user?.surname ?: ""
+        val fullName = "$name $surname"
 
-        val username = user?.username ?: "Utente"
-        view.findViewById<TextView>(R.id.user_username).text = "$username"
+        view.findViewById<TextView>(R.id.user_name).text = fullName
+        view.findViewById<TextView>(R.id.user_username).text = user?.username ?: "username"
 
+        // --- INTEGRAZIONE: Imposta il nome sopra la carta PNG ---
+        tvNomeSuCarta.text = fullName.uppercase()
 
-        //Clicco su 'i tuoi dati'
+        // Clicco su 'i tuoi dati'
         cardDate.setOnClickListener {
-            val fragment = UserDataFragment() // Assicurati che il nome della classe sia corretto
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null) // Permette di tornare indietro al profilo col tasto "back"
+                .replace(R.id.fragment_container, UserDataFragment())
+                .addToBackStack(null)
                 .commit()
         }
 
-        //Clicco su 'i tuoi indirizzi'
+        val cardFedelta = view.findViewById<ImageView>(R.id.img_carta_fedelta)
+
+        // Clicco sulla Carta Fedeltà
+
+        cardFedelta.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out,
+                    android.R.anim.fade_in,
+                    android.R.anim.fade_out
+                )
+                .replace(R.id.fragment_container, LoyaltyCardFragment())
+                .addToBackStack(null)
+                .commit()
+        }
+
+        // Clicco su 'i tuoi indirizzi'
         cardAdress.setOnClickListener {
-            val fragment = AddressListFragment()// Assicurati che il nome della classe sia corretto
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null) // Permette di tornare indietro al profilo col tasto "back"
+                .replace(R.id.fragment_container, AddressListFragment())
+                .addToBackStack(null)
                 .commit()
         }
 
-        //Clicco su 'i tuoi ordini'
+        // Clicco su 'i tuoi ordini'
         cardOrder.setOnClickListener {
-            val fragment = OrderHistoryFragment()// Assicurati che il nome della classe sia corretto
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null) // Permette di tornare indietro al profilo col tasto "back"
+                .replace(R.id.fragment_container, OrderHistoryFragment())
+                .addToBackStack(null)
                 .commit()
         }
 
-        //Clicco su 'le tue candidature'
+        // Clicco su 'candidature' (ex card_job, ora nell'icona in alto a destra)
         cardJob.setOnClickListener {
-            val fragment = ApplicationsSentFragment() // Assicurati che il nome della classe sia corretto
             parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null) // Permette di tornare indietro al profilo col tasto "back"
+                .replace(R.id.fragment_container, ApplicationsSentFragment())
+                .addToBackStack(null)
                 .commit()
-
         }
-
-
 
         // Clicco su Logout
         cardLogout.setOnClickListener {
@@ -94,22 +109,14 @@ class ProfileFragment : Fragment() {
             }
 
             customView.findViewById<Button>(R.id.btn_conferma).setOnClickListener {
-                // Logica logout qui
-                // 2. Torna al Login
                 val intent = Intent(requireActivity(), MainActivity::class.java)
-
-                // Pulisce lo stack: l'utente non può tornare indietro
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-
-                // Chiude l'activity corrente
                 requireActivity().finish()
             }
-
             dialog.show()
         }
 
         return view
     }
 }
-

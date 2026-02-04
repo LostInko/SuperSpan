@@ -99,21 +99,41 @@
                     android:textSize="16sp"
                     app:layout_constraintTop_toBottomOf="@id/product_name"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/product_price"
-                    app:layout_constraintHorizontal_weight="1"
-                    app:layout_goneMarginEnd="8dp"
-                    />
+                    app:layout_constraintEnd_toStartOf="@id/priceContainer" app:layout_constraintHorizontal_weight="1"
+                    app:layout_goneMarginEnd="8dp" />
 
-                <TextView
-                    android:id="@+id/product_price"
+                <LinearLayout
+                    android:id="@+id/priceContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0,00€"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
+                    android:orientation="vertical"
+                    android:gravity="end"
+                    android:paddingBottom="30dp"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/product_description"
-                    app:layout_constraintBottom_toBottomOf="@id/product_description"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintBottom_toBottomOf="@id/product_description">
+
+                    <TextView
+                        android:id="@+id/product_old_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/greenText"
+                        android:textSize="14sp"
+                        android:alpha="0.7"
+                        android:visibility="gone"
+                        tools:visibility="visible"
+                        tools:text="€ 1,56" />
+
+                    <TextView
+                        android:id="@+id/product_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/red"
+                        android:fontFamily="sans-serif-black"
+                        android:textSize="26dp"
+                        android:textStyle="bold"
+                        tools:text="€ 0,98" />
+                </LinearLayout>
 
                 <!-- QTY container: fisso in basso a destra -->
                 <androidx.constraintlayout.widget.ConstraintLayout

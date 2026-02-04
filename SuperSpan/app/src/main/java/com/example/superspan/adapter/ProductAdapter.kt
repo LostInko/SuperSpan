@@ -47,6 +47,22 @@ class ProductAdapter(
         holder.txtPrice.text = product.price
         holder.imgProduct.setImageResource(product.imageRes)
 
+        // Gestione dei prezzi
+        val txtOldPrice = holder.itemView.findViewById<TextView>(R.id.txtOldPrice)
+
+        if (product.discountPrice != null) {
+            holder.txtPrice.text = product.discountPrice
+            holder.txtPrice.setTextColor(holder.itemView.context.getColor(R.color.red))
+
+            txtOldPrice.visibility = View.VISIBLE
+            txtOldPrice.text = product.price
+            txtOldPrice.paintFlags = txtOldPrice.paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+        } else {
+            holder.txtPrice.text = product.price
+            holder.txtPrice.setTextColor(holder.itemView.context.getColor(R.color.black))
+            txtOldPrice.visibility = View.GONE
+        }
+
         // dimensioni collassata/espansa
         val collapsedWidth = dpToPx(holder.itemView, 48f)
         // uso tutta la riga come target

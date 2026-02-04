@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.allViews
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,17 +25,15 @@ import com.google.android.material.textfield.TextInputEditText
 class ProductsSectionFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
-    private lateinit var rvCategories: RecyclerView // Viene usata sia per Categorie che Prodotti
+    private lateinit var rvCategories: RecyclerView
     private lateinit var tabLayout: TabLayout
     private lateinit var searchBar: TextInputEditText
     private lateinit var divider: View
 
-    // Adapter per le categorie
     private lateinit var categoryAdapter: CategoryAdapter
 
-    // Variabili stato Tab
-    private val softRed = Color.parseColor("#4DFF0000") // Rosso sbiadito
-    private val activeRed = Color.parseColor("#FF0000") // Rosso acceso
+    private val softRed = Color.parseColor("#4DFF0000")
+    private val activeRed = Color.parseColor("#FF0000")
     private var currentTabName: String = "Generale"
 
     override fun onCreateView(
@@ -51,13 +48,11 @@ class ProductsSectionFragment : Fragment() {
 
         viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
-        // Binding
         rvCategories = view.findViewById(R.id.rvCategories)
         tabLayout = view.findViewById(R.id.tabLayout)
         searchBar = view.findViewById(R.id.search_bar)
         divider = view.findViewById(R.id.divider)
 
-        // Inizializzazione adapter delle categorie
         categoryAdapter = CategoryAdapter(emptyList()) { categoriaSelezionata ->
             val nextFrag = CategoryProductFragment.newInstance(categoriaSelezionata, currentTabName)
             parentFragmentManager.beginTransaction()
@@ -66,66 +61,79 @@ class ProductsSectionFragment : Fragment() {
                 .commit()
         }
 
-        // Setup Tab Layout
         setupTabLayout()
 
-        // Setup TextWatcher per la ricerca
         searchBar.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val query = s.toString().trim()
-
                 if (query.isEmpty()) {
-                    showCategoriesMode()
+                    // Se svuoto la ricerca, torno alla modalità corretta in base al tab
+                    if (currentTabName == "Offerte") showOfferteMode() else showCategoriesMode()
                 } else {
                     showSearchMode(query)
                 }
             }
-
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        // Stato Iniziale: Mostra Categorie
         showCategoriesMode()
     }
 
-    // --- MODALITÀ 1: Navigazione a Categorie (Default) ---
     private fun showCategoriesMode() {
         tabLayout.visibility = View.VISIBLE
         divider.visibility = View.VISIBLE
 
-        // Le categorie stanno bene in lista verticale
-        if (rvCategories.layoutManager !is LinearLayoutManager || rvCategories.adapter !is CategoryAdapter) {
-            rvCategories.layoutManager = LinearLayoutManager(requireContext())
-            rvCategories.adapter = categoryAdapter
-        }
+        // Reset a lista verticale per categorie
+        rvCategories.layoutManager = LinearLayoutManager(requireContext())
+        rvCategories.adapter = categoryAdapter
 
-        // Ripristina le categorie del tab corrente
         filtraCategorie(currentTabName)
     }
 
-    // --- MODALITÀ 2: Ricerca Globale Prodotti ---
+    // --- NUOVA MODALITÀ: Solo Prodotti in Sconto ---
+    private fun showOfferteMode() {
+        tabLayout.visibility = View.VISIBLE
+        divider.visibility = View.VISIBLE
+
+        // Griglia a 2 colonne per i prodotti
+        rvCategories.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        val discountedProducts = viewModel.products.value?.filter { it.discountPrice != null } ?: emptyList()
+
+        rvCategories.adapter = ProductAdapter(
+            productList = discountedProducts,
+            onItemClick = { product ->
+                val detailFrag = ProductFragment.newInstance(
+                    product.name, product.description, product.price, product.imageRes
+                )
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, detailFrag)
+                    .addToBackStack(null)
+                    .commit()
+            },
+            onCartChanged = {
+                viewModel.updateCartTotal()
+                viewModel.refreshProducts()
+            }
+        )
+    }
+
     private fun showSearchMode(query: String) {
         tabLayout.visibility = View.GONE
         divider.visibility = View.GONE
 
-        // I prodotti stanno meglio in una griglia (2 colonne)
-        // Controllo se dobbiamo cambiare LayoutManager per evitare sfarfallii
         if (rvCategories.layoutManager !is GridLayoutManager) {
             rvCategories.layoutManager = GridLayoutManager(requireContext(), 2)
         }
 
         val allProducts = viewModel.products.value ?: emptyList()
-
-        // Filtro: cerchiamo nel nome o nella label della categoria
         val filteredList = allProducts.filter { product ->
             product.name.contains(query, ignoreCase = true) ||
                     product.category.label.contains(query, ignoreCase = true)
         }
 
-        // Creiamo l'adapter prodotti
-        val productAdapter = ProductAdapter(
+        rvCategories.adapter = ProductAdapter(
             productList = filteredList,
             onItemClick = { product ->
                 val detailFrag = ProductFragment.newInstance(
@@ -137,30 +145,28 @@ class ProductsSectionFragment : Fragment() {
                     .commit()
             },
             onCartChanged = {
-                // aggiorna il totale nel ViewModel quando clicchi + o -
                 viewModel.updateCartTotal()
-                viewModel.refreshProducts() // Forza l'aggiornamento UI
+                viewModel.refreshProducts()
             }
         )
-
-        rvCategories.adapter = productAdapter
     }
 
-    // --- Gestione Tab (Grafica e Logica) ---
     private fun setupTabLayout() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 currentTabName = tab?.text.toString()
-
-                //Gestione colore rosso 'offerte'
                 updateOfferteTabStyle(tab, true)
 
-                // Se sto cercando e cambio tab, pulisco la ricerca per tornare alle categorie
                 if (searchBar.text?.isNotEmpty() == true) {
                     searchBar.text?.clear()
-                    searchBar.clearFocus() // Chiude tastiera opzionale
+                    searchBar.clearFocus()
+                }
+
+                // LOGICA TAB OFFERTE
+                if (currentTabName == "Offerte") {
+                    showOfferteMode()
                 } else {
-                    filtraCategorie(currentTabName)
+                    showCategoriesMode()
                 }
             }
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -169,7 +175,6 @@ class ProductsSectionFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        // Inizializza stile tab iniziale
         for (i in 0 until tabLayout.tabCount) {
             val tab = tabLayout.getTabAt(i)
             updateOfferteTabStyle(tab, tab?.isSelected == true)
@@ -185,8 +190,10 @@ class ProductsSectionFragment : Fragment() {
     }
 
     private fun filtraCategorie(nomeTab: String) {
-        val listaFiltrata = ProductCategory.getLabelsByTab(nomeTab).toMutableList()
-        listaFiltrata.add("Vedi tutto")
-        categoryAdapter.updateData(listaFiltrata)
+        val categorieOriginali = ProductCategory.getLabelsByTab(nomeTab)
+        val listaOrdinata = mutableListOf<String>()
+        listaOrdinata.add("Vedi tutto")
+        listaOrdinata.addAll(categorieOriginali)
+        categoryAdapter.updateData(listaOrdinata)
     }
 }

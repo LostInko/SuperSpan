@@ -130,7 +130,28 @@ class HomeViewModel : ViewModel() {
         cartTotal.value = 0.0
 
         // Carica indirizzi
+        applyRandomDiscounts()
+        cartTotal.value = 0.0
         loadAddresses()
+    }
+
+    // ------------------
+    // Sconta randomicamente i prodotti
+    // ------------------
+    private fun applyRandomDiscounts() {
+        val currentList = products.value ?: return
+        // Mischia la lista e prendi i primi 7
+        val discountedProducts = currentList.shuffled().take(7)
+
+        discountedProducts.forEach { product ->
+            val original = product.parsedPrice()
+            // Calcola uno sconto random tra 20% e 40%
+            val factor = (80 - (0..20).random()) / 100.0
+            val newPrice = original * factor
+
+            // Formatta il prezzo con due decimali e virgola
+            product.discountPrice = String.format("%.2f€", newPrice).replace(".", ",")
+        }
     }
 
     // -------------------------

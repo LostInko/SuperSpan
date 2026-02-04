@@ -79,6 +79,23 @@ class ProductFragment : Fragment() {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        // Dentro onCreateView di ProductFragment
+        val txtPrice = v.findViewById<TextView>(R.id.product_price)
+        val txtOldPrice = v.findViewById<TextView>(R.id.product_old_price)
+        val currentProduct = resolveCurrentProduct()
+
+        if (currentProduct?.discountPrice != null) {
+            txtPrice.text = currentProduct.discountPrice
+            txtPrice.setTextColor(resources.getColor(R.color.red, null))
+
+            txtOldPrice.visibility = View.VISIBLE
+            txtOldPrice.text = currentProduct.price
+            txtOldPrice.paintFlags = txtOldPrice.paintFlags or android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
+        } else {
+            txtPrice.text = currentProduct?.price
+            txtPrice.setTextColor(resources.getColor(R.color.black, null))
+            txtOldPrice.visibility = View.GONE
+        }
 
         // ---- Preferiti (cuore in alto a destra) ----
         val btnFavTop = v.findViewById<AppCompatImageView>(R.id.btnFavTop)
