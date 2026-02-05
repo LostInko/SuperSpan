@@ -79,8 +79,6 @@ class ApplicationCheckFragment : Fragment() {
     private val appicationFiles: String by lazy { arguments?.getString(ARG_FILES).orEmpty() }
     private val jobOfferImage : Int by lazy { arguments?.getInt(ARG_IMG) ?: -1 }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm = ViewModelProvider(requireActivity())[WorkWithUsViewModel::class.java]
@@ -100,7 +98,7 @@ class ApplicationCheckFragment : Fragment() {
         v.findViewById<TextView>(R.id.offer_description)?.text = jobOfferDesc
         v.findViewById<ImageView>(R.id.topImage).setImageResource(jobOfferImage)
 
-        // Back button
+        // Bottone Back
         v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -128,7 +126,6 @@ class ApplicationCheckFragment : Fragment() {
             val newQuestion = Question(title = file.fileTitle, answer = file.fileName, options = listOf(), tipo = TipoDomanda.Aperta, hasError = false )
             listQuestion.add(newQuestion)
         }
-
 
         rvQuestion.adapter = QuestionCheckAdapter(listQuestion)
 

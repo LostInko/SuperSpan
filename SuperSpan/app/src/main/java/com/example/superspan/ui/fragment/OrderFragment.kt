@@ -34,8 +34,6 @@ class OrderFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_order, container, false)
         vm = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
 
-
-        // Inside onCreateView or onViewCreated
         val tvAddressTitle = view.findViewById<TextView>(R.id.tvAddressTitle)
         val tvAddressDetails = view.findViewById<TextView>(R.id.tvAddressDetails)
         val tvChangeAddress = view.findViewById<TextView>(R.id.tvChangeAddress)
@@ -47,13 +45,12 @@ class OrderFragment : Fragment() {
             val defaultAddress = allAddresses.find { it.isSelected }
 
             if (defaultAddress != null) {
-                tvAddressTitle.text = defaultAddress.Name // e.g., "Home"
+                tvAddressTitle.text = defaultAddress.Name
                 tvAddressDetails.text = "${defaultAddress.Address}, ${defaultAddress.City}"
             }
         }
 
         tvChangeAddress.setOnClickListener {
-            // Navigate to the fragment showing all addresses
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, AddressListFragment())
                 .addToBackStack(null)
@@ -81,8 +78,7 @@ class OrderFragment : Fragment() {
         val tvEmptyCart = view.findViewById<TextView>(R.id.tvEmptyCart)
 
 
-
-        // Bottone back (in testa alla pagina)
+        // Bottone Back
         view.findViewById<View>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -125,7 +121,5 @@ class OrderFragment : Fragment() {
                 rcProducts.visibility = View.VISIBLE
             }
         }
-
     }
-
 }

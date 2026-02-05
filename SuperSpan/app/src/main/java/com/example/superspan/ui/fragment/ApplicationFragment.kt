@@ -72,12 +72,11 @@ class ApplicationFragment : Fragment() {
     private val originalOfferName: String by lazy { arguments?.getString(ARG_NAME).orEmpty() }
     private val applicationUserId: String by lazy { arguments?.getString(ARG_USER_ID).orEmpty() }
     private val applicationOfferId: Int by lazy { arguments?.getInt(ARG_JOB_OFFER) ?: -2 }
-    private val applicationRisposte: String by lazy { arguments?.getString(ARG_RISPOSTE).orEmpty() }
 
     private lateinit var adapterSummary: QuestionCheckAdapter
     private var tempVideoUri: Uri? = null
 
-    // Launcher CV
+    // Launcher caricamento CV
     private val cvLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
             updateDocument(uri, TipoFile.CV)
@@ -85,7 +84,7 @@ class ApplicationFragment : Fragment() {
         }
     }
 
-    // Launcher Video Galleria
+    // Launcher caricamento Video Galleria
     private val videoGalleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
             updateDocument(uri, TipoFile.Video)
@@ -93,7 +92,7 @@ class ApplicationFragment : Fragment() {
         }
     }
 
-    // Launcher Video Camera
+    // Launcher caricamento Video Camera
     private val takeVideoLauncher = registerForActivityResult(ActivityResultContracts.CaptureVideo()) { success ->
         if (success && tempVideoUri != null) {
             updateDocument(tempVideoUri!!, TipoFile.Video, isCamera = true)
@@ -109,7 +108,6 @@ class ApplicationFragment : Fragment() {
         }
     }
 
-    // UI Elements
     private lateinit var adapterQuestionsStep1: QuestionAdapter
     private lateinit var adapterQuestionsStep2: QuestionAdapter
     private lateinit var adapterFileCV: DocumentsAdapter
@@ -141,7 +139,7 @@ class ApplicationFragment : Fragment() {
             setupInitialData()
         }
 
-        // Init UI Reference
+        // Binding elementi View
         viewFlipper = view.findViewById(R.id.viewFlipper)
         btnStepAvanti = view.findViewById(R.id.btnStepAvanti)
         cbPrivacy = view.findViewById(R.id.cbPrivacy)
@@ -150,7 +148,7 @@ class ApplicationFragment : Fragment() {
         btnBackTop = view.findViewById(R.id.btnBackTop)
         val rvSummary = view.findViewById<RecyclerView>(R.id.rvSummary)
 
-        // SETUP RECYCLER VIEWS
+        // Setup Recycler Views
 
         // Step 1 - Dati Personali
         listStep1 = question_list.take(4)
@@ -191,7 +189,8 @@ class ApplicationFragment : Fragment() {
         adapterSummary = QuestionCheckAdapter(emptyList())
         rvSummary.adapter = adapterSummary
 
-        // BOTTONI
+
+        // Pulsanti
 
         // Tasto Avanti
         btnStepAvanti.setOnClickListener {
@@ -381,8 +380,7 @@ class ApplicationFragment : Fragment() {
         parentFragmentManager.popBackStack()
     }
 
-    // --- Metodi per Video e File ---
-
+    // Metodi per Video e File
     private fun showVideoOptionsDialog() {
         val options = arrayOf("Registra Video", "Scegli dalla Galleria")
         AlertDialog.Builder(requireContext())
