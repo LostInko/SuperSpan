@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             ))
         )
         GlobalData.user_list.add(
-            1,
+            2,
             User("Diego", "Serra", "13/01/2005", "Cagliari", "d", "s"
             )
         )
@@ -106,10 +106,6 @@ class MainActivity : AppCompatActivity() {
                     ContextCompat.getColorStateList(this, R.color.soft_red)
                 etPassword.backgroundTintList =
                     ContextCompat.getColorStateList(this, R.color.soft_red)
-
-                // 3) Svuota i campi per nuovo tentativo
-                //etUsername.text.clear()
-                //etPassword.text.clear()
             }
         }
 
@@ -144,7 +140,7 @@ class MainActivity : AppCompatActivity() {
                 before: Int,
                 count: Int
             ) {
-                // Appena l'utente scrive qualcosa, nascondiamo l'errore!
+                // Appena l'utente scrive qualcosa
 
                 // 1. Nascondi la scritta rossa
                 tvError.visibility = TextView.INVISIBLE
@@ -164,19 +160,19 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    /** Apre la schermata di registrazione. */
+    // Apre register
     private fun register() {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
     }
 
-    /** Apre la HomeActivity (login riuscito). */
+    // Apre home
     private fun login() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
 
-    /** Apre la schermata di recupero password. */
+    //Apre recupero passworrd
     private fun passDim() {
         val intent = Intent(this, PasswordActivity::class.java)
         startActivity(intent)

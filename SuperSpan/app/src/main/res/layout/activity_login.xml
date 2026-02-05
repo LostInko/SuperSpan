@@ -44,7 +44,7 @@
             android:text="Username"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_marginTop="10dp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -71,7 +71,7 @@
             android:text="Password"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_marginTop="10dp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -119,7 +119,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:text="Non hai un account?"
+                android:text="Non hai un account? "
                 android:textStyle="italic"
                 android:gravity="center"
                 android:textSize="20sp"
@@ -130,9 +130,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Registrati!"
+                android:textStyle="bold"
                 android:gravity="center"
                 android:textSize="20sp"
-                android:textColor="#71DB76" />
+                android:textColor="@color/brand_primary" />
         </LinearLayout>
 
         <View
