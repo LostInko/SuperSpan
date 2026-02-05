@@ -37,7 +37,6 @@ class AddressListFragment : Fragment() {
             }
         }
 
-        // Binding dei componenti
         val backButton = view.findViewById<ImageView>(R.id.btnBackTop)
 
         backButton.setOnClickListener {

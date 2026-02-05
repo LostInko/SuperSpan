@@ -39,7 +39,7 @@ class OrderFragment : Fragment() {
         val tvChangeAddress = view.findViewById<TextView>(R.id.tvChangeAddress)
         val recyclerViewProduct = view.findViewById<RecyclerView>(R.id.recyclerCart)
 
-        tvTotalPrice = view.findViewById<TextView>(R.id.tv_total_price)
+        tvTotalPrice = view.findViewById(R.id.tv_total_price)
 
         vm.addresses.observe(viewLifecycleOwner) { allAddresses ->
             val defaultAddress = allAddresses.find { it.isSelected }

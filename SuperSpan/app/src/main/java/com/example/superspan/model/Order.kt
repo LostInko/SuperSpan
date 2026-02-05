@@ -8,7 +8,6 @@ data class Order(
 ) {
     companion object {
         private var nextOrderId = 1
-
         fun generateId(): Int {
             return nextOrderId++
         }

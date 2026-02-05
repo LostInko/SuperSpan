@@ -1,6 +1,5 @@
 package com.example.superspan.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ class AddressAdapter(
 ) : RecyclerView.Adapter<AddressAdapter.AddressViewHolder>() {
 
     class AddressViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        // Usiamo gli ID del TUO file XML
         val txtName: TextView = view.findViewById(R.id.txtNameAddress)
         val txtAddress: TextView = view.findViewById(R.id.txtAddress)
         val txtCap: TextView = view.findViewById(R.id.txtCap)
@@ -37,13 +35,12 @@ class AddressAdapter(
         val addressEncoded = "${item.Address}, ${item.City}".replace(" ", "+")
         val mapUrl = "https://maps.googleapis.com/maps/api/staticmap?center=$addressEncoded&zoom=15&size=200x200&key=AIzaSyBhUqEjaJ14r8GvdmfYVkKtpVhXpoY3dYI"
 
-        // Usiamo Glide per caricare la mappa nell'ImageView
+        //Libreria Glide per caricare la mappa nell'ImageView
         Glide.with(holder.itemView.context)
             .load(mapUrl)
             .centerCrop()
             .into(holder.imgMapPreview)
 
-        // Mappatura 1:1 con i campi della tua classe Address
         holder.txtName.text = item.Name
         holder.txtAddress.text = item.Address
         holder.txtCap.text = item.CAP

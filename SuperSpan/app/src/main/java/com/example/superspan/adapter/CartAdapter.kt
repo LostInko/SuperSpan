@@ -17,14 +17,6 @@ class CartAdapter(
     private val vm: HomeViewModel
 ) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
-    private var swipedPosition = -1
-
-    fun setItemSwiped(position: Int) {
-        val previousPosition = swipedPosition
-        swipedPosition = position
-        if (previousPosition != -1) notifyItemChanged(previousPosition)
-        notifyItemChanged(swipedPosition)
-    }
 
     class CartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imgProduct: ImageView = view.findViewById(R.id.imgProduct)
@@ -51,14 +43,6 @@ class CartAdapter(
         notifyDataSetChanged()
     }
 
-    fun isItemOpen(position: Int): Boolean = swipedPosition == position
-
-    fun closeSwipedItem() {
-        val prev = swipedPosition
-        swipedPosition = -1
-        if (prev != -1) notifyItemChanged(prev)
-    }
-
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         val product = cartList[position]
 
@@ -67,20 +51,19 @@ class CartAdapter(
         holder.txtCount.text = product.qty.toString()
         holder.viewForeground.translationX = 0f
 
-        // --- LOGICA PREZZI E COLORI ---
         if (product.discountPrice != null) {
-            // Caso Prodotto in Offerta
+            //prodotto in offerta
             holder.txtPrice.text = product.discountPrice
             holder.txtPrice.setTextColor(Color.parseColor("#D60000")) // Rosso
 
             holder.txtOldPrice.visibility = View.VISIBLE
             holder.txtOldPrice.text = product.price
-            // Applica la linea barrata
+
             holder.txtOldPrice.paintFlags = holder.txtOldPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         } else {
-            // Caso Prodotto a Prezzo Pieno
+            //prodotto normale
             holder.txtPrice.text = product.price
-            holder.txtPrice.setTextColor(Color.BLACK) // Nero
+            holder.txtPrice.setTextColor(Color.BLACK)
             holder.txtOldPrice.visibility = View.GONE
         }
 
@@ -88,20 +71,8 @@ class CartAdapter(
             holder.imgProduct.setImageResource(product.imageRes)
         }
 
-        // Gestione Swipe (Foreground translation)
-        val buttonWidth = 200f // Valore di fallback se width è 0 all'inizio
-        if (position == swipedPosition) {
-            holder.viewForeground.animate().translationX(-220f).setDuration(200).start()
-        } else {
-            holder.viewForeground.animate().translationX(0f).setDuration(200).start()
-        }
-
-        holder.viewForeground.setOnClickListener {
-            if (swipedPosition == position) closeSwipedItem()
-        }
 
         holder.btnDelete.setOnClickListener {
-            swipedPosition = -1
             vm.updateProductQuantity(product, 0)
         }
 

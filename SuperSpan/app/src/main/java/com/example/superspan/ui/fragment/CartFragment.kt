@@ -63,7 +63,7 @@ class CartFragment : Fragment() {
                 btnPay.alpha = 0.6f;
             } else {
                 tvEmptyCart.visibility = View.GONE
-                cartAdapter.updateData(itemsInCart) // Usiamo il nuovo metodo
+                cartAdapter.updateData(itemsInCart)
             }
         }
 

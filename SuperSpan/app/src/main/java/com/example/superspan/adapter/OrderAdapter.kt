@@ -1,4 +1,4 @@
-package com.example.superspan.ui.adapter
+package com.example.superspan.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -45,7 +45,7 @@ class OrderAdapter(private val onItemClick: (Order) -> Unit) : ListAdapter<Order
         holder.itemView.setOnClickListener { onItemClick(order) }
     }
 
-    // DiffUtil serve per aggiornare solo gli elementi cambiati, migliorando le performance
+    //Aggiorno solo gli elementi cambiati
     class OrderDiffCallback : DiffUtil.ItemCallback<Order>() {
         override fun areItemsTheSame(oldItem: Order, newItem: Order): Boolean {
             return oldItem.orderNumber == newItem.orderNumber

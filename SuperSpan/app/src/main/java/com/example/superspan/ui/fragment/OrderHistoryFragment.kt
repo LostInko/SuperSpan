@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.superspan.R
-import com.example.superspan.ui.adapter.OrderAdapter
+import com.example.superspan.adapter.OrderAdapter
 import com.example.superspan.viewmodel.HomeViewModel
 
 class OrderHistoryFragment : Fragment() {
@@ -30,7 +30,6 @@ class OrderHistoryFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_order_history, container, false)
 
-        // Binding dei componenti
         val backButton = view.findViewById<ImageView>(R.id.btnBackTop)
 
         backButton.setOnClickListener {

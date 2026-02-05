@@ -18,7 +18,6 @@ import com.google.android.material.card.MaterialCardView
 class OrderConfirmationFragment : Fragment() {
 
     private lateinit var vm : HomeViewModel
-
     private var tvCartAmountInActivity: TextView? = null
     private var tvTotalPrice: TextView? = null
     private var paymentMethod: String = "CREDIT_CARD"
@@ -47,14 +46,14 @@ class OrderConfirmationFragment : Fragment() {
             }
         }
 
-        val cardCreditCard = view.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardCreditCard)
-        val cardCash = view.findViewById<com.google.android.material.card.MaterialCardView>(R.id.cardCash)
+        val cardCreditCard = view.findViewById<MaterialCardView>(R.id.cardCreditCard)
+        val cardCash = view.findViewById<MaterialCardView>(R.id.cardCash)
 
         // Listener sui click
         cardCreditCard.setOnClickListener { selectPayment("CREDIT_CARD", view) }
         cardCash.setOnClickListener { selectPayment("CASH", view) }
 
-        tvTotalPrice = view.findViewById<TextView>(R.id.tv_total_price)
+        tvTotalPrice = view.findViewById(R.id.tv_total_price)
 
         return view
     }
@@ -79,7 +78,7 @@ class OrderConfirmationFragment : Fragment() {
             val cartProducts = vm.products.value?.filter { it.qty > 0 }?.map { it.copy() } ?: emptyList()
 
             val selectedAddress = vm.getSelectedAddress()
-            val selectedShop = GlobalData.selectedShop ?: "SuperSpan Store"
+            val selectedShop = GlobalData.selectedShop ?: "Negozio, SuperSpan"
 
             if (cartProducts.isNotEmpty() && selectedAddress != null) {
 
@@ -118,27 +117,27 @@ class OrderConfirmationFragment : Fragment() {
         val colorInactiveText = "#A0A0A0".toColorInt()
 
         if (method == "CREDIT_CARD") {
-            // --- CARTA DI CREDITO SELEZIONATA (Attiva) ---
-            cardCreditCard.strokeWidth = dpToPx(2) // 2dp bordo
+            //attivo carta di credito
+            cardCreditCard.strokeWidth = dpToPx(2)
             cardCreditCard.setStrokeColor(android.content.res.ColorStateList.valueOf(colorGreenIcon))
             tvCreditCard.setTextColor(colorGreenText)
             tvCreditCard.setTypeface(null, android.graphics.Typeface.BOLD)
 
-            // --- CONTANTI (Disattivo) ---
-            cardCash.strokeWidth = 0 // 0dp bordo
+            //disattivo contanti
+            cardCash.strokeWidth = 0
             cardCash.setStrokeColor(android.content.res.ColorStateList.valueOf(android.graphics.Color.TRANSPARENT))
             cardCash.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(colorWhite))
             tvCash.setTextColor(colorInactiveText)
             tvCash.setTypeface(null, android.graphics.Typeface.NORMAL)
 
         } else {
-            // --- CONTANTI SELEZIONATO (Attiva) ---
+            //attivo contanti
             cardCash.strokeWidth = dpToPx(2)
             cardCash.setStrokeColor(android.content.res.ColorStateList.valueOf(colorGreenIcon))
             tvCash.setTextColor(colorGreenText)
             tvCash.setTypeface(null, android.graphics.Typeface.BOLD)
 
-            // --- CARTA DI CREDITO (Disattivo) ---
+            //disattivo carta di credito
             cardCreditCard.strokeWidth = 0
             cardCreditCard.setStrokeColor(android.content.res.ColorStateList.valueOf(android.graphics.Color.TRANSPARENT))
             cardCreditCard.setCardBackgroundColor(android.content.res.ColorStateList.valueOf(colorWhite))
@@ -147,7 +146,6 @@ class OrderConfirmationFragment : Fragment() {
         }
     }
 
-    // Funzione per convertire DP in Pixel per il bordo
     private fun dpToPx(dp: Int): Int {
         return (dp * resources.displayMetrics.density).toInt()
     }
