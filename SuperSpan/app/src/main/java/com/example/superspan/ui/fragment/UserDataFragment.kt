@@ -91,7 +91,6 @@ class UserDataFragment : Fragment() {
             etDate.isFocusable = false
             etDate.isClickable = enabled
 
-
             tilConfirmPass.visibility = View.GONE
             tvConfermaLabel.visibility = View.GONE
             tvPassHint.visibility = View.GONE

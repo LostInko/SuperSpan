@@ -22,6 +22,7 @@ class AddAddressFragment : Fragment(R.layout.fragment_add_address) {
 
     private lateinit var vm: HomeViewModel
 
+    // Serve per fare le mappe, è personale dell'account GULUGULU di Diego
     private val API_KEY = "AIzaSyBhUqEjaJ14r8GvdmfYVkKtpVhXpoY3dYI"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -119,7 +120,6 @@ class AddAddressFragment : Fragment(R.layout.fragment_add_address) {
             }
         }
 
-        // --- 5) Setup Watcher (come nella tua RegisterActivity) ---
         fun setupWatcher(editText: EditText) {
             editText.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
@@ -146,7 +146,7 @@ class AddAddressFragment : Fragment(R.layout.fragment_add_address) {
         setupWatcher(etStreet)
         setupWatcher(etCap)
 
-        // --- 6) Click su Salva con controlli extra (es. lunghezza CAP) ---
+        // Click su Salva con controlli extra (es. lunghezza CAP) ---
         btnSave.setOnClickListener {
             var invalid = false
             val capText = etCap.text.toString().trim()

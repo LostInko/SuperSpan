@@ -78,7 +78,8 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="24dp"
             app:backgroundTint="@color/brand_primary"
-            app:srcCompat="@drawable/ic_plus" />
+            app:srcCompat="@drawable/ic_plus"
+            app:tint="@color/white"/>
 
     </FrameLayout>
 
