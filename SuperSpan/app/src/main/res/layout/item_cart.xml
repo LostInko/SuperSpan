@@ -40,123 +40,153 @@
                 android:layout_marginStart="12dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btnDelete"
-                    android:layout_width="55dp"
-                    android:layout_height="47dp"
-                    android:layout_gravity="end"
-                    android:padding="4dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_trash"
-                    app:tint="#D60000" />
-
-                <TextView
-                    android:id="@+id/txtTitle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:textColor="#000000"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    tools:text="Prodotto in offerta" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/txtDesc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:textColor="#666666"
-                    android:textSize="13sp"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    tools:text="Descrizione breve" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:textColor="#000000"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            tools:text="Prodotto in offerta" />
+
+                        <TextView
+                            android:id="@+id/txtDesc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="#666666"
+                            android:textSize="13sp"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            tools:text="Descrizione breve" />
+
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/btnDelete"
+                        android:layout_width="55dp"
+                        android:layout_height="47dp"
+                        android:layout_gravity="end"
+                        android:padding="4dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_trash"
+                        app:tint="#D60000" />
+
+                </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txtOldPrice"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/greenText"
-                        android:textSize="12sp"
-                        android:alpha="0.6"
-                        android:visibility="gone"
-                        tools:visibility="visible"
-                        tools:text="€ 2,50" />
+                        android:layout_marginTop="4dp"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtPrice"
+                        <TextView
+                            android:id="@+id/txtOldPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/greenText"
+                            android:textSize="12sp"
+                            android:alpha="0.6"
+                            android:visibility="gone"
+                            tools:visibility="visible"
+                            tools:text="€ 2,50" />
+
+                        <TextView
+                            android:id="@+id/txtPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:textColor="@color/red"
+                            android:fontFamily="sans-serif-black"
+                            tools:text="€ 1,99" />
+                    </LinearLayout>
+
+                    <Space
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:textColor="@color/red"
-                        android:fontFamily="sans-serif-black"
-                        tools:text="€ 1,99" />
+                        android:layout_weight="1"/>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/qtyContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/bg_qty_green"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:layout_gravity="bottom">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btnMinus"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:padding="4dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_minus"
+                            app:tint="@android:color/white" />
+
+                        <TextView
+                            android:id="@+id/txtCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:textColor="@android:color/white"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/btnPlus"
+                            app:layout_constraintStart_toEndOf="@id/btnMinus"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="1" />
+
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/btnPlus"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:padding="4dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_plus"
+                            app:tint="@android:color/white" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 </LinearLayout>
+
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/controlRow"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/rowTitlePrice"
-                android:layout_marginTop="12dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/qtyContainer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="36dp"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/bg_qty_green"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/btnMinus"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:padding="4dp"
-                        app:srcCompat="@drawable/ic_minus"
-                        app:tint="@android:color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                    <TextView
-                        android:id="@+id/txtCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:textColor="@android:color/white"
-                        app:layout_constraintStart_toEndOf="@id/btnMinus"
-                        app:layout_constraintEnd_toStartOf="@id/btnPlus"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        tools:text="1" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/btnPlus"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:padding="4dp"
-                        app:srcCompat="@drawable/ic_plus"
-                        app:tint="@android:color/white"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </RelativeLayout>
         </RelativeLayout>
     </FrameLayout>
 </androidx.cardview.widget.CardView>
