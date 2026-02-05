@@ -63,11 +63,7 @@ class PasswordActivity : AppCompatActivity() {
 
             // 2) Password uguali?
             if (newPass != confPass) {
-                etPassword.text.clear()
-                etPasswordConf.text.clear()
-                etPassword.error = "Le password non coincidono"
                 etPasswordConf.error = "Le password non coincidono"
-                etPassword.backgroundTintList = ContextCompat.getColorStateList(this, R.color.soft_red)
                 etPasswordConf.backgroundTintList = ContextCompat.getColorStateList(this, R.color.soft_red)
                 invalid = true
             }

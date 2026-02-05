@@ -190,7 +190,6 @@ class ProductAdapter(
     private fun dpToPx(v: View, dp: Float): Int =
         (dp * v.resources.displayMetrics.density).roundToInt()
 
-    // small extension without importing core-ktx if you prefer
     private inline fun ValueAnimator.doOnEnd(crossinline action: () -> Unit) {
         addListener(object : android.animation.Animator.AnimatorListener {
             override fun onAnimationStart(animation: android.animation.Animator) {}

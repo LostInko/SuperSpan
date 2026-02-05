@@ -116,7 +116,7 @@ class WorkWithUsFragment : Fragment() {
             cardFilterSort.strokeWidth = 4 // ispessisce  il bordo
 
         } else {
-            // Stato Default: Grigio standard
+            //Stato default
             val defaultGray = Color.parseColor("#A0A0A0")
             val defaultBlack = Color.parseColor("#000000")
 
