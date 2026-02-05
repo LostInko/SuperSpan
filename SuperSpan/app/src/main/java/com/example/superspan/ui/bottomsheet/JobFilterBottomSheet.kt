@@ -36,10 +36,9 @@ class JobFilterBottomSheet(
         val rbDesc = view.findViewById<RadioButton>(R.id.rbDesc)
 
         // 2. Ripristina lo stato precedente
-        // (Se avevi già scritto "Cagliari", lo riscrive nella casella)
         etLocation.setText(currentLocation)
 
-        // (Se avevi già selezionato "Decrescente", riaccende quel pallino)
+        // (Se era già selezionato "Decrescente", riaccende quel pallino)
         when (currentSortMode) {
             1 -> rbAsc.isChecked = true
             2 -> rbDesc.isChecked = true

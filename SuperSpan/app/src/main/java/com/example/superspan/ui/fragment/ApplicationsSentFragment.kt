@@ -33,7 +33,7 @@ class ApplicationsSentFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_job_applications_sent, container, false)
 
-        // ---- Back (ID unico presente: btnBackTop) ----
+        // ---- Back ----
         view.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
