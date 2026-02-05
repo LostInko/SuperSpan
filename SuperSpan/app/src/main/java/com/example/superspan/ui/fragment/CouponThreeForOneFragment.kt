@@ -15,15 +15,13 @@ import com.example.superspan.adapter.ThreeForOneAdapter
 import com.example.superspan.model.Product
 import com.example.superspan.model.ProductCategory
 import com.example.superspan.model.parsedPrice
+import com.example.superspan.viewmodel.CouponType
 import com.example.superspan.viewmodel.HomeViewModel
 
 /**
- * Fragment "3×1" (seleziona 3 prodotti - paghi il più costoso).
- *
- * - Visualizza SOLO prodotti di CURA_PERSONALE.
- * - L'utente può selezionare fino a 3 prodotti (tap per selezionare/deselezionare).
- * - Non usiamo badge o testi "Paghi/Omaggio": SOLO bordo rosso nello slot pagato.
- * - Barra di conferma full-width con testo "Conferma".
+ * Fragment per l'offerta promozionale "3x1 Cura Personale".
+ * Consente la selezione di esattamente 3 prodotti della categoria CURA_PERSONALE.
+ * Applica una logica visiva per cui il prodotto più costoso viene evidenziato come "pagato".
  */
 class CouponThreeForOneFragment : Fragment() {
 
@@ -31,16 +29,17 @@ class CouponThreeForOneFragment : Fragment() {
         fun newInstance(): CouponThreeForOneFragment = CouponThreeForOneFragment()
     }
 
-    private lateinit var vm: HomeViewModel
+    private lateinit var viewModel: HomeViewModel
     private lateinit var adapter: ThreeForOneAdapter
 
-    // Stato locale: prodotti selezionati e prodotto "pagato" (il più costoso)
-    private val selected = mutableListOf<Product>()
+    // Stato locale per gestire la selezione temporanea prima della conferma
+    private val selectedItems = mutableListOf<Product>()
     private var paidProduct: Product? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
+        // Accesso al ViewModel condiviso con l'Activity per gestire lo stato dei coupon
+        viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -50,110 +49,100 @@ class CouponThreeForOneFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // --- Header: back + titolo ---
-        view.findViewById<View>(R.id.btnBackTop)?.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-        view.findViewById<TextView>(R.id.tvTitle)?.text = "3×1 • Cura personale"
-
-        // --- Lista: solo CURA_PERSONALE ---
-        val items = vm.products.value
-            .orEmpty()
-            .filter { it.category == ProductCategory.CURA_PERSONALE }
-
-        // RecyclerView: 2 colonne, spaziatura uniforme e padding laterale per centratura visiva
-        val rv = view.findViewById<RecyclerView>(R.id.rvProducts)
-        val glm = GridLayoutManager(requireContext(), 2)
-        rv.layoutManager = glm
-
-        // Spaziatura in dp -> px
-        val spacingPx = (12 * view.resources.displayMetrics.density).toInt()
-        rv.setPadding(spacingPx, 0, spacingPx, 0)
-        rv.clipToPadding = false
-        rv.addItemDecoration(GridSpacingItemDecoration(spanCount = 2, spacingPx = spacingPx, includeEdge = true))
-
-        // Adapter: nessun bottone interno, tap sull'item/immagine per il toggle
-        adapter = ThreeForOneAdapter(
-            items = items,
-            isSelected = { p -> selected.contains(p) },
-            isPaid = { p -> paidProduct == p },
-            onClick = { p -> onProductTap(p) } // toggling
-        )
-        rv.adapter = adapter
-
-        // --- UI iniziale: bottom bar + barra conferma ---
+        setupHeader(view)
+        setupRecyclerView(view)
         updateBottomBar(view)
         setupConfirmBar(view)
     }
 
+    /** Configura i componenti della testata e il pulsante di ritorno. */
+    private fun setupHeader(view: View) {
+        view.findViewById<View>(R.id.btnBackTop)?.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+        view.findViewById<TextView>(R.id.tvTitle)?.text = "3×1 • Cura personale"
+    }
+
+    /** Configura la griglia dei prodotti filtrando per la categoria specifica. */
+    private fun setupRecyclerView(view: View) {
+        // Filtraggio dati: mostriamo solo prodotti appartenenti alla categoria Bellezza/Igiene
+        val items = viewModel.products.value.orEmpty()
+            .filter { it.category == ProductCategory.CURA_PERSONALE }
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.rvProducts)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        // Configurazione spaziatura dinamica per la griglia
+        val spacingPx = (12 * view.resources.displayMetrics.density).toInt()
+        recyclerView.setPadding(spacingPx, 0, spacingPx, 0)
+        recyclerView.clipToPadding = false
+        recyclerView.addItemDecoration(GridSpacingItemDecoration(2, spacingPx, true))
+
+        adapter = ThreeForOneAdapter(
+            items = items,
+            isSelected = { p -> selectedItems.contains(p) },
+            isPaid = { p -> paidProduct == p },
+            onClick = { p -> handleProductSelection(p) }
+        )
+        recyclerView.adapter = adapter
+    }
+
     /**
-     * Toggle selezione:
-     * - se già selezionato -> rimuovi
-     * - se non selezionato -> aggiungi (max 3)
-     * Aggiorna prodotto pagato (il più costoso), lista e UI di supporto.
+     * Gestisce il toggle della selezione:
+     * - Rimuove se già presente.
+     * - Aggiunge se non presente (fino a un massimo di 3).
      */
-    private fun onProductTap(p: Product) {
-        if (selected.contains(p)) {
-            selected.remove(p)
+    private fun handleProductSelection(product: Product) {
+        if (selectedItems.contains(product)) {
+            selectedItems.remove(product)
         } else {
-            if (selected.size == 3) {
-                Toast.makeText(requireContext(), "Puoi selezionare massimo 3 prodotti", Toast.LENGTH_SHORT).show()
+            if (selectedItems.size >= 3) {
+                Toast.makeText(requireContext(), "Massimo 3 prodotti", Toast.LENGTH_SHORT).show()
                 return
             }
-            selected.add(p)
+            selectedItems.add(product)
         }
-        recomputePaid()
+
+        recomputePriceLogic()
         adapter.notifyDataSetChanged()
+
         view?.let {
             updateBottomBar(it)
             setupConfirmBar(it)
         }
     }
 
-    /** Ricalcola quale dei selezionati è "pagato": quello con prezzo più alto. */
-    private fun recomputePaid() {
-        paidProduct = selected.maxByOrNull { it.parsedPrice() }
+    /** Individua il prodotto con il prezzo maggiore tra i selezionati per l'evidenziazione visiva. */
+    private fun recomputePriceLogic() {
+        paidProduct = selectedItems.maxByOrNull { it.parsedPrice() }
     }
 
-    /**
-     * Barra di conferma full-width:
-     * - Abilitata solo con 3 selezionati
-     * - Colori/sfondo diversi per stato enabled/disabled
-     */
+    /** Aggiorna lo stato della barra di conferma (abilitata solo con 3 prodotti selezionati). */
     private fun setupConfirmBar(root: View) {
         val confirmBar = root.findViewById<TextView>(R.id.btnConfirmBar)
-        val enabled = selected.size == 3
+        val isReady = selectedItems.size == 3
 
-        confirmBar.isEnabled = enabled
+        confirmBar.isEnabled = isReady
         confirmBar.background = ContextCompat.getDrawable(
             requireContext(),
-            if (enabled) R.drawable.bg_confirm_bar_enabled else R.drawable.bg_confirm_bar_disabled
+            if (isReady) R.drawable.bg_confirm_bar_enabled else R.drawable.bg_confirm_bar_disabled
         )
-        confirmBar.text = "Conferma"
 
         confirmBar.setOnClickListener {
-            if (selected.size == 3) {
+            if (isReady) {
                 it.performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM)
-                vm.markCouponActivated()
-                vm.activateCoupon(
-                    type = com.example.superspan.viewmodel.CouponType.THREE_FOR_ONE,
+                viewModel.markCouponActivated()
+                viewModel.activateCoupon(
+                    type = CouponType.THREE_FOR_ONE,
                     title = "3×1 • Cura personale",
                     detail = null
                 )
-                Toast.makeText(requireContext(), "Coupon confermato", Toast.LENGTH_SHORT).show()
                 requireActivity().onBackPressedDispatcher.onBackPressed()
-            } else {
-                Toast.makeText(requireContext(), "Seleziona 3 prodotti", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    /**
-     * Aggiorna la bottom bar:
-     * - Mostra i 3 slot con l'immagine del prodotto selezionato (placeholder se mancante)
-     * - Solo il "pagato" ha bordo rosso; gli altri bordo neutro.
-     * - Nessun badge o testo.
-     */
+    /** Mostra le anteprime dei prodotti selezionati negli slot della barra inferiore. */
     private fun updateBottomBar(root: View) {
         val slots = listOf(
             root.findViewById<ImageView>(R.id.slot1),
@@ -161,18 +150,18 @@ class CouponThreeForOneFragment : Fragment() {
             root.findViewById<ImageView>(R.id.slot3),
         )
 
-        // Reset: placeholder + bordo neutro
+        // Reset visuale degli slot
         slots.forEach { slot ->
             slot.setImageResource(R.drawable.ic_question)
             slot.setBackgroundResource(R.drawable.bg_slot_neutral)
         }
 
-        // Riempie gli slot in ordine di selezione
-        selected.forEachIndexed { i, p ->
+        // Popolamento dinamico in base alla selezione attuale
+        selectedItems.forEachIndexed { i, product ->
             if (i < slots.size) {
-                val imgRes = if (p.imageRes != 0) p.imageRes else R.drawable.ic_question
-                slots[i].setImageResource(imgRes)
-                val isPaid = (p == paidProduct)
+                slots[i].setImageResource(if (product.imageRes != 0) product.imageRes else R.drawable.ic_question)
+                // Applica bordo rosso solo al prodotto identificato come "a pagamento"
+                val isPaid = (product == paidProduct)
                 slots[i].setBackgroundResource(
                     if (isPaid) R.drawable.bg_slot_paid_red else R.drawable.bg_slot_neutral
                 )
@@ -182,28 +171,27 @@ class CouponThreeForOneFragment : Fragment() {
 }
 
 /**
- * ItemDecoration per spaziatura uniforme nelle griglie:
- * - includeEdge=true applica spacing anche ai bordi esterni -> effetto visivo centrato
+ * Decoratore per RecyclerView per gestire i margini uniformi tra gli elementi della griglia.
  */
 class GridSpacingItemDecoration(
     private val spanCount: Int,
-    private val spacingPx: Int,
-    private val includeEdge: Boolean = true
+    private val spacing: Int,
+    private val includeEdge: Boolean
 ) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(outRect: android.graphics.Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        val position = parent.getChildAdapterPosition(view) // posizione dell'item
-        val column = position % spanCount                   // colonna (0..spanCount-1)
+        val position = parent.getChildAdapterPosition(view)
+        val column = position % spanCount
 
         if (includeEdge) {
-            outRect.left = spacingPx - column * spacingPx / spanCount    // spazio a sinistra
-            outRect.right = (column + 1) * spacingPx / spanCount         // spazio a destra
-            if (position < spanCount) outRect.top = spacingPx            // top per la prima riga
-            outRect.bottom = spacingPx                                   // bottom per tutte
+            outRect.left = spacing - column * spacing / spanCount
+            outRect.right = (column + 1) * spacing / spanCount
+            if (position < spanCount) outRect.top = spacing
+            outRect.bottom = spacing
         } else {
-            outRect.left = column * spacingPx / spanCount
-            outRect.right = spacingPx - (column + 1) * spacingPx / spanCount
-            if (position >= spanCount) outRect.top = spacingPx
+            outRect.left = column * spacing / spanCount
+            outRect.right = spacing - (column + 1) * spacing / spanCount
+            if (position >= spanCount) outRect.top = spacing
         }
     }
 }

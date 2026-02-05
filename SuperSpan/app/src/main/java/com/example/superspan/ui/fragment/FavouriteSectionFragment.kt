@@ -13,40 +13,63 @@ import com.example.superspan.R
 import com.example.superspan.adapter.FavouriteAdapter
 import com.example.superspan.viewmodel.HomeViewModel
 
+/**
+ * Fragment che gestisce la sezione dei Preferiti.
+ * Osserva i cambiamenti nel ViewModel per aggiornare la lista di Michele in tempo reale.
+ */
 class FavouriteSectionFragment : Fragment() {
 
-    private lateinit var vm: HomeViewModel
-    private lateinit var rv: RecyclerView
-    private lateinit var emptyView: TextView
-    private lateinit var adapter: FavouriteAdapter
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var emptyStateText: TextView
+    private lateinit var favouriteAdapter: FavouriteAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
+        // Utilizziamo requireActivity() per condividere lo stesso ViewModel tra Fragment diversi
+        viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_favourite, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        rv = view.findViewById(R.id.rvFavorites)
-        emptyView = view.findViewById(R.id.tvEmpty)
+        // Inizializzazione delle View
+        recyclerView = view.findViewById(R.id.rvFavorites)
+        emptyStateText = view.findViewById(R.id.tvEmpty)
 
-        adapter = FavouriteAdapter(
+        setupRecyclerView()
+        observeViewModel()
+    }
+
+    private fun setupRecyclerView() {
+        // Inizializziamo l'adapter con una lista vuota e definiamo le azioni (lambda)
+        favouriteAdapter = FavouriteAdapter(
             items = emptyList(),
-            onRemoveFavorite = { p -> vm.toggleFavoriteByRef(p) },
-            onOpenDetail = { p -> /* apri dettaglio */ }
+            onRemoveFavorite = { product -> viewModel.toggleFavoriteByRef(product) },
+            onOpenDetail = { product ->
+            }
         )
 
-        rv.layoutManager = LinearLayoutManager(requireContext())
-        rv.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = favouriteAdapter
+    }
 
-        vm.favorites.observe(viewLifecycleOwner) { favs ->
-            adapter.submit(favs)
-            emptyView.visibility = if (favs.isNullOrEmpty()) View.VISIBLE else View.GONE
+    private fun observeViewModel() {
+        // Osserva la lista dei preferiti nel ViewModel
+        viewModel.favorites.observe(viewLifecycleOwner) { favoritesList ->
+            // Aggiorna i dati nell'adapter (Usa updateItems come definito nel nuovo Adapter)
+            favouriteAdapter.updateItems(favoritesList)
+
+            // Gestione del feedback visivo: se la lista è vuota, mostra il messaggio di aiuto
+            emptyStateText.visibility = if (favoritesList.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
     }
 }

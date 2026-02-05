@@ -119,8 +119,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btnFav"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             app:srcCompat="@drawable/ic_favorite"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

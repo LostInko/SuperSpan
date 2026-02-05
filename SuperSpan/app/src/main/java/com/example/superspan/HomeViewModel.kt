@@ -11,9 +11,9 @@ import com.example.superspan.model.parsedPrice
 import com.example.superspan.ui.activity.GlobalData
 import java.util.UUID
 
-// =======================
+// ============================================================
 //   COUPON: TIPI & MODEL
-// =======================
+// ============================================================
 enum class CouponType {
     THREE_FOR_ONE,           // 3×1 • Cura personale
     PASTA_THREE_FOR_TWO,     // Pasta • 3×2 (stesso prodotto)
@@ -23,8 +23,8 @@ enum class CouponType {
 data class ActiveCoupon(
     val id: String = UUID.randomUUID().toString(),
     val type: CouponType,
-    val title: String,         // Es. "3×1 • Cura personale"
-    val detail: String? = null // Es. "Spaghetti n.5"
+    val title: String,
+    val detail: String? = null
 )
 
 class HomeViewModel : ViewModel() {
@@ -44,10 +44,7 @@ class HomeViewModel : ViewModel() {
     val orders = MutableLiveData<List<Order>>(emptyList())
     val selectedOrder = MutableLiveData<Order?>()
 
-    // ======================
-    //        COUPON
-    // ======================
-    // Nuova struttura: LISTA di coupon attivi
+    // -- Gestione Coupon --
     private val _activeCoupons = MutableLiveData<List<ActiveCoupon>>(emptyList())
     val activeCoupons: MutableLiveData<List<ActiveCoupon>> get() = _activeCoupons
 
@@ -56,7 +53,7 @@ class HomeViewModel : ViewModel() {
     val activatedCouponName = MutableLiveData<String?>(null)
 
     init {
-        // Inizializza prodotti (con categorie)
+        // 1. POPOLAMENTO PRODOTTI (Dati invariati come richiesto)
         products.value = mutableListOf(
             // --- BEVANDE ANALCOLICHE ---
             Product("Succo ACE", "Brik 0.2L x 6", "1,75€", R.drawable.succo_ace, ProductCategory.BEVANDE_ANALCOLICHE),
@@ -127,74 +124,62 @@ class HomeViewModel : ViewModel() {
             Product("Cibo Cani Manzo", "400g", "1,10€", R.drawable.lattina_cane, ProductCategory.ANIMALI),
         )
 
+        // 2. LOGICA INIZIALE E SIMULAZIONE MICHELE
         cartTotal.value = 0.0
-
-        // Carica indirizzi
         applyRandomDiscounts()
-        cartTotal.value = 0.0
         loadAddresses()
 
-        // --- SIMULAZIONE CASISTICHE PREFERITI PER UTENTE ATTENTO ---
         val currentProducts = products.value ?: mutableListOf()
         if (GlobalData.currentUser?.username == "m") {
-            // 1. CASO DIMINUZIONE: Il prodotto è sceso ulteriormente di prezzo (Successo UX)
+            // Caso Diminuzione (Successo per Michele)
             currentProducts.find { it.name == "Spaghetti n.5" }?.apply {
                 isFavorite = true
-                priceWhenAddedToFav = "1,20€" // Salvato quando costava caro
-//            discountPrice = "0,85€"       // Ora è in super offerta
+                priceWhenAddedToFav = "1,20€"
             }
 
-            // 2. CASO AUMENTO: L'offerta è scaduta (Urgenza UX)
+            // Caso Aumento (Offerta scaduta)
             currentProducts.find { it.name == "Patatine Classiche" }?.apply {
                 isFavorite = true
-                priceWhenAddedToFav = "0,90€" // Salvato in offerta
-//            discountPrice = null          // L'offerta è finita
-                // Il prezzo attuale (price) tornerà ad essere quello pieno, es. "5,20€"
+                priceWhenAddedToFav = "0,90€"
             }
 
-            // 3. CASO INVARIATO: Prezzo stabile (Affidabilità UX)
+            // Caso Invariato (Affidabilità)
             currentProducts.find { it.name == "Latte Arborea" }?.apply {
                 isFavorite = true
                 priceWhenAddedToFav = "1,32€"
-//            discountPrice = "1,32€"
             }
 
-            // 4. CASO SCONTO ATTUALE VS SALVATO: Sconto presente ma meno conveniente dell'inizio
+            // Caso Sconto meno conveniente di prima
             currentProducts.find { it.name == "Detersivo Piatti" }?.apply {
                 isFavorite = true
-                priceWhenAddedToFav = "1,00€" // Lo avevi visto a 1€
-//            discountPrice = "1,25€"       // Ora è scontato, ma costa comunque più di prima
+                priceWhenAddedToFav = "1,00€"
             }
 
-            // 5. CASO SUPER AFFARE: Il prezzo è crollato (Sconto > 0.50€)
+            // Caso Super Affare (Risparmio > 0.50€)
             currentProducts.find { it.name == "Ichnusa non filtrata" }?.apply {
                 isFavorite = true
-                priceWhenAddedToFav = "2,50€" // Prezzo originale alto
-//            discountPrice = "1,56€"       // Prezzo attuale (Risparmio di 0,94€!)
+                priceWhenAddedToFav = "2,50€"
             }
         }
 
-
-
-        // Aggiorna la lista dei preferiti per la UI
         recomputeFavorites()
     }
 
-    // ------------------
-    // Sconta randomicamente i prodotti
-    // ------------------
+    // GESTIONE SCONTI (Simulazione Volantino)
+    /**
+     * Applica sconti casuali tra il 20% e il 40% a 7 prodotti.
+     * Serve a simulare le offerte dinamiche che Michele cerca per risparmiare.
+     */
     private fun applyRandomDiscounts() {
         val currentList = products.value ?: return
-        // Mischia la lista e prendi i primi 7
         val discountedProducts = currentList.shuffled().take(7)
 
         discountedProducts.forEach { product ->
             val original = product.parsedPrice()
-            // Calcola uno sconto random tra 20% e 40%
             val factor = (80 - (0..20).random()) / 100.0
             val newPrice = original * factor
 
-            // Formatta il prezzo con due decimali e virgola
+            // Formatta il prezzo con virgola e simbolo euro per la UI
             product.discountPrice = String.format("%.2f€", newPrice).replace(".", ",")
         }
     }
@@ -297,37 +282,23 @@ class HomeViewModel : ViewModel() {
         notifyChange()
     }
 
-    // -------------------------
-    //         PREFERITI
-    // -------------------------
+
+    // GESTIONE PREFERITI
+    /**
+     * Aggiunge o rimuove un prodotto dai preferiti.
+     * Salva il prezzo storico al momento dell'aggiunta per permettere il confronto futuro.
+     */
     fun toggleFavoriteByRef(product: Product) {
         product.isFavorite = !product.isFavorite
-
-        // NUOVO: Se viene aggiunto, salviamo il prezzo attuale come riferimento storico
         if (product.isFavorite) {
+            // Salva il prezzo attuale (scontato o pieno) per monitorare le variazioni
             product.priceWhenAddedToFav = product.discountPrice ?: product.price
         }
-
         refreshProducts()
         recomputeFavorites()
     }
 
-    fun toggleFavoriteByIndex(index: Int) {
-        val list = products.value ?: return
-        if (index in list.indices) {
-            list[index].isFavorite = !list[index].isFavorite
-            refreshProducts()
-            recomputeFavorites()
-        }
-    }
-
-    fun toggleFavoriteByName(name: String) {
-        val p = products.value?.find { it.name == name } ?: return
-        p.isFavorite = !p.isFavorite
-        refreshProducts()
-        recomputeFavorites()
-    }
-
+    /** Filtra la lista prodotti per mostrare solo quelli salvati da Michele. */
     private fun recomputeFavorites() {
         favorites.postValue(products.value?.filter { it.isFavorite } ?: emptyList())
     }
@@ -345,57 +316,31 @@ class HomeViewModel : ViewModel() {
         selectedOrder.value = order
     }
 
-    // -------------------------
-    //           COUPON
-    // -------------------------
-
-    /** Nuovo metodo: controlla se è già attivo un coupon di quel tipo. */
+    // GESTIONE COUPON
+    /** Verifica se un coupon di una determinata categoria è già attivo. */
     fun hasActiveCouponOfType(type: CouponType): Boolean {
         val list = _activeCoupons.value ?: return false
         return list.any { it.type == type }
     }
 
-    /** Nuovo metodo: attiva un coupon (evita duplicati per tipo). */
+    /** Attiva un nuovo coupon assicurandosi che non ci siano duplicati dello stesso tipo. */
     fun activateCoupon(type: CouponType, title: String, detail: String? = null) {
         val current = _activeCoupons.value ?: emptyList()
-        if (current.any { it.type == type }) return // blocca duplicati
+        if (current.any { it.type == type }) return
 
         val updated = current + ActiveCoupon(type = type, title = title, detail = detail)
         _activeCoupons.value = updated
 
-        // aggiorna campi legacy
         isAnyCouponActivated.value = updated.isNotEmpty()
         updateLegacyName()
     }
 
-    /** Overload legacy: per compatibilità con chiamate vecchie `activateCoupon(name)` */
-    fun activateCoupon(name: String) {
-        // Prova a inferire il tipo dal titolo (best-effort, evita crash)
-        val lower = name.lowercase()
-        val inferredType: CouponType? = when {
-            lower.contains("3×1") || lower.contains("3x1") || lower.contains("cura personale") -> CouponType.THREE_FOR_ONE
-            lower.contains("3×2") || lower.contains("3x2") || lower.contains("pasta") -> CouponType.PASTA_THREE_FOR_TWO
-            lower.contains("bancofrutta") -> CouponType.BANCOFRUTTA_DISCOUNT
-            else -> null
-        }
-
-        if (inferredType != null) {
-            activateCoupon(inferredType, name, null)
-            return
-        }
-
-        // Fallback estrema: solo legacy fields (non aggiunge in lista)
-        isAnyCouponActivated.value = true
-        activatedCouponName.value = name
-    }
-
-    /** Legacy: flag usato prima; lo manteniamo (utile per analytics o compat). */
+    /** Imposta manualmente il flag di attivazione coupon. */
     fun markCouponActivated() {
         isAnyCouponActivated.value = true
-        // verrà riallineato quando si chiama activateCoupon(type,...)
     }
 
-    /** Rimuove uno specifico coupon per id. */
+    /** Rimuove un coupon specifico tramite il suo ID univoco. */
     fun removeCouponById(id: String) {
         val current = _activeCoupons.value ?: emptyList()
         val updated = current.filterNot { it.id == id }
@@ -405,14 +350,7 @@ class HomeViewModel : ViewModel() {
         updateLegacyName()
     }
 
-    /** Disattiva tutti i coupon. */
-    fun clearActivatedCoupon() {
-        _activeCoupons.value = emptyList()
-        isAnyCouponActivated.value = false
-        activatedCouponName.value = null
-    }
-
-    /** Aggiorna il nome singolo (compatibilità con UI precedente). */
+    /** Sincronizza il nome visualizzato per la UI legacy con il primo coupon attivo in lista. */
     private fun updateLegacyName() {
         val first = _activeCoupons.value?.firstOrNull()
         activatedCouponName.value = when {
@@ -421,5 +359,4 @@ class HomeViewModel : ViewModel() {
             else -> "${first.title} — ${first.detail}"
         }
     }
-
 }

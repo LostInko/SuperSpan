@@ -14,22 +14,22 @@ import com.example.superspan.viewmodel.CouponType
 import com.example.superspan.viewmodel.HomeViewModel
 
 /**
- * Fragment di conferma per il coupon "Bancofrutta".
- * - Mostra l'immagine del coupon (stessa del banner).
- * - Chiede conferma con bottone "Attiva coupon".
- * - Se confermato, attiva il coupon e lo aggiunge alla barra espandibile.
+ * Fragment per la gestione dell'attivazione del coupon "Bancofrutta".
+ * Gestisce la visualizzazione della promo e l'inserimento nel sistema dei coupon attivi.
  */
 class CouponBancofruttaFragment : Fragment() {
 
     companion object {
+        /** Factory method per creare un'istanza del fragment. */
         fun newInstance(): CouponBancofruttaFragment = CouponBancofruttaFragment()
     }
 
-    private lateinit var vm: HomeViewModel
+    private lateinit var viewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vm = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
+        // Recupero dell'istanza condivisa del ViewModel legata all'Activity
+        viewModel = ViewModelProvider(requireActivity())[HomeViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -39,48 +39,49 @@ class CouponBancofruttaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Titolo
-        view.findViewById<TextView>(R.id.tvTitle).text =
-            getString(R.string.bancofrutta_title)
+        // Configurazione UI: Inserimento testi e risorse grafiche
+        view.findViewById<TextView>(R.id.tvTitle).text = getString(R.string.bancofrutta_title)
+        view.findViewById<ImageView>(R.id.imgCouponPreview).setImageResource(R.drawable.coupon_store_bancofrutta)
 
-        // Immagine: stessa del banner
-        view.findViewById<ImageView>(R.id.imgCouponPreview)
-            .setImageResource(R.drawable.coupon_store_bancofrutta)
-
-        // Back
+        // Gestione navigazione: Pulsante di ritorno
         view.findViewById<View>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // Bottone Annulla (torna indietro)
+        // Azione Annulla: Ritorno alla schermata precedente con feedback aptico
         view.findViewById<View>(R.id.btnCancel)?.setOnClickListener {
             it.performHapticFeedback(android.view.HapticFeedbackConstants.REJECT)
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // Bottone Conferma: attiva coupon e chiudi
+        // Azione Conferma: Validazione e attivazione del coupon
         view.findViewById<View>(R.id.btnConfirm)?.setOnClickListener {
-            // Evita doppia attivazione dello stesso tipo
-            if (vm.hasActiveCouponOfType(CouponType.BANCOFRUTTA_DISCOUNT)) {
+
+            // 1. Controllo ridondanza: evita che l'utente attivi due volte lo stesso tipo di offerta
+            if (viewModel.hasActiveCouponOfType(CouponType.BANCOFRUTTA_DISCOUNT)) {
                 showToast("Coupon sconto bancofrutta già attivo")
                 requireActivity().onBackPressedDispatcher.onBackPressed()
                 return@setOnClickListener
             }
 
+            // 2. Feedback tattile per confermare l'interazione
             it.performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM)
 
-            vm.markCouponActivated() // legacy flag per compatibilità/analytics
-            vm.activateCoupon(
+            // 3. Aggiornamento stato nel ViewModel
+            viewModel.markCouponActivated() // Flag legacy per compatibilità con altre componenti UI
+            viewModel.activateCoupon(
                 type = CouponType.BANCOFRUTTA_DISCOUNT,
-                title = getString(R.string.bancofrutta_title), // "Coupon sconto bancofrutta"
-                detail = null
+                title = getString(R.string.bancofrutta_title),
+                detail = null // Questo coupon non richiede una scelta specifica di prodotto
             )
 
+            // 4. Feedback utente e chiusura del fragment
             showToast(getString(R.string.bancofrutta_activated))
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
+    /** Helper per la visualizzazione rapida di messaggi a schermo. */
     private fun showToast(msg: String) {
         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
     }
