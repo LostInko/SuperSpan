@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#F8F9FA"
     android:fillViewport="true">
 
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- ░░░ BANNER POSIZIONE ░░░ -->
+        <!-- BANNER POSIZIONE -->
         <LinearLayout
             android:id="@+id/location_banner"
             android:layout_width="match_parent"
@@ -91,7 +91,7 @@
                 android:layout_marginBottom="5dp" />
         </LinearLayout>
 
-        <!-- ░░░ BANNER LAVORA CON NOI ░░░ -->
+        <!-- BANNER LAVORA CON NOI -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/bannerCard"
             android:layout_width="match_parent"
@@ -137,7 +137,7 @@
                 android:layout_marginBottom="6dp"
                 android:text="Ultime offerte!"
                 android:textColor="@color/greenText"
-                android:textSize="34sp"
+                android:textSize="30sp"
                 android:textStyle="bold" />
         </LinearLayout>
 

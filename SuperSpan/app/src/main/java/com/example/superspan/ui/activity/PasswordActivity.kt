@@ -74,13 +74,12 @@ class PasswordActivity : AppCompatActivity() {
 
             // 3) Password lunghezza minima?
             if (newPass.length < 8) {
-                // Nota: non pulire il testo qui, è fastidioso per l'utente dover riscrivere tutto se ne manca solo uno
                 etPassword.error = "La password deve avere almeno 8 caratteri"
                 etPassword.backgroundTintList = ContextCompat.getColorStateList(this, R.color.soft_red)
                 invalid = true
             }
 
-            // --- SE TUTTO È VALIDO ---
+            // SE TUTTO È VALIDO
             if (!invalid && targetUser != null) {
                 // 4) AGGIORNA LA PASSWORD REALE
                 targetUser.password = newPass
@@ -97,7 +96,7 @@ class PasswordActivity : AppCompatActivity() {
             }
         }
 
-        // --- LOGICA DISABILITAZIONE BOTTONE "AVANTI" ---
+        // LOGICA DISABILITAZIONE BOTTONE "AVANTI"
         // 1. Stato iniziale: bottone disabilitato e trasparente
         btnAvanti.isEnabled = false
         btnAvanti.alpha = 0.6f

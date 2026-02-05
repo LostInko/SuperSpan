@@ -22,10 +22,6 @@ class ProductFragment : Fragment() {
         private const val ARG_IMAGE_RES = "arg_image_res"
         private const val ARG_INDEX = "arg_index"
 
-        /**
-         * Costruttore consigliato: passa anche l'indice se lo conosci.
-         * Se non lo hai, usa -1: il fragment farà fallback per nome.
-         */
         @JvmOverloads
         fun newInstance(
             name: String,
@@ -66,21 +62,21 @@ class ProductFragment : Fragment() {
     ): View? {
         val v = inflater.inflate(R.layout.fragment_product, container, false)
 
+        val txtPrice = v.findViewById<TextView>(R.id.product_price)
+        txtPrice?.text = productPrice
+
         // ---- Bind dati statici (coerenti con l'XML) ----
         v.findViewById<TextView>(R.id.product_name)?.text = productName
         v.findViewById<TextView>(R.id.product_description)?.text = productDesc
-        v.findViewById<TextView>(R.id.product_price)?.text = productPrice
         v.findViewById<ImageView>(R.id.imgProduct)?.apply {
             if (productImageRes != 0) setImageResource(productImageRes)
         }
 
-        // ---- Back (ID unico presente: btnBackTop) ----
+        // Tasto Back
         v.findViewById<AppCompatImageView>(R.id.btnBackTop)?.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // Dentro onCreateView di ProductFragment
-        val txtPrice = v.findViewById<TextView>(R.id.product_price)
         val txtOldPrice = v.findViewById<TextView>(R.id.product_old_price)
         val currentProduct = resolveCurrentProduct()
 
@@ -97,7 +93,7 @@ class ProductFragment : Fragment() {
             txtOldPrice.visibility = View.GONE
         }
 
-        // ---- Preferiti (cuore in alto a destra) ----
+        // Preferiti (cuore in alto a destra)
         val btnFavTop = v.findViewById<AppCompatImageView>(R.id.btnFavTop)
         val current = resolveCurrentProduct()
         if (current != null) {
@@ -110,7 +106,6 @@ class ProductFragment : Fragment() {
         }
 
 
-        // ---- Qty (ID presenti nel tuo XML) ----
         val btnPlus = v.findViewById<AppCompatImageView>(R.id.btnPlus)
         val btnMinus = v.findViewById<AppCompatImageView>(R.id.btnMinus)
         val txtCount = v.findViewById<TextView>(R.id.txtCount)
@@ -143,13 +138,9 @@ class ProductFragment : Fragment() {
         iv?.setImageResource(
             if (isFav) R.drawable.ic_favorite else R.drawable.ic_favorite_border
         )
-        // opzionale: lasciare il tint gestito dal layout/tema
-        // iv?.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.greenIcon))
     }
 
-    /**
-     * Recupera il prodotto corrente. Preferisce l'indice se valido, altrimenti cerca per nome.
-     */
+    // Recupera il prodotto che stiamo guardando
     private fun resolveCurrentProduct(): com.example.superspan.model.Product? {
         val list = vm.products.value ?: return null
         return if (productIndex in 0 until list.size) {
@@ -159,13 +150,7 @@ class ProductFragment : Fragment() {
         }
     }
 
-    /**
-     * Notifica le variazioni al ViewModel e aggiorna il totale carrello.
-     * Mantiene l'approccio della prima versione.
-     */
     private fun notifyVmChanged() {
-        // Se la tua implementazione del ViewModel non prevede questa funzione,
-        // sostituiscila con vm.notifyChange() oppure implementa updateCartTotal() nel VM.
         vm.updateCartTotal()
         vm.products.value = vm.products.value
     }

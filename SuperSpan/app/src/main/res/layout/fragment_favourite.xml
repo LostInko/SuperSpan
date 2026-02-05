@@ -5,15 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Lista dei Preferiti"
-        android:textSize="28sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         android:textColor="#1B5E20"
         android:padding="16dp"
-        android:gravity="center"/>
+        android:layout_gravity="center_vertical"/>
 
     <FrameLayout
         android:layout_width="match_parent"

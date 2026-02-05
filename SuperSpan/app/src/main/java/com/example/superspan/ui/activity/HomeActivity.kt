@@ -23,25 +23,17 @@ import com.example.superspan.R
 import com.example.superspan.ui.fragment.ProductsSectionFragment
 import com.example.superspan.viewmodel.HomeViewModel
 
-/**
- * Activity principale che mostra una bottom bar "curva" animata.
- * La gobba (onda) si sposta sotto l'elemento selezionato e il relativo bottone
- * viene evidenziato con scaling, sollevamento e colori invertiti.
- */
 class HomeActivity : AppCompatActivity() {
 
     // Riferimenti a UI
     private lateinit var curvedBar: CurvedBottomBarView
-
     private lateinit var btnHome: LinearLayout
     private lateinit var btnProd: LinearLayout
     private lateinit var btnCoup: LinearLayout
     private lateinit var btnFav: LinearLayout
     private lateinit var btnProfile: LinearLayout
 
-    private lateinit var btnOffscreen: LinearLayout
-
-    // Colori usati per stato attivo/inattivo (lazy: calcolati al primo accesso)
+    // Colori usati per stato attivo/inattivo
     private val green by lazy { ContextCompat.getColor(this, R.color.greenIcon) }
     private val white by lazy { ContextCompat.getColor(this, R.color.white) }
 
@@ -58,23 +50,16 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Abilita il layout edge-to-edge (contenuti sotto status/navigation bar, con insets gestiti a mano)
         enableEdgeToEdge()
-
-        // Layout dell'activity
         setContentView(R.layout.activity_home)
 
-        // 1) prendi il VM scoped all'Activity
-                vm = ViewModelProvider(this)[HomeViewModel::class.java]
+        vm = ViewModelProvider(this)[HomeViewModel::class.java]
 
-                // 2) trova la TextView del totale nel layout dell'Activity
-                val tvCartAmount = findViewById<TextView>(R.id.tv_cart_amount)
+        val tvCartAmount = findViewById<TextView>(R.id.tv_cart_amount)
 
-                // 3) osserva SEMPRE il totale: l'Activity è sempre attiva
-                vm.cartTotal.observe(this) { total ->
-                    tvCartAmount.text = String.format("€ %.2f", total)
-                }
+        vm.cartTotal.observe(this) { total ->
+            tvCartAmount.text = String.format("€ %.2f", total)
+        }
 
         if (savedInstanceState == null) {
             replaceFragment(HomeSectionFragment())
@@ -90,20 +75,13 @@ class HomeActivity : AppCompatActivity() {
 
         // Bind dei componenti principali
         curvedBar = findViewById(R.id.curved_bar)
-
         btnHome = findViewById(R.id.btn_home)
         btnProd = findViewById(R.id.btn_prod)
         btnCoup = findViewById(R.id.btn_coup)
         btnProfile = findViewById(R.id.btn_profile)
         btnFav = findViewById(R.id.btn_fav)
-        btnOffscreen = findViewById(R.id.btn_offscreen)
-
-
 
         val btnCart = findViewById<LinearLayout>(R.id.btn_cart)
-
-        // Posiziona la gobba sotto il bottone HOME
-
 
         // Stato iniziale: posiziona la gobba sotto il bottone HOME
         // .post() rimanda l'operazione a dopo il layout, così le dimensioni/posizioni sono già calcolate.
@@ -143,7 +121,6 @@ class HomeActivity : AppCompatActivity() {
             select(btnCoup)
             coupon()
         }
-
 
     }
 
@@ -202,18 +179,6 @@ class HomeActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun product() {
-        // Creiamo un'istanza del fragment
-        val fragment = ProductFragment()
-
-        // Lo inseriamo nel contenitore dell'Activity
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment) // 'fragment_container' è l'ID nel tuo XML
-            .addToBackStack(null) // Opzionale: permette di tornare indietro con il tasto back
-            .commit()
-    }
-
-
     private fun productsSection() {
         // Qui usi la sezione/lista dei prodotti
         val fragment = ProductsSectionFragment()   // Assicurati che questa classe esista
@@ -223,28 +188,17 @@ class HomeActivity : AppCompatActivity() {
             .commit()
     }
 
-
-
-    /**
-     * Anima la curvatura (onda/gobba) della bottom bar verso il centro X del target.
-     */
+    // Gestisce l'animazione della curva della navbar
     private fun moveWaveTo(target: View) {
         curvedBar.animateTo(centerXRelativeToBar(target), duration = animDuration)
     }
 
-    /**
-     * Calcola la coordinata X del centro del target, relativa alla curvatura della barra.
-     * (Serve per dire alla barra "mettiti sotto questo bottone".)
-     */
+    // Calcola la coordinata X del punto in cui la navbar deve generare la "gobba"
     private fun centerXRelativeToBar(v: View): Float {
         return (v.x + v.width / 2f) - curvedBar.x
     }
 
-    /**
-     * Gestisce la selezione di uno dei 4 gruppi (HOME/FAV/CART/PROFILE):
-     * - Prima rimette tutti nello stato inattivo
-     * - Poi mette attivo solo il target
-     */
+    // Gestisce la selezione del pulsante "attivo"
     private fun select(target: LinearLayout, animate: Boolean = true) {
         setGroupInactive(btnHome, animate)
         setGroupInactive(btnProd, animate)
@@ -255,13 +209,6 @@ class HomeActivity : AppCompatActivity() {
         setGroupActive(target, animate)
     }
 
-    /**
-     * Porta un gruppo (bottone bottom bar) allo stato inattivo:
-     * - Colori verdi su icona/testo
-     * - Scala icona a 1.0
-     * - Riporta il gruppo alla quota base (translationY = 0)
-     * - Rimette lo Z a 0 (niente priorità di disegno)
-     */
     private fun setGroupInactive(group: LinearLayout, animate: Boolean) {
         tintGroup(group, active = false)
 
@@ -291,13 +238,6 @@ class HomeActivity : AppCompatActivity() {
         group.translationZ = 0f                // torna dietro (sotto all'item attivo e alla curva)
     }
 
-    /**
-     * Porta un gruppo allo stato attivo:
-     * - Colori bianchi su icona/testo
-     * - Scala icona a 1.22
-     * - Solleva il gruppo (translationY negativo) per farlo "uscire" dalla curva
-     * - Aumenta lo Z così sta sopra agli altri e sopra la curva
-     */
     private fun setGroupActive(group: LinearLayout, animate: Boolean) {
         tintGroup(group, active = true)
 
@@ -328,11 +268,6 @@ class HomeActivity : AppCompatActivity() {
         group.translationZ = 12f               // porta visivamente sopra la curva e gli altri item
     }
 
-    /**
-     * Applica colori e background al gruppo in base allo stato.
-     * - Attivo: icona/testo bianchi + background pillola selezionata
-     * - Inattivo: icona/testo verdi + nessun background
-     */
     private fun tintGroup(group: LinearLayout, active: Boolean) {
         val colorIcon = if (active) white else green
         val colorText = if (active) white else green
@@ -351,10 +286,6 @@ class HomeActivity : AppCompatActivity() {
         else null
     }
 
-    /**
-     * Dato il LinearLayout del bottone, ritorna l'id della sua icona interna.
-     * Serve per trovare rapidamente l'ImageView su cui fare scaling/tint.
-     */
     private fun findIconId(group: LinearLayout): Int = when (group.id) {
         R.id.btn_home    -> R.id.ic_home
         R.id.btn_prod     -> R.id.ic_prod

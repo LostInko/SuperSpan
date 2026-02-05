@@ -153,7 +153,7 @@ class CategoryProductFragment : Fragment() {
     //Aspetto visivo bottoni
     private fun updateSortUI() {
         val colorActive = ContextCompat.getColor(requireContext(), R.color.greenText)
-        val colorInactive = 0xFFA0A0A0.toInt() // Grigio standard (#A0A0A0)
+        val colorInactive = 0xFFA0A0A0.toInt()
 
         // Reset: imposta entrambi come inattivi di default
         cardAsc.strokeColor = colorInactive
@@ -170,7 +170,7 @@ class CategoryProductFragment : Fragment() {
         when (currentSortMode) {
             1 -> { // Crescente
                 cardAsc.strokeColor = colorActive
-                cardAsc.strokeWidth = 4 // Spessore bordo attivo (circa 2dp)
+                cardAsc.strokeWidth = 4
                 tvAsc.setTextColor(colorActive)
                 tvAsc.typeface = Typeface.DEFAULT_BOLD
             }

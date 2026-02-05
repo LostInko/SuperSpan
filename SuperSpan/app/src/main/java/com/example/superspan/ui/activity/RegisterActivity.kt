@@ -21,27 +21,13 @@ import com.example.superspan.model.Application
 import com.example.superspan.model.User
 import java.util.Calendar
 
-/**
- * Schermata di Registrazione.
- * - Valida i campi (password uguali, lunghezza minima, username unico, TOS accettati)
- * - Permette di selezionare la data di nascita con DatePicker
- * - Se la registrazione va a buon fine, crea un nuovo User e torna alla LoginActivity.
- */
-
-/**
- * Oggetto globale usato per memorizzare informazioni condivise nell'app.
- * In questo caso contiene una lista di utenti (che simula un "database" in memoria).
- *//**
- * Oggetto globale usato per memorizzare informazioni condivise nell'app.
- * In questo caso contiene una lista di utenti (che simula un "database" in memoria).
- */
+// Oggetto globale, contiene informazioni visibili in tutta l'applicazione:
+// La lista di utenti, l'utente attuale e il negozio selezionato
 object GlobalData {
     // Lista di utenti memorizzata in RAM (si resetta se l'app viene completamente chiusa)
     var user_list = mutableListOf<User>()
 
-
     var currentUser: User? = null
-
     var selectedShop: String = ""
 }
 class RegisterActivity : AppCompatActivity() {
@@ -66,7 +52,7 @@ class RegisterActivity : AppCompatActivity() {
         val etUsername = findViewById<EditText>(R.id.etUsername)
         val etPassword = findViewById<EditText>(R.id.etPassword)
         val etPasswordConf = findViewById<EditText>(R.id.etPasswordConf)
-        val checkBox = findViewById<CheckBox>(R.id.checkBox)     // TOS / privacy
+        val checkBox = findViewById<CheckBox>(R.id.checkBox)
         val btnRegister = findViewById<Button>(R.id.btnRegister)
         val etcitta = findViewById<EditText>(R.id.etcitta)
 
@@ -120,13 +106,13 @@ class RegisterActivity : AppCompatActivity() {
                     etName.text.toString(),
                     etSurname.text.toString(),
                     etDate.text.toString(),
-                    etcitta.text.toString(),// qui usi la data come terzo campo del tuo model
+                    etcitta.text.toString(),
                     etUsername.text.toString(),
                     etPassword.text.toString()
                 )
                 GlobalData.user_list.add(newUser)
                 GlobalData.currentUser = newUser
-                endRegister() // Torna alla LoginActivity con un extra
+                endRegister() // Torna alla LoginActivity
             }
 
 
@@ -140,7 +126,7 @@ class RegisterActivity : AppCompatActivity() {
         btnRegister.isEnabled = false;
         btnRegister.alpha = 0.6f;
 
-        //Creiamo funziona che controlla se tutto è valido
+        //Funzione che controlla se tutto è valido
         fun checkValidation() {
             val areFieldsFilled = etUsername.text.isNotBlank() &&
                     etPassword.text.isNotBlank() &&
@@ -158,11 +144,11 @@ class RegisterActivity : AppCompatActivity() {
                 btnRegister.alpha = 1f
             } else {
                 btnRegister.isEnabled = false
-                btnRegister.alpha = 0.6f // Mantiene il colore più scuro anche da disabilitato
+                btnRegister.alpha = 0.6f
             }
         }
 
-        // Funzione semplice per aggiungere il controllo a un campo
+        // Funzione per aggiungere il controllo a un campo
         fun setupWatcher(editText: EditText) {
             editText.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
@@ -195,10 +181,6 @@ class RegisterActivity : AppCompatActivity() {
         TooltipCompat.setTooltipText(tvHelp, "La password deve avere almeno 8 caratteri")
     }
 
-    /**
-     * Mostra un DatePicker e scrive la data selezionata nell'EditText passato.
-     * - Imposta maxDate = oggi (non puoi selezionare date future)
-     */
     fun datePicker(etDate: EditText) {
         val calendar = Calendar.getInstance()
         val day = calendar.get(Calendar.DAY_OF_MONTH)
@@ -219,21 +201,11 @@ class RegisterActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    /**
-     * Torna alla LoginActivity senza extra (usato per il tasto indietro).
-     */
     fun back() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 
-
-    /**
-     * Conclude la registrazione:
-     * - Torna alla LoginActivity
-     * - Passa un extra per poter mostrare un messaggio "Registrazione completata"
-     *   o riempire automaticamente dei campi, se vuoi gestirlo in LoginActivity.
-     */
     fun endRegister() {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("fromRegisterActivity", true)

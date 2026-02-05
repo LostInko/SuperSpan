@@ -23,7 +23,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputEditText
 
 class ProductsSectionFragment : Fragment() {
-
     private lateinit var viewModel: HomeViewModel
     private lateinit var rvCategories: RecyclerView
     private lateinit var tabLayout: TabLayout

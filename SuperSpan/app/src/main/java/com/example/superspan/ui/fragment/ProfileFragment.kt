@@ -31,7 +31,7 @@ class ProfileFragment : Fragment() {
         val cardLogout = view.findViewById<MaterialCardView>(R.id.card_logout)
         val cardDate = view.findViewById<MaterialCardView>(R.id.card_data)
         val cardJob = view.findViewById<CardView>(R.id.card_job)
-        val cardAdress = view.findViewById<CardView>(R.id.card_adress)
+        val cardAddress = view.findViewById<CardView>(R.id.card_adress)
         val cardOrder = view.findViewById<CardView>(R.id.card_order)
 
         // Riferimento alla TextView sopra la Carta Fedeltà (PNG)
@@ -45,7 +45,7 @@ class ProfileFragment : Fragment() {
         view.findViewById<TextView>(R.id.user_name).text = fullName
         view.findViewById<TextView>(R.id.user_username).text = user?.username ?: "username"
 
-        // --- INTEGRAZIONE: Imposta il nome sopra la carta PNG ---
+        // Imposta il nome sopra la carta PNG
         tvNomeSuCarta.text = fullName.uppercase()
 
         // Clicco su 'i tuoi dati'
@@ -59,7 +59,6 @@ class ProfileFragment : Fragment() {
         val cardFedelta = view.findViewById<ImageView>(R.id.img_carta_fedelta)
 
         // Clicco sulla Carta Fedeltà
-
         cardFedelta.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .setCustomAnimations(
@@ -74,7 +73,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Clicco su 'i tuoi indirizzi'
-        cardAdress.setOnClickListener {
+        cardAddress.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, AddressListFragment())
                 .addToBackStack(null)
@@ -89,7 +88,7 @@ class ProfileFragment : Fragment() {
                 .commit()
         }
 
-        // Clicco su 'candidature' (ex card_job, ora nell'icona in alto a destra)
+        // Clicco su 'candidature'
         cardJob.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ApplicationsSentFragment())

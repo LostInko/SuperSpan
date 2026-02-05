@@ -17,7 +17,6 @@ import com.example.superspan.model.Product
 import com.example.superspan.ui.activity.GlobalData
 
 class HomeSectionFragment : Fragment() {
-
     private lateinit var vm: HomeViewModel
     private var tvCartAmountInActivity: TextView? = null
 
@@ -41,8 +40,6 @@ class HomeSectionFragment : Fragment() {
 
         view.findViewById<TextView>(R.id.tvUserName).text =
             "Benvenuto " + (user?.name ?: "Utente") + "!"
-
-        // Osserva la lista prodotti dal ViewModel
 
         // Osserva la lista prodotti dal ViewModel
         vm.products.observe(viewLifecycleOwner) { productList ->
