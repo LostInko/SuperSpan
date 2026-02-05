@@ -32,7 +32,7 @@
             android:layout_marginStart="16dp"
             android:text="Nuovo Indirizzo"
             android:textColor="@color/greenText"
-            android:textSize="22sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/btnBack"
             app:layout_constraintEnd_toEndOf="parent"

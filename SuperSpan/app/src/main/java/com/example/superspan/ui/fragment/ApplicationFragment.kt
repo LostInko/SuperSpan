@@ -235,7 +235,7 @@ class ApplicationFragment : Fragment() {
         val currentStep = viewFlipper.displayedChild
 
         if (currentStep == 0) {
-            // Step 1: chiediamo conferma per uscire con il TUO dialog custom
+            // Step 1: chiediamo conferma per uscire
             val customView = layoutInflater.inflate(R.layout.dialog3, null)
             val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
                 .setView(customView)

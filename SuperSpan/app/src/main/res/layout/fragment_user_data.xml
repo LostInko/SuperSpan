@@ -46,7 +46,7 @@
             android:layout_marginEnd="20dp"
             android:text="Nome"
             android:textColor="@color/black"
-            android:textSize="19sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 tools:text="Nome Utente" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,7 +80,7 @@
             android:layout_marginTop="12dp"
             android:text="Cognome"
             android:textColor="@color/black"
-            android:textSize="19sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/tilName"
             app:layout_constraintStart_toStartOf="@id/tilName"
@@ -103,7 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 tools:text="Cognome Utente" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +114,7 @@
             android:layout_marginTop="12dp"
             android:text="Data di nascita"
             android:textColor="@color/black"
-            android:textSize="19sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/tilSurname"
             app:layout_constraintStart_toStartOf="@id/tilSurname"
@@ -139,7 +139,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 tools:text="01/01/2000" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,7 +150,7 @@
             android:layout_marginTop="12dp"
             android:text="Città"
             android:textColor="@color/black"
-            android:textSize="19sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/tilData"
             app:layout_constraintStart_toStartOf="@id/tilData"
@@ -173,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 tools:text="Cagliari" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -184,7 +184,7 @@
             android:layout_marginTop="12dp"
             android:text="Username"
             android:textColor="@color/black"
-            android:textSize="19sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/tilCity"
             app:layout_constraintStart_toStartOf="@id/tilCity"
@@ -207,7 +207,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 tools:text="admin_user" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -218,7 +218,7 @@
             android:layout_marginTop="12dp"
             android:text="Password"
             android:textColor="@color/black"
-            android:textSize="19sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/tilUser"
             app:layout_constraintStart_toStartOf="@id/tilUser"
@@ -244,7 +244,7 @@
                 android:paddingEnd="50dp"
                 android:enabled="false"
                 android:inputType="textPassword"
-                android:textSize="17sp"
+                android:textSize="18sp"
                 tools:text="••••••••" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -268,7 +268,7 @@
             android:layout_marginTop="12dp"
             android:text="Conferma password"
             android:textColor="@color/black"
-            android:textSize="19sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/tvPassHint"
@@ -295,7 +295,7 @@
                 android:layout_height="wrap_content"
                 android:paddingEnd="50dp"
                 android:inputType="textPassword"
-                android:textSize="17sp" />
+                android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.card.MaterialCardView

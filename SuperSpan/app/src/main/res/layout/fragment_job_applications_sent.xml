@@ -50,26 +50,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.SuperSpan.TextInputLayout.Filled"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:hintEnabled="false"
-            android:layout_marginTop="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_bar"
-                style="@style/Widget.SuperSpan.EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Cosa vuoi cercare?"
-                android:textSize="18sp"
-                android:inputType="textFilter"
-                android:drawableStart="@drawable/ic_search_fast"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
         <TextView
             android:id="@+id/tvEmpty"
             android:layout_width="wrap_content"
