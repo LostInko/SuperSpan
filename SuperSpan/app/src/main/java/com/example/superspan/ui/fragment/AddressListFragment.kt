@@ -32,8 +32,8 @@ class AddressListFragment : Fragment() {
 
         vm.addresses.observe(viewLifecycleOwner) { list ->
             recyclerView.adapter = AddressAdapter(list) { selected ->
-                vm.selectAddress(selected) // Logic to set the new default
-                parentFragmentManager.popBackStack() // Go back to Order screen
+                vm.selectAddress(selected)
+                parentFragmentManager.popBackStack()
             }
         }
 
