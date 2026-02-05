@@ -42,14 +42,14 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/btnDelete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="4dp"
-                    app:srcCompat="@drawable/ic_trash"
+                    android:layout_width="55dp"
+                    android:layout_height="47dp"
                     android:layout_gravity="end"
-                    app:tint="#D60000"
+                    android:padding="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_trash"
+                    app:tint="#D60000" />
 
                 <TextView
                     android:id="@+id/txtTitle"

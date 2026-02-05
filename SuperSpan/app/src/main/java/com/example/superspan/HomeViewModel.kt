@@ -239,7 +239,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun refreshProducts() {
-        products.value = products.value // trigger observers
+        products.value = products.value
     }
 
     fun setQtyAt(index: Int, qty: Int) {
@@ -256,17 +256,6 @@ class HomeViewModel : ViewModel() {
         updateCartTotal()
     }
 
-    fun removeFromCart(product: Product) {
-        val currentList = products.value ?: mutableListOf()
-
-        currentList.remove(product)
-
-        //resettiamo la quantità a 0
-        product.qty = 0
-        products.value = currentList
-
-        notifyChange()
-    }
 
     fun updateProductQuantity(product: Product, newQty: Int) {
         val currentProducts = products.value ?: return
