@@ -55,19 +55,17 @@
 
                 <TextView
                     android:id="@+id/tv_header_title"
-                    android:layout_width="170dp"
-                    android:layout_height="41dp"
-                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="Il tuo carrello"
                     android:textColor="@color/greenText"
-                    android:textSize="25sp"
+                    android:textSize="30sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.191"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btnBackTop"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintHorizontal_bias="0.1" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
