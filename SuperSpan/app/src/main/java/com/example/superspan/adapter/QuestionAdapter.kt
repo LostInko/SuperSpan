@@ -26,23 +26,29 @@ class QuestionAdapter (
     companion object {
         private const val TYPE_APERTA = 0
         private const val TYPE_MULTIPLA = 1
+        private const val TYPE_NUMB = 2
     }
 
     override fun getItemViewType(position: Int): Int {
         if (listaDomande[position].tipo == TipoDomanda.Aperta) return TYPE_APERTA
-        else return TYPE_MULTIPLA
+        else if (listaDomande[position].tipo == TipoDomanda.Chiusa) return TYPE_MULTIPLA
+        else return TYPE_NUMB
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        // In base al tipo di domanda (Aperta o a risosta multipla) mostra una pagina differente
+        // In base al tipo di domanda (Aperta, risosta multipla o numero di telefono) mostra una pagina differente
         return when (viewType) {
             TYPE_APERTA -> {
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.view_question, parent, false)
                 ApertaViewHolder(view)
             }
-            else -> { // TYPE_MULTIPLA
+            TYPE_MULTIPLA -> { // TYPE_MULTIPLA
                 val view = LayoutInflater.from(parent.context).inflate(R.layout.view_multiple_choice_question, parent, false)
                 MultiplaViewHolder(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.view_number, parent, false)
+                NumberViewHolder(view)
             }
         }
     }
@@ -175,12 +181,60 @@ class QuestionAdapter (
             }
         }
     }
+    inner class NumberViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvDomanda : TextView = itemView.findViewById(R.id.question_text)
+        val etAnswer : TextInputEditText = itemView.findViewById(R.id.etAnswer)
+        var currentTextWatcher : TextWatcher? = null
+        val cardView = itemView.findViewById<MaterialCardView>(R.id.answerBox)
+
+        fun bind(domanda : Question){
+            tvDomanda.text = domanda.title
+
+            currentTextWatcher?.let { etAnswer.removeTextChangedListener(it) }
+
+            etAnswer.setText(domanda.answer)
+
+            // Aggiorna lo stato della domanda, in base al fatto se è vuota o meno
+            updateErrorState(domanda.answer.isBlank(), etAnswer.text.toString())
+
+            currentTextWatcher = object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                }
+                override fun afterTextChanged(s: Editable?) {
+                    val testo = s.toString()
+                    domanda.answer = testo
+                    domanda.hasError = testo.length != 12
+
+                    updateErrorState(testo.isBlank(), testo)
+
+
+
+                    onDataChanged()
+                }
+            }
+
+            etAnswer.addTextChangedListener(currentTextWatcher)
+        }
+
+        private fun updateErrorState(isEmpty : Boolean, input : String) {
+            if (isEmpty || input.length != 10) {
+                cardView.strokeColor = Color.parseColor("#4DFF0000")
+                cardView.strokeWidth = 4
+            } else {
+                cardView.strokeColor = Color.parseColor("#BDBDBD")
+                cardView.strokeWidth = 2
+            }
+        }
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val domanda = listaDomande[position]
         when (holder) {
             is ApertaViewHolder -> holder.bind(domanda)
             is MultiplaViewHolder -> holder.bind(domanda)
+            is NumberViewHolder -> holder.bind(domanda)
         }
     }
 
