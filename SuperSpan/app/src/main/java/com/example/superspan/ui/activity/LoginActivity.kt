@@ -108,6 +108,22 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         )
+        GlobalData.user_list.add(
+            6,
+            User(
+                name = "Giorgio",
+                surname = "Valenti",
+                date = "9/02/2000",
+                citta = "Cagliari",
+                username = "giorgetto",
+                password = "12345678",
+                profileImageUri = getUriFromDrawable(R.id.giorgio_valenti),
+                addresses = mutableListOf(
+                    Address("Cagliari", "Via Dante Alighieri 15", "09127", "Casa", isSelected = true),
+                    Address("Cagliari", "Piazza della Repubblica 2", "09125", "Studio", isSelected = false)
+                )
+            )
+        )
 
 
 
