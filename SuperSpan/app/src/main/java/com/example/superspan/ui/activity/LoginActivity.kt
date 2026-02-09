@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                 citta = "Cagliari",
                 username = "giorgetto",
                 password = "12345678",
-                profileImageUri = getUriFromDrawable(R.id.giorgio_valenti),
+                profileImageUri = getUriFromDrawable(R.drawable.giorgio_valenti),
                 addresses = mutableListOf(
                     Address("Cagliari", "Via Dante Alighieri 15", "09127", "Casa", isSelected = true),
                     Address("Cagliari", "Piazza della Repubblica 2", "09125", "Studio", isSelected = false)
