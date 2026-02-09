@@ -205,7 +205,7 @@ class QuestionAdapter (
                 override fun afterTextChanged(s: Editable?) {
                     val testo = s.toString()
                     domanda.answer = testo
-                    domanda.hasError = testo.length != 12
+                    domanda.hasError = testo.length < 10
 
                     updateErrorState(testo.isBlank(), testo)
 
