@@ -1,6 +1,6 @@
 package com.example.superspan.model
 
-enum class TipoDomanda {Aperta, Chiusa}
+enum class TipoDomanda {Aperta, Chiusa, Numero}
 
 class Question (
     val title : String,             // Domanda
