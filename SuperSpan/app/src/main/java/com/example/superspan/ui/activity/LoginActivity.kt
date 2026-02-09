@@ -59,6 +59,57 @@ class MainActivity : AppCompatActivity() {
             User("Diego", "Serra", "13/01/2005", "Cagliari", "d", "s"
             )
         )
+        GlobalData.user_list.add(
+            3,
+            User(
+                name = "Michele",
+                surname = "Giraud",
+                date = "15/05/1981", // 45 anni circa
+                citta = "Cagliari",
+                username = "TheRealMichelino",
+                password = "michelino",
+                profileImageUri = getUriFromDrawable(R.drawable.michele_giraud), // Usa un'icona di default
+                addresses = mutableListOf(
+                    Address("Cagliari", "Via San Michele 45", "09122", "Casa", isSelected = true),
+                    Address("Cagliari", "Via Roma 10", "09125", "Ufficio", isSelected = false)
+                )
+            )
+        )
+        GlobalData.user_list.add(
+            4,
+            User(
+                name = "Paolo",
+                surname = "Cortellesi",
+                date = "12/03/1994", // 32 anni circa
+                citta = "Vasto",
+                username = "TruePaoletto",
+                password = "paoletto",
+                profileImageUri = getUriFromDrawable(R.drawable.paolo_cortellesi),
+                addresses = mutableListOf(
+                    Address("Vasto", "Via Adriatica 10", "66054", "Casa", isSelected = true),
+                    Address("Vasto", "Zona Industriale Porto", "66054", "Ex Lavoro", isSelected = false)
+                )
+            )
+        )
+        GlobalData.user_list.add(
+            5,
+            User(
+                name = "Claudia",
+                surname = "Bisio",
+                date = "24/08/1994", // 32 anni
+                citta = "Castellabate",
+                username = "Claudiona94",
+                password = "claudietta",
+                profileImageUri = getUriFromDrawable(R.drawable.claudia_bisio),
+                addresses = mutableListOf(
+                    Address("Castellabate", "Via del Mare 12", "84048", "Casa", isSelected = true),
+                    Address("Castellabate", "Corso Matarazzo 5", "84048", "Ufficio", isSelected = false),
+                    Address("Castellabate", "Via Belvedere 22", "84048", "Casa Amica", isSelected = false)
+                )
+            )
+        )
+
+
 
         val fromRegister = intent.getBooleanExtra("fromRegisterActivity", false)
         if (fromRegister) {
@@ -176,5 +227,9 @@ class MainActivity : AppCompatActivity() {
     private fun passDim() {
         val intent = Intent(this, PasswordActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun getUriFromDrawable(resourceId: Int): android.net.Uri {
+        return android.net.Uri.parse("android.resource://${packageName}/$resourceId")
     }
 }

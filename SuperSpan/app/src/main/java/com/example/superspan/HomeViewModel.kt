@@ -130,7 +130,7 @@ class HomeViewModel : ViewModel() {
         loadAddresses()
 
         val currentProducts = products.value ?: mutableListOf()
-        if (GlobalData.currentUser?.username == "m") {
+        if (GlobalData.currentUser?.username == "TheRealMichelino") {
             // Caso Diminuzione (Successo per Michele)
             currentProducts.find { it.name == "Spaghetti n.5" }?.apply {
                 isFavorite = true
