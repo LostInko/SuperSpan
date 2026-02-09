@@ -50,11 +50,28 @@ class FavouriteSectionFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        // Inizializziamo l'adapter con una lista vuota e definiamo le azioni (lambda)
+        // Inizializziamo l'adapter
         favouriteAdapter = FavouriteAdapter(
             items = emptyList(),
             onRemoveFavorite = { product -> viewModel.toggleFavoriteByRef(product) },
             onOpenDetail = { product ->
+                // Recuperiamo la lista completa dal ViewModel per trovare l'indice corretto
+                val fullList = viewModel.products.value.orEmpty()
+                val index = fullList.indexOfFirst { it.name == product.name && it.imageRes == product.imageRes }
+
+                // Passiamo tutti i dati come nel tuo esempio della Home
+                val fragment = ProductFragment.newInstance(
+                    name = product.name,
+                    desc = product.description,
+                    price = product.price,
+                    imageRes = product.imageRes,
+                    index = index
+                )
+
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
             }
         )
 

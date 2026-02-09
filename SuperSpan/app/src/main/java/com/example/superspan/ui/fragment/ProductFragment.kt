@@ -22,16 +22,12 @@ import com.example.superspan.viewmodel.HomeViewModel
 class ProductFragment : Fragment() {
 
     companion object {
-        // Chiavi per il passaggio dei dati tramite Bundle (Arguments)
         private const val ARG_NAME = "arg_name"
         private const val ARG_DESC = "arg_desc"
         private const val ARG_PRICE = "arg_price"
         private const val ARG_IMAGE_RES = "arg_image_res"
         private const val ARG_INDEX = "arg_index"
 
-        /**
-         * Metodo factory per creare una nuova istanza del fragment passando i dati necessari.
-         */
         @JvmOverloads
         fun newInstance(
             name: String,
@@ -186,6 +182,7 @@ class ProductFragment : Fragment() {
      */
     private fun resolveCurrentProduct(): Product? {
         val list = viewModel.products.value ?: return null
+        // Cerca per indice se valido, altrimenti per nome
         return if (productIndex in list.indices) {
             list[productIndex]
         } else {
