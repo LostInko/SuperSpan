@@ -1,6 +1,7 @@
 package com.example.superspan.ui.fragment
 
 import android.app.DatePickerDialog
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.example.superspan.R
 import com.example.superspan.ui.activity.GlobalData
@@ -24,7 +27,23 @@ import java.util.Calendar
 class UserDataFragment : Fragment() {
 
     private var isEditing = false
-    private var originalPassword = "" // Memorizza la password attuale dell'utente
+    private var originalPassword = ""
+    private var selectedImageUri: Uri? = null
+    private var initialImageUri: Uri? = null
+
+    // Riferimenti ai componenti necessari globalmente nella classe
+    private lateinit var btnModifica: MaterialCardView
+    private lateinit var editTexts: List<TextInputEditText>
+    private lateinit var imgProfileEdit: ImageView
+
+    // Launcher per la galleria
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            selectedImageUri = uri
+            imgProfileEdit.setImageURI(uri)
+            updateBtnEnableState() // Ora la vede correttamente
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,9 +60,10 @@ class UserDataFragment : Fragment() {
         val etCity = view.findViewById<TextInputEditText>(R.id.etCity)
         val etUser = view.findViewById<TextInputEditText>(R.id.etUser)
         val etPass = view.findViewById<TextInputEditText>(R.id.etPass)
-        val btnModifica = view.findViewById<MaterialCardView>(R.id.btnModificaDati)
 
-        // Componenti modifica
+        btnModifica = view.findViewById(R.id.btnModificaDati)
+        imgProfileEdit = view.findViewById(R.id.img_profile_edit)
+
         val tilConfirmPass = view.findViewById<TextInputLayout>(R.id.tilConfirmPass)
         val tvConfermaLabel = view.findViewById<TextView>(R.id.tvConfermaPassLabel)
         val tvPassHint = view.findViewById<TextView>(R.id.tvPassHint)
@@ -52,9 +72,9 @@ class UserDataFragment : Fragment() {
         val tilUser = view.findViewById<TextInputLayout>(R.id.tilUser)
         val tilPass = view.findViewById<TextInputLayout>(R.id.tilPass)
 
-        val editTexts = listOf(etName, etSurname, etDate, etCity, etUser, etPass)
+        editTexts = listOf(etName, etSurname, etDate, etCity, etUser, etPass)
 
-        // Caricamento dati
+        // Funzione locale di caricamento (va bene qui perché usata solo in onCreateView)
         fun loadUserData() {
             GlobalData.currentUser?.let { user ->
                 etName.setText(user.name)
@@ -64,73 +84,61 @@ class UserDataFragment : Fragment() {
                 etUser.setText(user.username)
                 etPass.setText(user.password)
 
-                originalPassword = user.password // Salviamo la password originale per il confronto
+                initialImageUri = user.profileImageUri
+                selectedImageUri = user.profileImageUri
+                if (user.profileImageUri != null) {
+                    imgProfileEdit.setImageURI(user.profileImageUri)
+                } else {
+                    imgProfileEdit.setImageResource(R.drawable.ic_person)
+                }
+
+                originalPassword = user.password
                 etConfirmPass.setText("")
             }
-            tilUser.error = null
-            tilPass.error = null
-            tilConfirmPass.error = null
         }
 
-        //Abilitare/Disabilitare tasto conferma
-        fun updateBtnEnableState() {
+        imgProfileEdit.setOnClickListener {
             if (isEditing) {
-                val modificato = haModificatoQualcosa(editTexts)
-                btnModifica.isEnabled = modificato
-                btnModifica.alpha = if (modificato) 1.0f else 0.6f
-            } else {
-                btnModifica.isEnabled = true
-                btnModifica.alpha = 1.0f
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
 
-        // Gestione Modalità Modifica
         fun setEditingMode(enabled: Boolean) {
             isEditing = enabled
             editTexts.forEach { it.isEnabled = enabled }
             etDate.isFocusable = false
             etDate.isClickable = enabled
-
+            imgProfileEdit.alpha = if (enabled) 0.8f else 1.0f
             tilConfirmPass.visibility = View.GONE
             tvConfermaLabel.visibility = View.GONE
             tvPassHint.visibility = View.GONE
-
             titleAddress.text = if (enabled) "Modifica profilo" else "I tuoi dati"
             tvBtnText.text = if (enabled) "Conferma Modifiche" else "Modifica i tuoi dati"
-
             updateBtnEnableState()
         }
 
-        // Mostra conferma solo se la password cambia
         etPass.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val currentText = s.toString()
-
-                // Mostriamo i campi di conferma solo se siamo in modalità editing
-                // E se il testo è diverso da quello salvato nel profilo
-                if (isEditing && currentText != originalPassword) {
+                if (isEditing && s.toString() != originalPassword) {
                     tilConfirmPass.visibility = View.VISIBLE
                     tvConfermaLabel.visibility = View.VISIBLE
                     tvPassHint.visibility = View.VISIBLE
                 } else {
-                        // Se torniamo alla pass originale, puliamo tutto
-                        resetFieldError(tilPass, etPass)
-                        resetFieldError(tilConfirmPass, etConfirmPass)
-
-                        tilConfirmPass.visibility = View.GONE
-                        tvConfermaLabel.visibility = View.GONE
-                        tvPassHint.visibility = View.GONE
-                        etConfirmPass.setText("")
-
+                    resetFieldError(tilPass, etPass)
+                    resetFieldError(tilConfirmPass, etConfirmPass)
+                    tilConfirmPass.visibility = View.GONE
+                    tvConfermaLabel.visibility = View.GONE
+                    tvPassHint.visibility = View.GONE
+                    etConfirmPass.setText("")
                 }
+                updateBtnEnableState()
             }
             override fun afterTextChanged(s: Editable?) {}
         })
 
         loadUserData()
 
-        // Listener Bottone Modifica/Conferma
         btnModifica.setOnClickListener {
             if (!isEditing) {
                 setEditingMode(true)
@@ -140,25 +148,9 @@ class UserDataFragment : Fragment() {
                 val confirmPass = etConfirmPass.text.toString()
                 var isValid = true
 
-                // Controllo Username
                 if (newUser != GlobalData.currentUser?.username) {
                     if (GlobalData.user_list.any { it.username == newUser }) {
                         etUser.error = "Username già esistente!"
-                        etUser.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
-                        isValid = false
-                    }
-                }
-
-                // Controllo Password (solo se è stata cambiata)
-                if (newPass != originalPassword) {
-                    if (newPass.length < 8) {
-                        etPass.error = "Minimo 8 caratteri"
-                        etPass.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
-                        isValid = false
-                    }
-                    if (newPass != confirmPass) {
-                        etConfirmPass.error = "Le password non coincidono!"
-                        etConfirmPass.backgroundTintList = ContextCompat.getColorStateList(requireContext(), R.color.soft_red)
                         isValid = false
                     }
                 }
@@ -171,22 +163,18 @@ class UserDataFragment : Fragment() {
                         citta = etCity.text.toString()
                         username = newUser
                         password = newPass
+                        profileImageUri = selectedImageUri
                     }
                     Toast.makeText(context, "Profilo aggiornato!", Toast.LENGTH_SHORT).show()
-                    loadUserData() // Aggiorna la password originale salvata
+                    loadUserData()
                     setEditingMode(false)
                 }
             }
         }
 
-        // Altri listener (Back button, DatePicker, etc.)
         backButton.setOnClickListener {
             if (isEditing) {
-                // Dialog di conferma uscita
-                showExitDialog {
-                    loadUserData()
-                    setEditingMode(false)
-                }
+                showExitDialog { loadUserData(); setEditingMode(false) }
             } else {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
@@ -196,44 +184,27 @@ class UserDataFragment : Fragment() {
         campiDaAscoltare.forEach { et ->
             et.addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    updateBtnEnableState()
-                }
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { updateBtnEnableState() }
                 override fun afterTextChanged(s: Editable?) {}
             })
-        }
-
-        fun setupClearErrorOnType(til: TextInputLayout, et: TextInputEditText) {
-            et.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    resetFieldError(til, et)
-                    updateBtnEnableState()
-                }
-                override fun afterTextChanged(s: Editable?) {}
-
-            })
-
-        }
-
-        setupClearErrorOnType(tilUser, etUser)
-        setupClearErrorOnType(tilPass, etPass)
-        setupClearErrorOnType(tilConfirmPass, etConfirmPass)
-
-
-        fun showDatePickerInterno(etDate: EditText) {
-            val calendar = Calendar.getInstance()
-            DatePickerDialog(requireContext(), { _, y, m, d ->
-                etDate.setText(String.format("%02d/%02d/%d", d, m + 1, y))
-
-                updateBtnEnableState()
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
         }
 
         etDate.setOnClickListener { if (isEditing) showDatePickerInterno(etDate) }
 
-
         return view
+    }
+
+    // --- FUNZIONI SPOSTATE FUORI DA onCreateView ---
+
+    private fun updateBtnEnableState() {
+        if (isEditing) {
+            val modificato = haModificatoQualcosa(editTexts) || selectedImageUri != initialImageUri
+            btnModifica.isEnabled = modificato
+            btnModifica.alpha = if (modificato) 1.0f else 0.6f
+        } else {
+            btnModifica.isEnabled = true
+            btnModifica.alpha = 1.0f
+        }
     }
 
     private fun haModificatoQualcosa(editTexts: List<TextInputEditText>): Boolean {
@@ -246,28 +217,25 @@ class UserDataFragment : Fragment() {
                 editTexts[5].text.toString() != u.password
     }
 
+    private fun showDatePickerInterno(etDate: EditText) {
+        val calendar = Calendar.getInstance()
+        DatePickerDialog(requireContext(), { _, y, m, d ->
+            etDate.setText(String.format("%02d/%02d/%d", d, m + 1, y))
+            updateBtnEnableState()
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+    }
+
     private fun showExitDialog(onConfirm: () -> Unit) {
         val customView = layoutInflater.inflate(R.layout.dialog2, null)
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-            .setView(customView).create()
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext()).setView(customView).create()
         customView.findViewById<Button>(R.id.btn_annulla).setOnClickListener { dialog.dismiss() }
-        customView.findViewById<Button>(R.id.btn_conferma).setOnClickListener {
-            onConfirm()
-            dialog.dismiss()
-        }
+        customView.findViewById<Button>(R.id.btn_conferma).setOnClickListener { onConfirm(); dialog.dismiss() }
         dialog.show()
     }
+
     fun resetFieldError(til: TextInputLayout, et: TextInputEditText) {
-        // 1. Rimuoviamo il testo dell'errore
         til.error = null
-
-        // 2. Nascondiamo forzatamente l'icona del punto esclamativo
-        til.errorIconDrawable = null
-
-        // 3. Disabilitiamo il meccanismo di errore
         til.isErrorEnabled = false
-
-        // 4. Ripristiniamo il colore dello sfondo dell'EditText
         et.backgroundTintList = null
     }
 }

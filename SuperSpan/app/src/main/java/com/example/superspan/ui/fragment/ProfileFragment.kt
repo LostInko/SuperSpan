@@ -18,6 +18,9 @@ import com.google.android.material.card.MaterialCardView
 
 class ProfileFragment : Fragment() {
 
+    // Dichiarazione della variabile per l'immagine profilo per poterla aggiornare facilmente
+    private lateinit var profileImage: ImageView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,6 +31,7 @@ class ProfileFragment : Fragment() {
         val user = GlobalData.currentUser
 
         // Binding dei componenti
+        profileImage = view.findViewById(R.id.profile_image) // Immagine profilo aggiunta
         val cardLogout = view.findViewById<MaterialCardView>(R.id.card_logout)
         val cardDate = view.findViewById<MaterialCardView>(R.id.card_data)
         val cardJob = view.findViewById<CardView>(R.id.card_job)
@@ -36,6 +40,9 @@ class ProfileFragment : Fragment() {
 
         // Riferimento alla TextView sopra la Carta Fedeltà (PNG)
         val tvNomeSuCarta = view.findViewById<TextView>(R.id.tv_nome_cognome_carta)
+
+        // --- GESTIONE FOTO PROFILO ---
+        updateProfilePicture()
 
         // Impostazione testi Header
         val name = user?.name ?: "Utente"
@@ -117,5 +124,21 @@ class ProfileFragment : Fragment() {
         }
 
         return view
+    }
+
+    // Funzione per caricare l'immagine dal GlobalData
+    private fun updateProfilePicture() {
+        val user = GlobalData.currentUser
+        if (user?.profileImageUri != null) {
+            profileImage.setImageURI(user.profileImageUri)
+        } else {
+            profileImage.setImageResource(R.drawable.ic_person)
+        }
+    }
+
+    // Viene chiamato quando torni indietro dal fragment Modifica Dati
+    override fun onResume() {
+        super.onResume()
+        updateProfilePicture()
     }
 }

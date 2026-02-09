@@ -68,7 +68,6 @@ class ApplicationFragment : Fragment() {
         }
     }
 
-    // Variabili recuperate dagli argomenti
     private val originalOfferName: String by lazy { arguments?.getString(ARG_NAME).orEmpty() }
     private val applicationUserId: String by lazy { arguments?.getString(ARG_USER_ID).orEmpty() }
     private val applicationOfferId: Int by lazy { arguments?.getInt(ARG_JOB_OFFER) ?: -2 }
@@ -76,7 +75,6 @@ class ApplicationFragment : Fragment() {
     private lateinit var adapterSummary: QuestionCheckAdapter
     private var tempVideoUri: Uri? = null
 
-    // Launcher caricamento CV
     private val cvLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
             updateDocument(uri, TipoFile.CV)
@@ -84,7 +82,6 @@ class ApplicationFragment : Fragment() {
         }
     }
 
-    // Launcher caricamento Video Galleria
     private val videoGalleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         if (uri != null) {
             updateDocument(uri, TipoFile.Video)
@@ -92,7 +89,6 @@ class ApplicationFragment : Fragment() {
         }
     }
 
-    // Launcher caricamento Video Camera
     private val takeVideoLauncher = registerForActivityResult(ActivityResultContracts.CaptureVideo()) { success ->
         if (success && tempVideoUri != null) {
             updateDocument(tempVideoUri!!, TipoFile.Video, isCamera = true)
@@ -120,7 +116,6 @@ class ApplicationFragment : Fragment() {
     private lateinit var tvOfferTitle: TextView
     private lateinit var btnBackTop: AppCompatImageView
 
-    // Liste di supporto per la validazione
     private lateinit var listStep1: List<Question>
     private lateinit var listStep2: List<Question>
     private lateinit var listCV: MutableList<Document>
@@ -139,7 +134,6 @@ class ApplicationFragment : Fragment() {
             setupInitialData()
         }
 
-        // Binding elementi View
         viewFlipper = view.findViewById(R.id.viewFlipper)
         btnStepAvanti = view.findViewById(R.id.btnStepAvanti)
         cbPrivacy = view.findViewById(R.id.cbPrivacy)
@@ -148,16 +142,12 @@ class ApplicationFragment : Fragment() {
         btnBackTop = view.findViewById(R.id.btnBackTop)
         val rvSummary = view.findViewById<RecyclerView>(R.id.rvSummary)
 
-        // Setup Recycler Views
-
-        // Step 1 - Dati Personali
         listStep1 = question_list.take(4)
         val rvStep1 = view.findViewById<RecyclerView>(R.id.rvStep1)
         rvStep1.layoutManager = LinearLayoutManager(requireContext())
         adapterQuestionsStep1 = QuestionAdapter(listStep1) { validateCurrentStep() }
         rvStep1.adapter = adapterQuestionsStep1
 
-        // Step 2 - Esperienza
         listStep2 = question_list.drop(4)
         val rvStep2Questions = view.findViewById<RecyclerView>(R.id.rvStep2Questions)
         rvStep2Questions.isNestedScrollingEnabled = false
@@ -165,7 +155,6 @@ class ApplicationFragment : Fragment() {
         adapterQuestionsStep2 = QuestionAdapter(listStep2) { validateCurrentStep() }
         rvStep2Questions.adapter = adapterQuestionsStep2
 
-        // Step 2 - CV
         listCV = docs_list.filter { it.tipo == TipoFile.CV }.toMutableList()
         val rvStep2File = view.findViewById<RecyclerView>(R.id.rvStep2File)
         rvStep2File.isNestedScrollingEnabled = false
@@ -175,7 +164,6 @@ class ApplicationFragment : Fragment() {
         }
         rvStep2File.adapter = adapterFileCV
 
-        // Step 3 - Video
         listVideo = docs_list.filter { it.tipo == TipoFile.Video }.toMutableList()
         val rvStep3Video = view.findViewById<RecyclerView>(R.id.rvStep3Video)
         rvStep3Video.layoutManager = LinearLayoutManager(requireContext())
@@ -184,74 +172,52 @@ class ApplicationFragment : Fragment() {
         }
         rvStep3Video.adapter = adapterFileVideo
 
-        // Step 4 - Riepilogo
         rvSummary.layoutManager = LinearLayoutManager(requireContext())
         adapterSummary = QuestionCheckAdapter(emptyList())
         rvSummary.adapter = adapterSummary
 
-
-        // Pulsanti
-
-        // Tasto Avanti
         btnStepAvanti.setOnClickListener {
             val currentStep = viewFlipper.displayedChild
             val totalSteps = viewFlipper.childCount
 
             if (currentStep == totalSteps - 1) {
-                // Siamo all'ultimo step -> Invia
                 submitApplication()
-
             } else {
-                // Andiamo avanti
                 viewFlipper.setInAnimation(requireContext(), R.anim.slide_in_right)
                 viewFlipper.setOutAnimation(requireContext(), R.anim.slide_out_left)
                 viewFlipper.showNext()
-
                 if (viewFlipper.displayedChild == totalSteps - 1) {
                     populateSummary()
                 }
-
                 updateUiForStep()
             }
         }
 
-        // Tasto Indietro
         btnBackTop.setOnClickListener {
             handleBackNavigation()
         }
 
-        // Privacy Checkbox
         cbPrivacy.setOnCheckedChangeListener { _, _ ->
             validateCurrentStep()
         }
 
-        // Setup iniziale UI
         updateUiForStep()
     }
 
-    // Gestione logica del tasto indietro
     private fun handleBackNavigation() {
         val currentStep = viewFlipper.displayedChild
-
         if (currentStep == 0) {
-            // Step 1: chiediamo conferma per uscire
             val customView = layoutInflater.inflate(R.layout.dialog3, null)
             val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
                 .setView(customView)
                 .create()
-
-            customView.findViewById<Button>(R.id.btn_annulla).setOnClickListener {
-                dialog.dismiss() // Chiude il dialog e resta lì
-            }
-
+            customView.findViewById<Button>(R.id.btn_annulla).setOnClickListener { dialog.dismiss() }
             customView.findViewById<Button>(R.id.btn_conferma).setOnClickListener {
                 dialog.dismiss()
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
-
             dialog.show()
         } else {
-            // Step > 1: torniamo allo step precedente
             viewFlipper.setInAnimation(requireContext(), android.R.anim.slide_in_left)
             viewFlipper.setOutAnimation(requireContext(), android.R.anim.slide_out_right)
             viewFlipper.showPrevious()
@@ -259,37 +225,32 @@ class ApplicationFragment : Fragment() {
         }
     }
 
-    // Aggiorna Titolo, Progress Bar e abilita/disabilita bottone
     private fun updateUiForStep() {
         val currentStep = viewFlipper.displayedChild
         val totalSteps = viewFlipper.childCount
-
-        // 1. Titolo Dinamico
         tvOfferTitle.text = "$originalOfferName - Step ${currentStep + 1}"
-
-        // 2. Progress Bar
         val progress = ((currentStep + 1).toFloat() / totalSteps.toFloat() * 100).toInt()
         progressBar.progress = progress
-
-        // 3. Testo Bottone
-        if (currentStep == totalSteps - 1) {
-            btnStepAvanti.text = "Invia"
-        } else {
-            btnStepAvanti.text = "Avanti"
-        }
-
-        // 4. Controlla validazione
+        btnStepAvanti.text = if (currentStep == totalSteps - 1) "Invia" else "Avanti"
         validateCurrentStep()
     }
 
-    // Controlla se abilitare il tasto Avanti
+    // --- LOGICA VALIDAZIONE AGGIORNATA ---
     private fun validateCurrentStep() {
         val currentStep = viewFlipper.displayedChild
         var isValid = false
 
         when (currentStep) {
-            0 -> { // Step 1: Dati Personali
-                isValid = listStep1.none { it.answer.isBlank() }
+            0 -> { // Step 1: Dati Personali + Telefono
+                val allFieldsFilled = listStep1.none { it.answer.isBlank() }
+
+                // Il telefono è il 4° elemento (indice 3)
+                val phoneAnswer = listStep1.getOrNull(3)?.answer?.replace(" ", "") ?: ""
+
+                // Controllo: tra 10 e 12 caratteri e solo numeri
+                val isPhoneValid = phoneAnswer.length in 10..12 && phoneAnswer.all { it.isDigit() }
+
+                isValid = allFieldsFilled && isPhoneValid
             }
             1 -> { // Step 2: Esperienza + CV
                 val questionsOk = listStep2.none { it.answer.isBlank() }
@@ -303,7 +264,6 @@ class ApplicationFragment : Fragment() {
                 isValid = cbPrivacy.isChecked
             }
         }
-
         btnStepAvanti.isEnabled = isValid
     }
 
@@ -337,30 +297,17 @@ class ApplicationFragment : Fragment() {
     }
 
     private fun updateDocument(uri: Uri, type: TipoFile, isCamera: Boolean = false) {
-        val fileName = if (isCamera) {
-            "Video_Presentazione.mp4"
-        } else {
-            getFileNameFromUri(requireContext(), uri) ?: "file_caricato"
-        }
-
+        val fileName = if (isCamera) "Video_Presentazione.mp4" else getFileNameFromUri(requireContext(), uri)
         val globalItem = docs_list.find { it.tipo == type }
-        globalItem?.fileName = fileName
+        globalItem?.fileName = fileName ?: "file_caricato"
         globalItem?.fileUri = uri
-
-        if (type == TipoFile.CV) {
-            adapterFileCV.notifyItemChanged(0)
-        } else {
-            adapterFileVideo.notifyItemChanged(0)
-        }
-        validateCurrentStep() // Rivalida il bottone dopo il caricamento
+        if (type == TipoFile.CV) adapterFileCV.notifyItemChanged(0) else adapterFileVideo.notifyItemChanged(0)
+        validateCurrentStep()
     }
 
     private fun submitApplication() {
         if (applicationOfferId == -1) return
-
-        // Usa l'ID passato negli argomenti, se vuoto usa quello globale
         val currentUserId = if (applicationUserId.isNotBlank()) applicationUserId else (GlobalData.currentUser?.username ?: "Guest")
-
         val answers = question_list.map { it.answer }
         val stringaRisposte = answers.joinToString("###")
         val fileNames = docs_list.map { it.fileName }
@@ -373,14 +320,11 @@ class ApplicationFragment : Fragment() {
             risposte = stringaRisposte,
             files = stringaFiles
         )
-
         ApplicationGlobal.application_list.add(newApplication)
-
         Toast.makeText(context, "Candidatura inviata con successo!", Toast.LENGTH_SHORT).show()
         parentFragmentManager.popBackStack()
     }
 
-    // Metodi per Video e File
     private fun showVideoOptionsDialog() {
         val options = arrayOf("Registra Video", "Scegli dalla Galleria")
         AlertDialog.Builder(requireContext())
@@ -390,8 +334,7 @@ class ApplicationFragment : Fragment() {
                     0 -> checkCameraPermissionAndOpen()
                     1 -> videoGalleryLauncher.launch("video/*")
                 }
-            }
-            .show()
+            }.show()
     }
 
     private fun checkCameraPermissionAndOpen() {
@@ -412,20 +355,18 @@ class ApplicationFragment : Fragment() {
         return FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.provider", tempFile)
     }
 
-    private fun getFileNameFromUri(context: Context, uri: Uri): String {
+    private fun getFileNameFromUri(context: Context, uri: Uri): String? {
         var result: String? = null
         if (uri.scheme == "content") {
-            try {
-                val cursor = context.contentResolver.query(uri, null, null, null, null)
-                cursor?.use {
-                    if (it.moveToFirst()) {
-                        val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                        if (nameIndex >= 0) result = it.getString(nameIndex)
-                    }
+            val cursor = context.contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    if (nameIndex >= 0) result = it.getString(nameIndex)
                 }
-            } catch (e: Exception) { e.printStackTrace() }
+            }
         }
         if (result == null) result = uri.lastPathSegment
-        return result ?: "File_Sconosciuto"
+        return result
     }
 }

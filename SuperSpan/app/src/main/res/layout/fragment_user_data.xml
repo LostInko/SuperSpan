@@ -37,12 +37,39 @@
             app:layout_constraintStart_toEndOf="@id/btnBackTop"
             app:layout_constraintTop_toTopOf="@id/btnBackTop" />
 
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_profile_edit"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person"
+            app:layout_constraintEnd_toStartOf="@id/tv_insert_photo"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/titleAddress"
+            app:shapeAppearanceOverlay="@style/CircleImage"
+            app:strokeColor="@color/greenIcon"
+            app:strokeWidth="2dp" />
+
         <TextView
+            android:id="@+id/tv_insert_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Inserisci foto profilo"
+            android:textColor="@color/greenText"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@id/img_profile_edit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_profile_edit"
+            app:layout_constraintTop_toTopOf="@id/img_profile_edit" />   <TextView
             android:id="@+id/tvNomeLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="20dp"
             android:text="Nome"
             android:textColor="@color/black"
@@ -50,7 +77,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnBackTop" />
+            app:layout_constraintTop_toBottomOf="@id/img_profile_edit" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilName"

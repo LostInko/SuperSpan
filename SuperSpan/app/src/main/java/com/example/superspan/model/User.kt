@@ -8,4 +8,5 @@ data class User (
     var username : String,
     var password : String,
     val addresses : MutableList<Address> = mutableListOf(),
+    var profileImageUri: android.net.Uri? = null,
 )
