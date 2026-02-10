@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         )
         GlobalData.user_list.add(
             2,
-            User("Diego", "Serra", "13/01/2005", "Cagliari", "d", "s"
+            User("Diego", "Serra", "13/01/2005", "Cagliari", "diiegoserra", "ds", profileImageUri = getUriFromDrawable(R.drawable.diiego)
             )
         )
         GlobalData.user_list.add(
