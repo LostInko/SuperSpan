@@ -23,7 +23,7 @@ Nel team di sviluppo mi sono occupato di:
 
 ## Team di Progetto
 Il progetto è stato sviluppato in collaborazione con:
-* **Matteo Manai** (Tu) - [GitHub](https://github.com/LostInko)
+* **Matteo Manai** - [GitHub](https://github.com/LostInko)
 * **Diego Serra** - [GitHub](https://github.com/diiego-s)
 * **Giulia Cannata** - [GitHub](https://github.com/giuliaacannata05)
 * **Michele Chillotti** - [GitHub](https://github.com/mikiichillo)
